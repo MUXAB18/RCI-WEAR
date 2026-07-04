@@ -142,7 +142,53 @@ function ProductCard({ item, index, onOpen }) {
                 className={styles.overlayBtn}
                 onClick={(e) => {
                   e.stopPropagation()
-                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
+                  
+                  // Hide overlay immediately on mobile
+                  if (window.innerWidth <= 640) {
+                    setShowOverlay(false)
+                  }
+                  
+                  // Auto-fill contact form
+                  const form = document.querySelector('#quote-form')
+                  if (form) {
+                    // Fill the subject field
+                    const subjectField = form.querySelector('select[name="subject"]')
+                    if (subjectField) {
+                      subjectField.value = 'Custom Order'
+                      subjectField.dispatchEvent(new Event('change', { bubbles: true }))
+                    }
+                    
+                    // Fill the message field with full product details
+                    const messageField = form.querySelector('textarea[name="message"]')
+                    if (messageField) {
+                      messageField.value = `Product: ${item.title}
+Category: ${item.cat}
+${item.badge ? `Badge: ${item.badge}\n` : ''}
+Description: ${item.desc}
+
+I'm interested in this product. Please provide:
+- Pricing information
+- Available sizes/colors  
+- Customization options
+- Minimum order quantity
+- Lead time
+
+Thank you!`
+                      messageField.dispatchEvent(new Event('input', { bubbles: true }))
+                      messageField.dispatchEvent(new Event('change', { bubbles: true }))
+                    }
+                    
+                    // Wait for overlay to close, then scroll
+                    setTimeout(() => {
+                      form.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                      
+                      // Focus on name field
+                      setTimeout(() => {
+                        const nameField = form.querySelector('input[name="name"]')
+                        if (nameField) nameField.focus()
+                      }, 1000)
+                    }, 100)
+                  }
                 }}
                 data-cursor
               >

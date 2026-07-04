@@ -401,6 +401,7 @@
   display: flex;
   gap: 14px;
   position: relative;
+  pointer-events: auto;
 }
 
 .notificationBubble::after {
@@ -1174,6 +1175,7 @@
     width: 280px;
     bottom: 100px;
     right: 20px;
+    display: none; /* Hide notification bubble on tablet/mobile to avoid overlap */
   }
   
   .fabContainer {
@@ -1250,11 +1252,7 @@
   }
   
   .notificationBubble {
-    bottom: 96px;
-    right: 16px;
-    left: 16px;
-    width: auto;
-    max-width: 320px;
+    display: none; /* Hide notification bubble completely on mobile */
   }
   
   .serviceCardsGrid {
