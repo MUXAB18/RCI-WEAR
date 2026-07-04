@@ -25,7 +25,7 @@
 /* ── Background ── */
 .bg {
   position: absolute;
-  inset: -8%;
+  inset: 0;
   will-change: transform;
 }
 
@@ -80,9 +80,11 @@
 .content {
   position: relative;
   z-index: 5;
-  padding: 0 clamp(24px, 6vw, 120px);
+  padding: 0 clamp(20px, 5vw, 120px);
   margin-top: 100px; /* Shift down to avoid navbar */
   max-width: 1000px;
+  width: 100%;
+  box-sizing: border-box;
   will-change: transform, opacity;
 }
 
@@ -155,6 +157,8 @@
   gap: 24px;
   margin-bottom: 32px;
   opacity: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .taglineBar {
@@ -404,7 +408,7 @@
 /* ── Responsive ── */
 @media (max-width: 1200px) {
   .logoFloat { display: none; }
-  .sideLabel { display: none; }
+  .sideLabel { display: none !important; }
   .content {
     max-width: 100%;
     margin-left: auto;
@@ -413,6 +417,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
   .eyebrow { justify-content: center; width: 100%; margin-left: auto; margin-right: auto; padding-left: 6px; }
   .eyebrowLine { display: none !important; }
@@ -426,13 +431,15 @@
 
 @media (max-width: 768px) {
   .content {
-    padding: 128px 24px 88px;
+    padding: 128px 20px 88px;
     margin-top: 0; /* Reset desktop margin */
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    box-sizing: border-box;
+    max-width: 100vw;
   }
   .eyebrow { justify-content: center; width: 100%; margin-left: auto; margin-right: auto; padding-left: 6px; }
   .eyebrowLine { display: none !important; }
