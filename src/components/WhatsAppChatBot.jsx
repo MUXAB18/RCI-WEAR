@@ -601,7 +601,7 @@ export default function WhatsAppChatBot() {
           aria-label={isOpen ? 'Close WhatsApp chat' : 'Open WhatsApp chat'}
           aria-expanded={isOpen}
         >
-          {hasUnread && !isOpen && <div className={styles.unreadBadge}>1</div>}
+          {/* Always show red notification dot */}
           {!isOpen && <div className={styles.fabNotificationDot} />}
           <div className={styles.fabPulse} />
           <div className={styles.fabPulse2} />

@@ -146,17 +146,8 @@ function ProductCard({ item, index, onOpen }) {
                   // Auto-fill contact form
                   const form = document.querySelector('#quote-form')
                   if (form) {
-                    // Fill the subject field
-                    const subjectField = form.querySelector('select[name="subject"]')
-                    if (subjectField) {
-                      subjectField.value = 'Custom Order'
-                      subjectField.dispatchEvent(new Event('change', { bubbles: true }))
-                    }
-                    
-                    // Fill the message field with full product details
-                    const messageField = form.querySelector('textarea[name="message"]')
-                    if (messageField) {
-                      messageField.value = `Product: ${item.title}
+                    // Prepare the message content
+                    const messageContent = `Product: ${item.title}
 Category: ${item.cat}
 ${item.badge ? `Badge: ${item.badge}\n` : ''}
 Description: ${item.desc}
@@ -169,8 +160,25 @@ I'm interested in this product. Please provide:
 - Lead time
 
 Thank you!`
-                      messageField.dispatchEvent(new Event('input', { bubbles: true }))
-                      messageField.dispatchEvent(new Event('change', { bubbles: true }))
+                    
+                    // Fill the subject field with React event
+                    const subjectField = form.querySelector('select[name="subject"]')
+                    if (subjectField) {
+                      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set
+                      nativeInputValueSetter.call(subjectField, 'Custom Order')
+                      const event = new Event('change', { bubbles: true })
+                      subjectField.dispatchEvent(event)
+                    }
+                    
+                    // Fill the message field with React event
+                    const messageField = form.querySelector('textarea[name="message"]')
+                    if (messageField) {
+                      const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set
+                      nativeTextAreaValueSetter.call(messageField, messageContent)
+                      const inputEvent = new Event('input', { bubbles: true })
+                      const changeEvent = new Event('change', { bubbles: true })
+                      messageField.dispatchEvent(inputEvent)
+                      messageField.dispatchEvent(changeEvent)
                     }
                     
                     // Close the modal if on mobile
@@ -186,8 +194,8 @@ Thank you!`
                       setTimeout(() => {
                         const nameField = form.querySelector('input[name="name"]')
                         if (nameField) nameField.focus()
-                      }, 1000)
-                    }, 100)
+                      }, 800)
+                    }, window.innerWidth <= 640 ? 300 : 100)
                   }
                 }}
                 data-cursor

@@ -110,8 +110,8 @@
 /* Accent year box */
 .imageAccent {
   position: absolute;
-  bottom: -28px;
-  right: -28px;
+  bottom: 20px;
+  right: 20px;
   width: 108px;
   height: 108px;
   background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, var(--gold-dim) 100%);

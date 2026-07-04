@@ -95,6 +95,9 @@
 html {
   scroll-behavior: auto;
   font-size: 16px;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
 }
 
 body {
@@ -107,18 +110,52 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
+}
+
+/* Prevent horizontal scroll on all elements */
+* {
+  max-width: 100%;
+}
+
+/* Specific elements that might cause horizontal scroll */
+img, video, iframe, canvas, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent text from causing horizontal scroll */
+pre, code {
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-serif);
   font-weight: 400;
   line-height: 1.1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
 ul { list-style: none; }
 button { font-family: inherit; }
+
+/* Input fields - prevent zoom on iOS and horizontal scroll */
+input, textarea, select {
+  max-width: 100%;
+  font-size: 16px !important; /* Prevents iOS zoom */
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal scroll during form interaction */
+input:focus, textarea:focus, select:focus {
+  font-size: 16px !important;
+}
 
 /* ── Lenis ── */
 html.lenis, html.lenis body { height: auto; }
@@ -774,6 +811,13 @@ body::before {
   .container { padding: 0 40px; }
   .container-tight { padding: 0 40px; }
   .section { padding: 120px 0; }
+  
+  /* Prevent horizontal scroll */
+  body, html {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -785,10 +829,50 @@ body::before {
   a, button, [data-cursor] { cursor: pointer; }
   .btn-primary, .btn-outline { padding: 15px 32px; }
   #luxury-loader .lc { display: none; }
+  
+  /* Strict horizontal scroll prevention */
+  body, html {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    position: relative !important;
+  }
+  
+  /* Prevent any element from causing horizontal scroll */
+  * {
+    max-width: 100% !important;
+  }
+  
+  /* Ensure containers stay within viewport */
+  .container, .container-tight, .container-full {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Prevent form fields from causing scroll */
+  input, textarea, select, button {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    font-size: 16px !important; /* Prevents iOS zoom */
+  }
 }
 
 @media (max-width: 480px) {
   .container { padding: 0 20px; }
   .section { padding: 72px 0; }
   .section-title { font-size: clamp(1.9rem, 8vw, 2.8rem); }
+  
+  /* Extra strict mobile controls */
+  body, html {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+  
+  /* Ensure all interactive elements stay within bounds */
+  input, textarea, select {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 16px !important;
+  }
 }

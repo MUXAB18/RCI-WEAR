@@ -8,35 +8,35 @@
    CSS VARIABLES — DESIGN TOKENS
    ─────────────────────────────────────────────────────────────── */
 :root {
-  /* WhatsApp Brand Colors */
+  /* WhatsApp Brand Colors - Official */
   --wa-primary: #25D366;
-  --wa-primary-dark: #128C7E;
-  --wa-primary-light: #34E877;
-  --wa-primary-hover: #1EBF55;
+  --wa-primary-dark: #075E54;
+  --wa-primary-light: #128C7E;
+  --wa-primary-hover: #20BA5A;
   
-  /* Background Colors */
-  --wa-bg-dark: #0A0A0A;
-  --wa-bg-panel: #0F0F0F;
-  --wa-bg-header: linear-gradient(135deg, #075E54 0%, #128C7E 100%);
-  --wa-bg-message-agent: rgba(30, 43, 41, 0.95);
-  --wa-bg-message-user: linear-gradient(135deg, #075E54 0%, #128C7E 100%);
-  --wa-bg-glass: rgba(17, 17, 17, 0.85);
+  /* Background Colors - Official WhatsApp */
+  --wa-bg-dark: #111B21;
+  --wa-bg-panel: #0B141A;
+  --wa-bg-header: #202C33;
+  --wa-bg-message-agent: #202C33;
+  --wa-bg-message-user: #005C4B;
+  --wa-bg-glass: rgba(17, 27, 33, 0.95);
   
   /* Text Colors */
-  --wa-text-primary: #FFFFFF;
-  --wa-text-secondary: rgba(255, 255, 255, 0.75);
-  --wa-text-tertiary: rgba(255, 255, 255, 0.5);
+  --wa-text-primary: #E9EDEF;
+  --wa-text-secondary: #8696A0;
+  --wa-text-tertiary: #667781;
   --wa-text-muted: rgba(255, 255, 255, 0.35);
   
   /* Border Colors */
-  --wa-border-subtle: rgba(255, 255, 255, 0.08);
-  --wa-border-medium: rgba(255, 255, 255, 0.12);
-  --wa-border-strong: rgba(255, 255, 255, 0.18);
+  --wa-border-subtle: rgba(134, 150, 160, 0.15);
+  --wa-border-medium: rgba(134, 150, 160, 0.25);
+  --wa-border-strong: rgba(134, 150, 160, 0.35);
   
   /* Accent Colors */
   --wa-accent-gold: #C8A96E;
-  --wa-accent-green: #4ADE80;
-  --wa-accent-blue: #60A5FA;
+  --wa-accent-green: #25D366;
+  --wa-accent-blue: #53BDEB;
   
   /* Shadows */
   --wa-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
@@ -48,11 +48,11 @@
   
   /* Border Radius */
   --wa-radius-xs: 6px;
-  --wa-radius-sm: 10px;
-  --wa-radius-md: 14px;
-  --wa-radius-lg: 18px;
-  --wa-radius-xl: 22px;
-  --wa-radius-2xl: 28px;
+  --wa-radius-sm: 8px;
+  --wa-radius-md: 12px;
+  --wa-radius-lg: 16px;
+  --wa-radius-xl: 20px;
+  --wa-radius-2xl: 24px;
   --wa-radius-full: 9999px;
   
   /* Transitions */
@@ -93,11 +93,11 @@
   justify-content: center;
   width: 64px;
   height: 64px;
-  background: var(--wa-bg-message-user);
+  background: #25D366;
   border: none;
   border-radius: var(--wa-radius-full);
   cursor: pointer;
-  box-shadow: var(--wa-shadow-fab);
+  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5), 0 4px 16px rgba(0, 0, 0, 0.4);
   transition: all var(--wa-transition-spring);
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
@@ -115,7 +115,7 @@
 
 .fab:hover {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6), 0 6px 20px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.7), 0 6px 20px rgba(0, 0, 0, 0.45);
 }
 
 .fab:active {
@@ -551,14 +551,6 @@
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-}
-
-.chatHeader::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
-  pointer-events: none;
 }
 
 .headerLeft {
