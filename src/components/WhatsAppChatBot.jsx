@@ -7,7 +7,8 @@ import styles from './WhatsAppChatBot.module.css'
 const CONFIG = {
   whatsappNumber: '923496014611',
   phone: '+92 349 6014611',
-  email: 'info@rciwear.com',
+  email: 'rasheedclothingintl@gmail.com',
+  linkedin: 'https://www.linkedin.com/company/rasheed-clothing-international', // Add your LinkedIn URL here
   businessName: 'Rasheed Clothing International',
   businessShort: 'RCI Wear',
   tagline: 'Premium Custom Clothing',
@@ -243,6 +244,18 @@ const ContactOptions = () => (
         <polyline points="22,6 12,13 2,6" />
       </svg>
       <span>Email</span>
+    </a>
+    <a
+      href={CONFIG.linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={styles.contactOption}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+        <circle cx="4" cy="4" r="2" stroke="none" fill="currentColor"/>
+      </svg>
+      <span>LinkedIn</span>
     </a>
   </div>
 )

@@ -303,3 +303,31 @@
   .bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
   .footer::after { font-size: 30vw; bottom: -40px; right: -20px; }
 }
+
+/* ── Social Icons ── */
+.socialIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: rgba(200, 169, 110, 0.08);
+  border: 1px solid rgba(200, 169, 110, 0.12);
+  color: var(--gold);
+  transition: all 0.3s var(--ease-luxury);
+  cursor: pointer;
+}
+
+.socialIcon:hover {
+  background: var(--gold);
+  color: var(--obsidian);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(200, 169, 110, 0.3);
+}
+
+.socialIcon svg {
+  width: 20px;
+  height: 20px;
+}

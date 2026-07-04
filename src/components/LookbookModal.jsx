@@ -1,23 +1,83 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './LookbookModal.module.css'
 
 export default function LookbookModal({ item, isOpen, onClose }) {
+  const [imageLoaded, setImageLoaded] = useState(false)
+  
   useEffect(() => {
     if (isOpen) {
+      // Reset image loaded state
+      setImageLoaded(false)
+      
+      // Preload the image
+      if (item?.img) {
+        const img = new Image()
+        img.src = item.img
+        img.onload = () => setImageLoaded(true)
+        img.onerror = () => setImageLoaded(true) // Still show even if error
+      }
+      
+      // Simple overflow hidden for all devices
       document.body.style.overflow = 'hidden'
+      document.body.style.touchAction = 'none'
     } else {
       document.body.style.overflow = ''
+      document.body.style.touchAction = ''
+      setImageLoaded(false)
     }
-    return () => { document.body.style.overflow = '' }
-  }, [isOpen])
+    
+    return () => { 
+      document.body.style.overflow = ''
+      document.body.style.touchAction = ''
+    }
+  }, [isOpen, item])
 
   if (!item) return null
 
   const handleInquire = () => {
     onClose()
+    
+    // Wait for modal close animation, then scroll and fill form
     setTimeout(() => {
-      document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
-    }, 300)
+      const form = document.querySelector('#quote-form')
+      if (form) {
+        // Fill the subject field
+        const subjectField = form.querySelector('select[name="subject"]')
+        if (subjectField) {
+          subjectField.value = 'Custom Order'
+          subjectField.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+        
+        // Fill the message field with full product details
+        const messageField = form.querySelector('textarea[name="message"]')
+        if (messageField) {
+          messageField.value = `Product: ${item.title}
+Category: ${item.cat}
+${item.badge ? `Badge: ${item.badge}\n` : ''}
+Description: ${item.desc}
+
+I'm interested in this product. Please provide:
+- Pricing information
+- Available sizes/colors  
+- Customization options
+- Minimum order quantity
+- Lead time
+
+Thank you!`
+          messageField.dispatchEvent(new Event('input', { bubbles: true }))
+          messageField.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+        
+        // Scroll to form centered
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        
+        // Focus on name field after scroll completes
+        setTimeout(() => {
+          const nameField = form.querySelector('input[name="name"]')
+          if (nameField) nameField.focus()
+        }, 1000)
+      }
+    }, 400)
   }
 
   return (
@@ -31,7 +91,20 @@ export default function LookbookModal({ item, isOpen, onClose }) {
         </button>
 
         <div className={styles.imageSide}>
-          <img src={item.img} alt={item.title} className={styles.image} />
+          {!imageLoaded && (
+            <div className={styles.imageSkeleton}>
+              <div className={styles.spinner} />
+            </div>
+          )}
+          <img 
+            src={item.img} 
+            alt={item.title} 
+            className={`${styles.image} ${imageLoaded ? styles.imageLoaded : ''}`}
+            loading="eager"
+            decoding="async"
+            onLoad={() => setImageLoaded(true)}
+            style={{ opacity: imageLoaded ? 1 : 0 }}
+          />
           {item.badge && <span className={styles.badge}>{item.badge}</span>}
         </div>
 
