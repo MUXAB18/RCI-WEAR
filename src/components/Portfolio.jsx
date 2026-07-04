@@ -143,11 +143,6 @@ function ProductCard({ item, index, onOpen }) {
                 onClick={(e) => {
                   e.stopPropagation()
                   
-                  // Hide overlay immediately on mobile
-                  if (window.innerWidth <= 640) {
-                    setShowOverlay(false)
-                  }
-                  
                   // Auto-fill contact form
                   const form = document.querySelector('#quote-form')
                   if (form) {
@@ -178,11 +173,16 @@ Thank you!`
                       messageField.dispatchEvent(new Event('change', { bubbles: true }))
                     }
                     
-                    // Wait for overlay to close, then scroll
+                    // Close the modal if on mobile
+                    if (window.innerWidth <= 640) {
+                      onOpen(null)
+                    }
+                    
+                    // Wait briefly, then scroll to form
                     setTimeout(() => {
                       form.scrollIntoView({ behavior: 'smooth', block: 'center' })
                       
-                      // Focus on name field
+                      // Focus on name field after scroll completes
                       setTimeout(() => {
                         const nameField = form.querySelector('input[name="name"]')
                         if (nameField) nameField.focus()
