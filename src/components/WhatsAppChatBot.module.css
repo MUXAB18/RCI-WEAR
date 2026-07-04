@@ -210,7 +210,7 @@
 /* Tooltip with red notification dot */
 .fabTooltip {
   position: absolute;
-  bottom: calc(100% + 12px);
+  bottom: calc(100% + 16px);
   right: 0;
   background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
   backdrop-filter: blur(20px) saturate(180%);
@@ -220,11 +220,13 @@
   padding: 12px 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   opacity: 0;
+  visibility: hidden;
   transform: translateY(10px) scale(0.9);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
   white-space: nowrap;
   z-index: 10;
+  min-width: 200px;
 }
 
 .fabTooltip::after {
@@ -241,6 +243,7 @@
 
 .fab:hover .fabTooltip {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0) scale(1);
 }
 
@@ -256,22 +259,46 @@
 }
 
 .tooltipDot {
-  width: 8px;
-  height: 8px;
-  background: #EF4444;
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
   border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+  position: relative;
+  animation: pulseGlow 2s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
+  flex-shrink: 0;
 }
 
-@keyframes pulse {
+.tooltipDot::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.3);
+  animation: pulseRing 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
   0%, 100% {
     opacity: 1;
     transform: scale(1);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.8;
     transform: scale(1.1);
+    box-shadow: 0 0 16px rgba(239, 68, 68, 1), 0 0 32px rgba(239, 68, 68, 0.6);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
   }
 }
 
@@ -310,6 +337,34 @@
   z-index: 2;
   animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+}
+
+/* Half-visible notification dot on FAB */
+.fabNotificationDot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  border: 2px solid var(--wa-bg-message-user);
+  border-radius: 50%;
+  z-index: 3;
+  animation: pulseGlow 2s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
+}
+
+.fabNotificationDot::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.3);
+  animation: pulseRing 2s ease-in-out infinite;
+}
+
+.fabOpen .fabNotificationDot {
+  display: none;
 }
 
 @keyframes badgePop {
@@ -1144,9 +1199,45 @@
     border-radius: var(--wa-radius-full);
   }
   
-  .fab:hover .fabLabel {
-    opacity: 0;
-    max-width: 0;
+  /* Show tooltip on mobile with tap */
+  .fabTooltip {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    animation: tooltipFloat 3s ease-in-out 1s;
+    bottom: calc(100% + 12px);
+    right: -20px;
+    min-width: 180px;
+  }
+  
+  @keyframes tooltipFloat {
+    0%, 100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  
+  /* Hide tooltip after 5 seconds on mobile */
+  .fab:not(:hover) .fabTooltip {
+    animation: tooltipFadeOut 0.5s ease-out 5s forwards;
+  }
+  
+  @keyframes tooltipFadeOut {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  
+  .fabNotificationDot {
+    width: 10px;
+    height: 10px;
+    top: 6px;
+    right: 6px;
   }
   
   .chatPanel {

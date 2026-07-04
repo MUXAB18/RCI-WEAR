@@ -589,6 +589,7 @@ export default function WhatsAppChatBot() {
           aria-expanded={isOpen}
         >
           {hasUnread && !isOpen && <div className={styles.unreadBadge}>1</div>}
+          {!isOpen && <div className={styles.fabNotificationDot} />}
           <div className={styles.fabPulse} />
           <div className={styles.fabPulse2} />
           <div className={styles.fabIcon}>
