@@ -59,7 +59,7 @@
 .closeBtn:hover {
   background: rgba(200, 169, 110, 0.1);
   border-color: rgba(200, 169, 110, 0.3);
-  color: #DFC28F;
+  color: #0A0A0A;
   transform: rotate(90deg);
 }
 
@@ -88,7 +88,7 @@
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: #C8A96E;
+  color: #000000;
   margin-bottom: 12px;
 }
 
@@ -104,7 +104,7 @@
 .divider {
   width: 40px;
   height: 2px;
-  background: #C8A96E;
+  background: #000000;
   margin: 0 auto 20px;
 }
 
@@ -138,21 +138,21 @@
 .field label {
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-  font-weight: 500;
-  color: #C8C2BC;
+  font-weight: 600;
+  color: #000000;
   letter-spacing: 0.5px;
 }
 
 .field input,
 .field textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 8px;
   padding: 14px 16px;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: #F2EDE4;
+  color: #000000;
   transition: all 0.3s ease;
   outline: none;
   appearance: none;
@@ -161,14 +161,14 @@
 
 .field input:focus,
 .field textarea:focus {
-  background: rgba(200, 169, 110, 0.05);
-  border-color: #C8A96E;
-  box-shadow: 0 0 0 4px rgba(200, 169, 110, 0.1);
+  background: rgba(0, 0, 0, 0.05);
+  border-color: #000000;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .field input::placeholder,
 .field textarea::placeholder {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .field textarea {
@@ -207,12 +207,12 @@
   height: 80px;
   margin: 0 auto 24px;
   background: rgba(200, 169, 110, 0.1);
-  border: 2px solid #C8A96E;
+  border: 2px solid #000000;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #C8A96E;
+  color: #000000;
 }
 
 .successState h3 {

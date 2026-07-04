@@ -25,7 +25,7 @@
   bottom: -100px;
   width: 700px;
   height: 500px;
-  background: radial-gradient(ellipse, rgba(200,169,110,0.02) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(0,0,0,0.02) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -68,8 +68,8 @@
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(200,169,110,0.025) 0%,
-    rgba(200,169,110,0.04) 100%
+    rgba(0,0,0,0.025) 0%,
+    rgba(0,0,0,0.04) 100%
   );
   backdrop-filter: var(--blur-md);
   -webkit-backdrop-filter: var(--blur-md);

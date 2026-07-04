@@ -8,35 +8,35 @@
    CSS VARIABLES — DESIGN TOKENS
    ─────────────────────────────────────────────────────────────── */
 :root {
-  /* WhatsApp Brand Colors - Official */
-  --wa-primary: #25D366;
-  --wa-primary-dark: #075E54;
-  --wa-primary-light: #128C7E;
-  --wa-primary-hover: #20BA5A;
+  /* WhatsApp Brand Colors - Grey Theme */
+  --wa-primary: #808080;
+  --wa-primary-dark: #505050;
+  --wa-primary-light: #A0A0A0;
+  --wa-primary-hover: #909090;
   
-  /* Background Colors - Official WhatsApp */
-  --wa-bg-dark: #111B21;
-  --wa-bg-panel: #0B141A;
-  --wa-bg-header: #202C33;
-  --wa-bg-message-agent: #202C33;
-  --wa-bg-message-user: #005C4B;
-  --wa-bg-glass: rgba(17, 27, 33, 0.95);
+  /* Background Colors - Pure Black Theme */
+  --wa-bg-dark: #000000;
+  --wa-bg-panel: #000000;
+  --wa-bg-header: #000000;
+  --wa-bg-message-agent: #1a1a1a;
+  --wa-bg-message-user: #808080;
+  --wa-bg-glass: rgba(0, 0, 0, 0.98);
   
   /* Text Colors */
-  --wa-text-primary: #E9EDEF;
-  --wa-text-secondary: #8696A0;
-  --wa-text-tertiary: #667781;
-  --wa-text-muted: rgba(255, 255, 255, 0.35);
+  --wa-text-primary: #FFFFFF;
+  --wa-text-secondary: #B0B0B0;
+  --wa-text-tertiary: #808080;
+  --wa-text-muted: rgba(255, 255, 255, 0.5);
   
-  /* Border Colors */
-  --wa-border-subtle: rgba(134, 150, 160, 0.15);
-  --wa-border-medium: rgba(134, 150, 160, 0.25);
-  --wa-border-strong: rgba(134, 150, 160, 0.35);
+  /* Border Colors - Light Grey */
+  --wa-border-subtle: #D3D3D3;
+  --wa-border-medium: #C0C0C0;
+  --wa-border-strong: #A8A8A8;
   
-  /* Accent Colors */
-  --wa-accent-gold: #C8A96E;
-  --wa-accent-green: #25D366;
-  --wa-accent-blue: #53BDEB;
+  /* Accent Colors - Grey Theme */
+  --wa-accent-gold: #808080;
+  --wa-accent-green: #808080;
+  --wa-accent-blue: #808080;
   
   /* Shadows */
   --wa-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
@@ -93,11 +93,11 @@
   justify-content: center;
   width: 64px;
   height: 64px;
-  background: #25D366;
-  border: none;
+  background: #000000;
+  border: 2px solid #D3D3D3;
   border-radius: var(--wa-radius-full);
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5), 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px rgba(211, 211, 211, 0.3), 0 4px 16px rgba(0, 0, 0, 0.8);
   transition: all var(--wa-transition-spring);
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
@@ -108,14 +108,15 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
-  opacity: 0.8;
+  background: radial-gradient(circle at 30% 30%, rgba(211, 211, 211, 0.1) 0%, transparent 70%);
+  opacity: 0.6;
   pointer-events: none;
 }
 
 .fab:hover {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.7), 0 6px 20px rgba(0, 0, 0, 0.45);
+  background: #808080;
+  box-shadow: 0 12px 40px rgba(128, 128, 128, 0.4), 0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
 .fab:active {
@@ -123,8 +124,9 @@
 }
 
 .fab.fabOpen {
-  background: linear-gradient(135deg, #1F1F1F 0%, #2A2A2A 100%);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4);
+  background: #000000;
+  border-color: #FFFFFF;
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.8);
 }
 
 .fab.fabOpen:hover {
@@ -137,7 +139,7 @@
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 3px solid rgba(37, 211, 102, 0.6);
+  border: 3px solid rgba(211, 211, 211, 0.4);
   animation: pulseRing 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   pointer-events: none;
 }
@@ -145,7 +147,7 @@
 .fabPulse2 {
   inset: -12px;
   border-width: 2px;
-  border-color: rgba(37, 211, 102, 0.4);
+  border-color: rgba(211, 211, 211, 0.3);
   animation-delay: 0.8s;
 }
 
@@ -173,25 +175,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--wa-text-primary);
+  color: #D3D3D3;
   flex-shrink: 0;
   width: 64px;
   height: 64px;
-  transition: transform var(--wa-transition-spring);
+  transition: all var(--wa-transition-spring);
   position: relative;
   z-index: 1;
 }
 
 .fab:hover .fabIcon {
-  transform: scale(1.1);
+  color: #FFFFFF;
 }
 
 .fabOpen .fabIcon {
   transform: rotate(90deg);
+  color: #FFFFFF;
 }
 
 .fab.fabOpen:hover .fabIcon {
   transform: rotate(180deg);
+  color: #FFFFFF;
 }
 
 .fabLabel {
@@ -212,13 +216,13 @@
   position: absolute;
   bottom: calc(100% + 16px);
   right: 0;
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
+  background: #000000;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 2px solid #D3D3D3;
   border-radius: 12px;
   padding: 12px 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(211, 211, 211, 0.2), inset 0 1px 0 rgba(211, 211, 211, 0.1);
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px) scale(0.9);
@@ -238,7 +242,7 @@
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 8px solid rgba(30, 30, 30, 0.98);
+  border-top: 8px solid #000000;
 }
 
 .fab:hover .fabTooltip {
@@ -261,11 +265,11 @@
 .tooltipDot {
   width: 10px;
   height: 10px;
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  background: #808080;
   border-radius: 50%;
   position: relative;
   animation: pulseGlow 2s ease-in-out infinite;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 12px rgba(128, 128, 128, 0.5), 0 0 24px rgba(128, 128, 128, 0.3);
   flex-shrink: 0;
 }
 
@@ -274,7 +278,7 @@
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 2px solid rgba(239, 68, 68, 0.3);
+  border: 2px solid rgba(128, 128, 128, 0.3);
   animation: pulseRing 2s ease-in-out infinite;
 }
 
@@ -282,12 +286,12 @@
   0%, 100% {
     opacity: 1;
     transform: scale(1);
-    box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 12px rgba(128, 128, 128, 0.5), 0 0 24px rgba(128, 128, 128, 0.3);
   }
   50% {
     opacity: 0.8;
     transform: scale(1.1);
-    box-shadow: 0 0 16px rgba(239, 68, 68, 1), 0 0 32px rgba(239, 68, 68, 0.6);
+    box-shadow: 0 0 16px rgba(128, 128, 128, 0.7), 0 0 32px rgba(128, 128, 128, 0.4);
   }
 }
 
@@ -303,7 +307,7 @@
 }
 
 .tooltipText {
-  color: var(--wa-text-primary);
+  color: #FFFFFF;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -311,7 +315,7 @@
 }
 
 .tooltipSubtext {
-  color: var(--wa-text-muted);
+  color: #B0B0B0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 11px;
   font-weight: 400;
@@ -346,12 +350,12 @@
   right: 8px;
   width: 12px;
   height: 12px;
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  border: 2px solid var(--wa-bg-message-user);
+  background: #808080;
+  border: 2px solid #000000;
   border-radius: 50%;
   z-index: 3;
   animation: pulseGlow 2s ease-in-out infinite;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), 0 0 24px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 12px rgba(128, 128, 128, 0.5), 0 0 24px rgba(128, 128, 128, 0.3);
 }
 
 .fabNotificationDot::before {
@@ -359,7 +363,7 @@
   position: absolute;
   inset: -3px;
   border-radius: 50%;
-  border: 2px solid rgba(239, 68, 68, 0.3);
+  border: 2px solid rgba(128, 128, 128, 0.3);
   animation: pulseRing 2s ease-in-out infinite;
 }
 
@@ -389,13 +393,13 @@
   bottom: 108px;
   right: 28px;
   width: 300px;
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
+  background: #000000;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--wa-border-medium);
+  border: 2px solid #D3D3D3;
   border-radius: var(--wa-radius-xl);
   padding: 18px;
-  box-shadow: var(--wa-shadow-2xl), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(211, 211, 211, 0.2), inset 0 1px 0 rgba(211, 211, 211, 0.1);
   z-index: var(--wa-z-notif);
   animation: slideInNotif 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
@@ -411,9 +415,9 @@
   right: 30px;
   width: 16px;
   height: 16px;
-  background: linear-gradient(to bottom right, rgba(30, 30, 30, 0.98) 0%, rgba(20, 20, 20, 0.98) 100%);
-  border-right: 1px solid var(--wa-border-medium);
-  border-bottom: 1px solid var(--wa-border-medium);
+  background: #000000;
+  border-right: 2px solid #D3D3D3;
+  border-bottom: 2px solid #D3D3D3;
   transform: rotate(45deg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -434,10 +438,10 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  border: none;
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: var(--wa-radius-xs);
-  color: var(--wa-text-tertiary);
+  color: #B0B0B0;
   font-size: 22px;
   line-height: 1;
   padding: 4px 8px;
@@ -447,8 +451,8 @@
 }
 
 .notifClose:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--wa-text-primary);
+  background: rgba(128, 128, 128, 0.2);
+  color: #FFFFFF;
   transform: scale(1.1);
 }
 
@@ -456,25 +460,25 @@
   width: 48px;
   height: 48px;
   border-radius: var(--wa-radius-md);
-  background: var(--wa-bg-message-user);
+  background: #808080;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: var(--wa-text-primary);
+  color: #FFFFFF;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
   animation: avatarPulse 2s ease infinite;
 }
 
 @keyframes avatarPulse {
   0%, 100% {
-    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
   }
   50% {
-    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.5);
+    box-shadow: 0 4px 16px rgba(128, 128, 128, 0.5);
   }
 }
 
@@ -487,7 +491,7 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 600;
-  color: var(--wa-text-primary);
+  color: #FFFFFF;
   margin-bottom: 4px;
   line-height: 1.4;
 }
@@ -495,7 +499,7 @@
 .notifMessage {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
-  color: var(--wa-text-secondary);
+  color: #B0B0B0;
   line-height: 1.5;
   margin-bottom: 6px;
 }
@@ -503,7 +507,7 @@
 .notifMeta {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 11px;
-  color: var(--wa-accent-gold);
+  color: #808080;
   opacity: 0.85;
 }
 
@@ -516,12 +520,12 @@
   right: 28px;
   width: 420px;
   max-height: 680px;
-  background: var(--wa-bg-glass);
+  background: #000000;
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--wa-border-subtle);
+  border: 2px solid #D3D3D3;
   border-radius: var(--wa-radius-2xl);
-  box-shadow: var(--wa-shadow-2xl), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(211, 211, 211, 0.2), inset 0 1px 0 rgba(211, 211, 211, 0.1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -547,7 +551,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 22px;
-  background: var(--wa-bg-header);
+  background: #3a3a3a;
+  border-bottom: 1px solid #D3D3D3;
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -566,17 +571,17 @@
   width: 50px;
   height: 50px;
   border-radius: var(--wa-radius-md);
-  background: rgba(255, 255, 255, 0.2);
-  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  background: #808080;
+  border: 2.5px solid #D3D3D3;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 18px;
   font-weight: 700;
-  color: var(--wa-text-primary);
+  color: #FFFFFF;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .onlinePulse {
@@ -594,10 +599,10 @@
 
 @keyframes pulseOnline {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+    box-shadow: 0 0 0 0 rgba(128, 128, 128, 0.5);
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(74, 222, 128, 0);
+    box-shadow: 0 0 0 8px rgba(128, 128, 128, 0);
   }
 }
 
@@ -636,11 +641,11 @@
 .onlineDot {
   width: 7px;
   height: 7px;
-  background: var(--wa-accent-green);
+  background: #808080;
   border-radius: var(--wa-radius-full);
   flex-shrink: 0;
   animation: dotPulse 2s ease infinite;
-  box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+  box-shadow: 0 0 6px rgba(128, 128, 128, 0.4);
 }
 
 @keyframes dotPulse {
@@ -669,18 +674,19 @@
   width: 38px;
   height: 38px;
   border-radius: var(--wa-radius-sm);
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--wa-text-primary);
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  color: #D3D3D3;
   cursor: pointer;
   transition: all var(--wa-transition-base);
   text-decoration: none;
 }
 
 .headerAction:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(128, 128, 128, 0.2);
+  border-color: #D3D3D3;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
 }
 
 .headerAction:active {
@@ -696,11 +702,11 @@
   justify-content: center;
   gap: 8px;
   padding: 12px 22px;
-  background: rgba(18, 140, 126, 0.12);
-  border-bottom: 1px solid var(--wa-border-subtle);
+  background: rgba(128, 128, 128, 0.1);
+  border-bottom: 1px solid #D3D3D3;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
-  color: var(--wa-accent-gold);
+  color: #D3D3D3;
   letter-spacing: 0.01em;
   flex-shrink: 0;
 }
@@ -722,7 +728,7 @@
   flex-direction: column;
   gap: 16px;
   scroll-behavior: smooth;
-  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(18, 140, 126, 0.04) 0%, transparent 50%), var(--wa-bg-panel);
+  background: #000000;
 }
 
 /* Custom Scrollbar */
@@ -751,9 +757,10 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--wa-text-muted);
+  color: #D3D3D3;
   padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: var(--wa-radius-full);
   margin-bottom: 8px;
 }
@@ -792,16 +799,16 @@
   width: 34px;
   height: 34px;
   border-radius: var(--wa-radius-sm);
-  background: var(--wa-bg-message-user);
+  background: #808080;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: var(--wa-text-primary);
+  color: #FFFFFF;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+  box-shadow: 0 2px 8px rgba(128, 128, 128, 0.3);
 }
 
 .messageSpacer {
@@ -822,14 +829,27 @@
 
 .bubbleAgent {
   background: var(--wa-bg-message-agent);
-  border: 1px solid rgba(37, 211, 102, 0.15);
+  border: 1px solid rgba(128, 128, 128, 0.2);
   border-bottom-left-radius: 6px;
 }
 
 .bubbleUser {
-  background: var(--wa-bg-message-user);
+  background: #808080;
   border-bottom-right-radius: 6px;
-  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.2);
+  box-shadow: 0 4px 16px rgba(128, 128, 128, 0.3);
+  color: #FFFFFF;
+}
+
+.bubbleUser .messageText {
+  color: #FFFFFF;
+}
+
+.bubbleUser .boldText {
+  color: #FFFFFF;
+}
+
+.bubbleUser .messageTime {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .messageText {
@@ -868,22 +888,22 @@
   width: 34px;
   height: 34px;
   border-radius: var(--wa-radius-sm);
-  background: var(--wa-bg-message-user);
+  background: #25D366;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: var(--wa-text-primary);
+  color: #000000;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.5);
   animation: avatarPulse 2s ease infinite;
 }
 
 .typingBubble {
   background: var(--wa-bg-message-agent);
-  border: 1px solid rgba(37, 211, 102, 0.15);
+  border: 1px solid rgba(128, 128, 128, 0.2);
   border-radius: var(--wa-radius-lg);
   border-bottom-left-radius: 6px;
   padding: 14px 18px;
@@ -899,7 +919,7 @@
 .typingDots span {
   width: 8px;
   height: 8px;
-  background: rgba(37, 211, 102, 0.7);
+  background: rgba(128, 128, 128, 0.7);
   border-radius: var(--wa-radius-full);
   animation: dotBounce 1.4s ease infinite;
 }
@@ -950,10 +970,10 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: rgba(37, 211, 102, 0.08);
+  background: rgba(128, 128, 128, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(37, 211, 102, 0.25);
+  border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: var(--wa-radius-full);
   cursor: pointer;
   transition: all var(--wa-transition-base);
@@ -963,16 +983,16 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: var(--wa-primary);
+  color: #D3D3D3;
   white-space: nowrap;
 }
 
 .serviceCard:hover {
-  background: rgba(37, 211, 102, 0.18);
-  border-color: rgba(37, 211, 102, 0.5);
+  background: rgba(128, 128, 128, 0.2);
+  border-color: rgba(128, 128, 128, 0.5);
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-  color: var(--wa-primary-light);
+  box-shadow: 0 6px 20px rgba(128, 128, 128, 0.3);
+  color: #FFFFFF;
 }
 
 .serviceCard:active {
@@ -1016,10 +1036,10 @@
   justify-content: center;
   gap: 8px;
   padding: 10px 18px;
-  background: linear-gradient(135deg, var(--wa-primary) 0%, var(--wa-primary-dark) 100%);
-  border: 1px solid rgba(37, 211, 102, 0.3);
+  background: #808080;
+  border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: var(--wa-radius-full);
-  color: var(--wa-text-primary);
+  color: #FFFFFF;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -1028,14 +1048,14 @@
   transition: all var(--wa-transition-base);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
   white-space: nowrap;
 }
 
 .whatsappButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-  background: linear-gradient(135deg, var(--wa-primary-hover) 0%, var(--wa-primary-dark) 100%);
+  box-shadow: 0 6px 20px rgba(128, 128, 128, 0.4);
+  background: #909090;
 }
 
 .whatsappButton:active {
@@ -1087,8 +1107,8 @@
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: rgba(37, 211, 102, 0.08);
-  border: 1px solid rgba(37, 211, 102, 0.25);
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: var(--wa-radius-md);
   color: var(--wa-text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -1100,10 +1120,10 @@
 }
 
 .contactOption:hover {
-  background: rgba(37, 211, 102, 0.15);
-  border-color: rgba(37, 211, 102, 0.4);
+  background: rgba(128, 128, 128, 0.2);
+  border-color: rgba(128, 128, 128, 0.5);
   transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+  box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
 }
 
 .contactOption:active {
@@ -1112,7 +1132,7 @@
 
 .contactOption svg {
   flex-shrink: 0;
-  color: var(--wa-primary);
+  color: #D3D3D3;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -1120,8 +1140,8 @@
    ─────────────────────────────────────────────────────────────── */
 .chatFooter {
   padding: 16px 22px;
-  border-top: 1px solid var(--wa-border-subtle);
-  background: rgba(10, 10, 10, 0.8);
+  border-top: 1px solid #D3D3D3;
+  background: #1a1a1a;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   flex-shrink: 0;
@@ -1134,12 +1154,13 @@
   gap: 8px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 11px;
-  color: var(--wa-text-tertiary);
+  color: #505050;
   letter-spacing: 0.01em;
 }
 
 .footerIcon {
-  opacity: 0.7;
+  color: #505050;
+  opacity: 0.9;
 }
 
 /* ═══════════════════════════════════════════════════════════════

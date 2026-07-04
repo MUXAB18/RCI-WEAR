@@ -25,7 +25,7 @@
   top: -150px;
   width: 700px;
   height: 500px;
-  background: radial-gradient(ellipse, rgba(200,169,110,0.022) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(0,0,0,0.022) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -94,8 +94,8 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(200,169,110,0.05);
-  border: 1px solid rgba(200,169,110,0.12);
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,9 +108,9 @@
 }
 
 .contactItem:hover .contactIcon {
-  background: rgba(200,169,110,0.1);
-  border-color: rgba(200,169,110,0.38);
-  box-shadow: 0 0 20px rgba(200,169,110,0.12);
+  background: rgba(0,0,0,0.1);
+  border-color: rgba(0,0,0,0.38);
+  box-shadow: 0 0 20px rgba(0,0,0,0.12);
 }
 
 .contactLabel {
@@ -170,11 +170,11 @@
 }
 
 .socialBtn:hover {
-  border-color: rgba(200,169,110,0.4);
+  border-color: rgba(0,0,0,0.4);
   color: var(--gold);
-  background: rgba(200,169,110,0.06);
+  background: rgba(0,0,0,0.06);
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(200,169,110,0.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 /* ══════════════════════════════
@@ -203,7 +203,7 @@
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(200,169,110,0.35) 50%,
+    rgba(0,0,0,0.35) 50%,
     transparent 100%
   );
 }
@@ -214,8 +214,8 @@
   position: absolute;
   bottom: 0; right: 0;
   width: 80px; height: 80px;
-  border-right: 1px solid rgba(200,169,110,0.07);
-  border-bottom: 1px solid rgba(200,169,110,0.07);
+  border-right: 1px solid rgba(0,0,0,0.07);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
 }
 
 /* Ambient inner glow */
@@ -223,7 +223,7 @@
   position: absolute;
   top: -100px; right: -100px;
   width: 300px; height: 300px;
-  background: radial-gradient(ellipse, rgba(200,169,110,0.03) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(0,0,0,0.03) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -246,7 +246,7 @@
   position: absolute;
   bottom: 0; left: 0;
   width: 100%; height: 1px;
-  background: linear-gradient(90deg, var(--gold), transparent);
+  background: linear-gradient(90deg, #000000, transparent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s var(--ease-luxury);
@@ -258,8 +258,8 @@
 .label {
   font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 400;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: #000000;
   position: absolute;
   top: 14px;
   left: 0;
@@ -274,13 +274,13 @@
 .field:focus-within .label,
 .field.has-value .label {
   transform: translateY(-20px) scale(0.8);
-  color: var(--gold);
+  color: #000000;
 }
 
 .input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.15);
   border-radius: 0;
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -299,7 +299,7 @@
 }
 
 .input:focus {
-  border-bottom-color: rgba(200,169,110,0.45);
+  border-bottom-color: rgba(0,0,0,0.45);
   outline: none;
 }
 
@@ -317,13 +317,13 @@
   resize: vertical;
   min-height: 120px;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.15);
   transition: border-color 0.4s ease, background 0.4s ease;
   line-height: 1.8;
   margin-top: 6px;
 }
 
-.textarea:focus { border-bottom-color: rgba(200,169,110,0.45); }
+.textarea:focus { border-bottom-color: rgba(0,0,0,0.45); }
 
 .submitBtn {
   align-self: flex-start;

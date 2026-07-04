@@ -25,7 +25,7 @@
   top: 200px;
   width: 600px;
   height: 600px;
-  background: radial-gradient(ellipse, rgba(200,169,110,0.025) 0%, transparent 60%);
+  background: radial-gradient(ellipse, rgba(0,0,0,0.025) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -77,7 +77,7 @@
 
 .pill:hover {
   color: var(--text-primary);
-  border-color: rgba(200,169,110,0.28);
+  border-color: rgba(0,0,0,0.28);
 }
 
 .pill:hover::before { transform: scaleX(1); }
@@ -144,9 +144,9 @@
 .cardInner:hover {
   box-shadow:
     0 40px 100px rgba(0,0,0,0.6),
-    0 20px 60px rgba(200,169,110,0.15),
-    0 0 40px rgba(200,169,110,0.05);
-  border-color: rgba(200,169,110,0.3);
+    0 20px 60px rgba(0,0,0,0.15),
+    0 0 40px rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.3);
   z-index: 10;
 }
 
@@ -204,7 +204,7 @@
   );
   padding: 6px 14px;
   border-radius: var(--radius-full);
-  box-shadow: 0 4px 16px rgba(200,169,110,0.4);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   letter-spacing: 2px;
 }
 
@@ -277,7 +277,7 @@
   align-items: center;
   gap: 10px;
   background: transparent;
-  border: 1px solid rgba(200,169,110,0.3);
+  border: 1px solid rgba(0,0,0,0.3);
   color: var(--gold-light);
   font-family: var(--font-sans);
   font-size: 8px;
@@ -362,8 +362,8 @@
 }
 
 .cardInner:hover .cardArrowWrap {
-  border-color: rgba(200,169,110,0.5);
-  background: rgba(200,169,110,0.07);
+  border-color: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.07);
   transform: rotate(45deg);
 }
 
@@ -387,7 +387,7 @@
   transition: border-color 0.4s ease;
 }
 
-.note:hover { border-color: rgba(200,169,110,0.12); }
+.note:hover { border-color: rgba(0,0,0,0.12); }
 
 .note p {
   font-family: var(--font-sans);
@@ -405,7 +405,7 @@
   background: var(--gold);
   flex-shrink: 0;
   animation: pulsate 2.8s ease-out infinite;
-  box-shadow: 0 0 8px rgba(200,169,110,0.4);
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
 }
 
 /* ── Responsive ── */

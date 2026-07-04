@@ -27,7 +27,7 @@
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(200,169,110,0.025) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(0,0,0,0.025) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -101,7 +101,7 @@
   height: 40%;
   background: linear-gradient(
     to top,
-    rgba(200,169,110,0.06) 0%,
+    rgba(0,0,0,0.06) 0%,
     transparent 100%
   );
   pointer-events: none;
@@ -121,8 +121,8 @@
   justify-content: center;
   gap: 0;
   box-shadow:
-    0 24px 64px rgba(200,169,110,0.45),
-    0 4px 16px rgba(200,169,110,0.3);
+    0 24px 64px rgba(0,0,0,0.45),
+    0 4px 16px rgba(0,0,0,0.3);
   border-radius: var(--radius-xs);
 }
 
@@ -149,13 +149,13 @@
   position: absolute;
   width: 32px;
   height: 32px;
-  border-color: rgba(200,169,110,0.22);
+  border-color: rgba(0,0,0,0.22);
   border-style: solid;
   pointer-events: none;
   transition: border-color 0.4s ease;
 }
 
-.imageFrame:hover .frameCorner { border-color: rgba(200,169,110,0.45); }
+.imageFrame:hover .frameCorner { border-color: rgba(0,0,0,0.45); }
 
 .fcTL { top: -12px; left: -12px; border-width: 1px 0 0 1px; }
 .fcBR { bottom: -12px; right: -12px; border-width: 0 1px 1px 0; }
@@ -213,13 +213,13 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(200,169,110,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3), transparent);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
 .memberBadge:hover {
-  border-color: rgba(200,169,110,0.18);
+  border-color: rgba(0,0,0,0.18);
   box-shadow: var(--shadow-gold);
   background: var(--surface-2);
 }
