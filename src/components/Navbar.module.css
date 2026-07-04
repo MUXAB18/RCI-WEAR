@@ -6,7 +6,8 @@
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  padding: 32px 0;
+  padding: 20px 0;
+  background: #3B3B3B;
   transition:
     padding         0.7s var(--ease-luxury),
     background      0.7s ease,
@@ -17,11 +18,11 @@
 
 /* Scrolled: true glassmorphism */
 .nav.scrolled {
-  padding: 18px 0;
-  background: rgba(6, 6, 6, 0.55);
+  padding: 12px 0;
+  background: #3B3B3B;
   backdrop-filter: blur(48px) saturate(200%) brightness(1.1);
   -webkit-backdrop-filter: blur(48px) saturate(200%) brightness(1.1);
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
   box-shadow: var(--shadow-3d);
 }
 
@@ -59,7 +60,7 @@
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid rgba(200,169,110,0.22);
+  border: 1px solid rgba(255,255,255,0.3);
   background: var(--surface);
   flex-shrink: 0;
   transition: border-color 0.4s ease, box-shadow 0.5s ease;
@@ -73,10 +74,10 @@
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    rgba(200,169,110,0.5) 60deg,
+    rgba(255,255,255,0.5) 60deg,
     transparent 120deg,
     transparent 240deg,
-    rgba(200,169,110,0.3) 300deg,
+    rgba(255,255,255,0.3) 300deg,
     transparent 360deg
   );
   animation: rotateSlow 8s linear infinite;
@@ -87,8 +88,8 @@
 
 .brand:hover .logoMark::before { opacity: 1; }
 .brand:hover .logoMark {
-  border-color: rgba(200,169,110,0.5);
-  box-shadow: 0 0 20px rgba(200,169,110,0.2);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
 }
 
 .logoImg {
@@ -108,7 +109,7 @@
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #FFFFFF;
   letter-spacing: 2px;
   text-transform: uppercase;
   line-height: 1;
@@ -120,8 +121,8 @@
   font-weight: 400;
   font-style: italic;
   letter-spacing: 1px;
-  color: var(--gold);
-  opacity: 0.55;
+  color: #FFFFFF;
+  opacity: 0.8;
   line-height: 1;
 }
 
@@ -139,7 +140,7 @@
   position: relative;
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: #D3D3D3;
   font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 500;
@@ -154,7 +155,7 @@
   overflow: visible;
 }
 
-.navLink:hover { color: var(--text-primary); }
+.navLink:hover { color: #FFFFFF; }
 
 /* Active & hover underline */
 .navIndicator {
@@ -163,7 +164,7 @@
   left: 20px;
   right: 20px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.45s var(--ease-luxury);
@@ -175,7 +176,7 @@
 }
 
 .navActive {
-  color: var(--gold-light) !important;
+  color: #FFFFFF !important;
 }
 
 /* ── CTA ── */
@@ -205,7 +206,7 @@
 .burgerLine {
   display: block;
   height: 2px;
-  background: var(--text-secondary);
+  background: #FFFFFF;
   border-radius: var(--radius-full);
   transform-origin: center;
   transition:
@@ -218,7 +219,7 @@
 
 .burgerLine:last-child { width: 65%; }
 
-.burger:hover .burgerLine { background: var(--text-primary); }
+.burger:hover .burgerLine { background: #FFFFFF; }
 .burger:hover .burgerLine:last-child { width: 100%; }
 
 .burgerOpen .burgerLine:nth-child(1) {
@@ -234,7 +235,7 @@
 .mobileMenu {
   display: none;
   flex-direction: column;
-  background: rgba(6,6,6,0.97);
+  background: #3B3B3B;
   backdrop-filter: blur(48px) saturate(200%);
   -webkit-backdrop-filter: blur(48px) saturate(200%);
   max-height: 0;
@@ -249,12 +250,12 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
   opacity: 0;
   transition: opacity 0.5s ease;
 }
 
-.mobileMenu.mobileOpen { max-height: 640px; border-color: rgba(200,169,110,0.06); }
+.mobileMenu.mobileOpen { max-height: 640px; border-color: rgba(255,255,255,0.12); }
 .mobileMenu.mobileOpen::before { opacity: 0.2; }
 
 .mobileMenuInner { padding: 16px 0 40px; }
@@ -283,13 +284,13 @@
   transform: translateX(0);
 }
 
-.mobileLink:hover { background: rgba(255,255,255,0.02); }
+.mobileLink:hover { background: rgba(255,255,255,0.05); }
 
 .mobileLinkNum {
   font-family: var(--font-italic);
   font-size: 11px;
-  color: var(--gold);
-  opacity: 0.35;
+  color: #FFFFFF;
+  opacity: 0.5;
   font-style: italic;
   min-width: 22px;
 }
@@ -300,16 +301,16 @@
   font-weight: 400;
   letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #D3D3D3;
   flex: 1;
   transition: color 0.3s ease;
 }
 
-.mobileLink:hover .mobileLinkLabel { color: var(--text-primary); }
-.mobileLinkActive .mobileLinkLabel { color: var(--gold-light); }
+.mobileLink:hover .mobileLinkLabel { color: #FFFFFF; }
+.mobileLinkActive .mobileLinkLabel { color: #FFFFFF; }
 
 .mobileLinkArrow {
-  color: var(--gold);
+  color: #FFFFFF;
   opacity: 0;
   font-size: 16px;
   transition: opacity 0.3s ease, transform 0.4s var(--ease-luxury);
