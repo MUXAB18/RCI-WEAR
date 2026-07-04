@@ -1,0 +1,1360 @@
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM WHATSAPP CHATBOT — PRODUCTION READY
+   Built with: Glassmorphism, Smooth Animations, Accessibility
+   Design Level: Apple / Intercom / Zendesk Quality
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ───────────────────────────────────────────────────────────────
+   CSS VARIABLES — DESIGN TOKENS
+   ─────────────────────────────────────────────────────────────── */
+:root {
+  /* WhatsApp Brand Colors */
+  --wa-primary: #25D366;
+  --wa-primary-dark: #128C7E;
+  --wa-primary-light: #34E877;
+  --wa-primary-hover: #1EBF55;
+  
+  /* Background Colors */
+  --wa-bg-dark: #0A0A0A;
+  --wa-bg-panel: #0F0F0F;
+  --wa-bg-header: linear-gradient(135deg, #075E54 0%, #128C7E 100%);
+  --wa-bg-message-agent: rgba(30, 43, 41, 0.95);
+  --wa-bg-message-user: linear-gradient(135deg, #075E54 0%, #128C7E 100%);
+  --wa-bg-glass: rgba(17, 17, 17, 0.85);
+  
+  /* Text Colors */
+  --wa-text-primary: #FFFFFF;
+  --wa-text-secondary: rgba(255, 255, 255, 0.75);
+  --wa-text-tertiary: rgba(255, 255, 255, 0.5);
+  --wa-text-muted: rgba(255, 255, 255, 0.35);
+  
+  /* Border Colors */
+  --wa-border-subtle: rgba(255, 255, 255, 0.08);
+  --wa-border-medium: rgba(255, 255, 255, 0.12);
+  --wa-border-strong: rgba(255, 255, 255, 0.18);
+  
+  /* Accent Colors */
+  --wa-accent-gold: #C8A96E;
+  --wa-accent-green: #4ADE80;
+  --wa-accent-blue: #60A5FA;
+  
+  /* Shadows */
+  --wa-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --wa-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
+  --wa-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.24);
+  --wa-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.32);
+  --wa-shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.4);
+  --wa-shadow-fab: 0 8px 32px rgba(37, 211, 102, 0.5), 0 4px 16px rgba(0, 0, 0, 0.4);
+  
+  /* Border Radius */
+  --wa-radius-xs: 6px;
+  --wa-radius-sm: 10px;
+  --wa-radius-md: 14px;
+  --wa-radius-lg: 18px;
+  --wa-radius-xl: 22px;
+  --wa-radius-2xl: 28px;
+  --wa-radius-full: 9999px;
+  
+  /* Transitions */
+  --wa-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --wa-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --wa-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  --wa-transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Spacing */
+  --wa-space-1: 4px;
+  --wa-space-2: 8px;
+  --wa-space-3: 12px;
+  --wa-space-4: 16px;
+  --wa-space-5: 20px;
+  --wa-space-6: 24px;
+  --wa-space-8: 32px;
+  
+  /* Z-Index */
+  --wa-z-fab: 9990;
+  --wa-z-panel: 9985;
+  --wa-z-notif: 9980;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FLOATING ACTION BUTTON (FAB)
+   ═══════════════════════════════════════════════════════════════ */
+.fabContainer {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: var(--wa-z-fab);
+}
+
+.fab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: var(--wa-bg-message-user);
+  border: none;
+  border-radius: var(--wa-radius-full);
+  cursor: pointer;
+  box-shadow: var(--wa-shadow-fab);
+  transition: all var(--wa-transition-spring);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.fab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.fab:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6), 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.fab:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.fab.fabOpen {
+  background: linear-gradient(135deg, #1F1F1F 0%, #2A2A2A 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.fab.fabOpen:hover {
+  transform: translateY(-2px) scale(1.05) rotate(90deg);
+}
+
+/* FAB Pulse Animation */
+.fabPulse,
+.fabPulse2 {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 3px solid rgba(37, 211, 102, 0.6);
+  animation: pulseRing 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  pointer-events: none;
+}
+
+.fabPulse2 {
+  inset: -12px;
+  border-width: 2px;
+  border-color: rgba(37, 211, 102, 0.4);
+  animation-delay: 0.8s;
+}
+
+.fabOpen .fabPulse,
+.fabOpen .fabPulse2 {
+  display: none;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.fabIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--wa-text-primary);
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  transition: transform var(--wa-transition-spring);
+  position: relative;
+  z-index: 1;
+}
+
+.fab:hover .fabIcon {
+  transform: scale(1.1);
+}
+
+.fabOpen .fabIcon {
+  transform: rotate(90deg);
+}
+
+.fab.fabOpen:hover .fabIcon {
+  transform: rotate(180deg);
+}
+
+.fabLabel {
+  display: none;
+}
+
+.fab:hover .fabLabel {
+  display: none;
+}
+
+.fabOpen .fabLabel,
+.fab.fabOpen:hover .fabLabel {
+  display: none;
+}
+
+/* Tooltip with red notification dot */
+.fabTooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  right: 0;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(10px) scale(0.9);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.fabTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 18px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(30, 30, 30, 0.98);
+}
+
+.fab:hover .fabTooltip {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.fabOpen .fabTooltip {
+  display: none;
+}
+
+.tooltipHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.tooltipDot {
+  width: 8px;
+  height: 8px;
+  background: #EF4444;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+.tooltipText {
+  color: var(--wa-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tooltipSubtext {
+  color: var(--wa-text-muted);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* Unread Badge */
+.unreadBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  border: 3px solid var(--wa-bg-dark);
+  border-radius: var(--wa-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--wa-text-primary);
+  z-index: 2;
+  animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NOTIFICATION BUBBLE
+   ═══════════════════════════════════════════════════════════════ */
+.notificationBubble {
+  position: fixed;
+  bottom: 108px;
+  right: 28px;
+  width: 300px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(30, 30, 30, 0.98) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--wa-border-medium);
+  border-radius: var(--wa-radius-xl);
+  padding: 18px;
+  box-shadow: var(--wa-shadow-2xl), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  z-index: var(--wa-z-notif);
+  animation: slideInNotif 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  gap: 14px;
+  position: relative;
+}
+
+.notificationBubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 30px;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(to bottom right, rgba(30, 30, 30, 0.98) 0%, rgba(20, 20, 20, 0.98) 100%);
+  border-right: 1px solid var(--wa-border-medium);
+  border-bottom: 1px solid var(--wa-border-medium);
+  transform: rotate(45deg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+@keyframes slideInNotif {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.notifClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: var(--wa-radius-xs);
+  color: var(--wa-text-tertiary);
+  font-size: 22px;
+  line-height: 1;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all var(--wa-transition-fast);
+  z-index: 1;
+}
+
+.notifClose:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--wa-text-primary);
+  transform: scale(1.1);
+}
+
+.notifAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--wa-radius-md);
+  background: var(--wa-bg-message-user);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wa-text-primary);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  animation: avatarPulse 2s ease infinite;
+}
+
+@keyframes avatarPulse {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.5);
+  }
+}
+
+.notifContent {
+  flex: 1;
+  padding-top: 2px;
+}
+
+.notifTitle {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--wa-text-primary);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.notifMessage {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  color: var(--wa-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.notifMeta {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  color: var(--wa-accent-gold);
+  opacity: 0.85;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHAT PANEL
+   ═══════════════════════════════════════════════════════════════ */
+.chatPanel {
+  position: fixed;
+  bottom: 108px;
+  right: 28px;
+  width: 420px;
+  max-height: 680px;
+  background: var(--wa-bg-glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--wa-border-subtle);
+  border-radius: var(--wa-radius-2xl);
+  box-shadow: var(--wa-shadow-2xl), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: var(--wa-z-panel);
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  pointer-events: none;
+  transform-origin: bottom right;
+  transition: opacity var(--wa-transition-slow), transform var(--wa-transition-spring);
+}
+
+.chatPanelOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   CHAT HEADER
+   ─────────────────────────────────────────────────────────────── */
+.chatHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px;
+  background: var(--wa-bg-header);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.chatHeader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.headerAvatar {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: var(--wa-radius-md);
+  background: rgba(255, 255, 255, 0.2);
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--wa-text-primary);
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.onlinePulse {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 13px;
+  height: 13px;
+  background: var(--wa-accent-green);
+  border: 3px solid #075E54;
+  border-radius: var(--wa-radius-full);
+  animation: pulseOnline 2.5s ease infinite;
+  box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+}
+
+@keyframes pulseOnline {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(74, 222, 128, 0);
+  }
+}
+
+.headerInfo {
+  flex: 1;
+}
+
+.headerName {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wa-text-primary);
+  line-height: 1.3;
+  margin-bottom: 3px;
+  letter-spacing: -0.02em;
+}
+
+.verifiedBadge {
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.headerStatus {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+}
+
+.onlineDot {
+  width: 7px;
+  height: 7px;
+  background: var(--wa-accent-green);
+  border-radius: var(--wa-radius-full);
+  flex-shrink: 0;
+  animation: dotPulse 2s ease infinite;
+  box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.headerAction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--wa-radius-sm);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--wa-text-primary);
+  cursor: pointer;
+  transition: all var(--wa-transition-base);
+  text-decoration: none;
+}
+
+.headerAction:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.headerAction:active {
+  transform: translateY(0);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   INFO BAR
+   ─────────────────────────────────────────────────────────────── */
+.infoBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: rgba(18, 140, 126, 0.12);
+  border-bottom: 1px solid var(--wa-border-subtle);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: var(--wa-accent-gold);
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+
+.infoBar svg {
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   MESSAGES AREA
+   ─────────────────────────────────────────────────────────────── */
+.messagesArea {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(18, 140, 126, 0.04) 0%, transparent 50%), var(--wa-bg-panel);
+}
+
+/* Custom Scrollbar */
+.messagesArea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messagesArea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messagesArea::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--wa-radius-full);
+  transition: background var(--wa-transition-fast);
+}
+
+.messagesArea::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.dateLabel {
+  align-self: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--wa-text-muted);
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--wa-radius-full);
+  margin-bottom: 8px;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   MESSAGE BUBBLES
+   ─────────────────────────────────────────────────────────────── */
+.messageRow {
+  display: flex;
+  gap: 10px;
+  animation: messageSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 85%;
+}
+
+.messageRowAgent {
+  align-self: flex-start;
+}
+
+.messageRowUser {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+@keyframes messageSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.messageAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--wa-radius-sm);
+  background: var(--wa-bg-message-user);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wa-text-primary);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+}
+
+.messageSpacer {
+  width: 34px;
+  flex-shrink: 0;
+}
+
+.messageBubble {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  border-radius: var(--wa-radius-lg);
+  position: relative;
+  box-shadow: var(--wa-shadow-sm);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.bubbleAgent {
+  background: var(--wa-bg-message-agent);
+  border: 1px solid rgba(37, 211, 102, 0.15);
+  border-bottom-left-radius: 6px;
+}
+
+.bubbleUser {
+  background: var(--wa-bg-message-user);
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.2);
+}
+
+.messageText {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--wa-text-primary);
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+
+.boldText {
+  font-weight: 700;
+  color: var(--wa-text-primary);
+}
+
+.messageTime {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 10px;
+  color: var(--wa-text-tertiary);
+  margin-top: 6px;
+  align-self: flex-end;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   TYPING INDICATOR
+   ─────────────────────────────────────────────────────────────── */
+.typingContainer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  animation: messageSlideIn 0.3s ease;
+}
+
+.typingAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--wa-radius-sm);
+  background: var(--wa-bg-message-user);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wa-text-primary);
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
+  animation: avatarPulse 2s ease infinite;
+}
+
+.typingBubble {
+  background: var(--wa-bg-message-agent);
+  border: 1px solid rgba(37, 211, 102, 0.15);
+  border-radius: var(--wa-radius-lg);
+  border-bottom-left-radius: 6px;
+  padding: 14px 18px;
+  box-shadow: var(--wa-shadow-sm);
+}
+
+.typingDots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.typingDots span {
+  width: 8px;
+  height: 8px;
+  background: rgba(37, 211, 102, 0.7);
+  border-radius: var(--wa-radius-full);
+  animation: dotBounce 1.4s ease infinite;
+}
+
+.typingDots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typingDots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   SERVICE CARDS (COMPACT & ATTRACTIVE)
+   ─────────────────────────────────────────────────────────────── */
+.serviceCardsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+  animation: cardsSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cardsSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.serviceCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(37, 211, 102, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(37, 211, 102, 0.25);
+  border-radius: var(--wa-radius-full);
+  cursor: pointer;
+  transition: all var(--wa-transition-base);
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wa-primary);
+  white-space: nowrap;
+}
+
+.serviceCard:hover {
+  background: rgba(37, 211, 102, 0.18);
+  border-color: rgba(37, 211, 102, 0.5);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+  color: var(--wa-primary-light);
+}
+
+.serviceCard:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.cardIcon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.cardTitle {
+  position: relative;
+  z-index: 1;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   ACTION BUTTONS (COMPACT)
+   ─────────────────────────────────────────────────────────────── */
+.actionButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  animation: ctaSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes ctaSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.whatsappButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, var(--wa-primary) 0%, var(--wa-primary-dark) 100%);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  border-radius: var(--wa-radius-full);
+  color: var(--wa-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--wa-transition-base);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  white-space: nowrap;
+}
+
+.whatsappButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+  background: linear-gradient(135deg, var(--wa-primary-hover) 0%, var(--wa-primary-dark) 100%);
+}
+
+.whatsappButton:active {
+  transform: translateY(0);
+}
+
+.moreOptionsButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--wa-border-medium);
+  border-radius: var(--wa-radius-full);
+  color: var(--wa-text-secondary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--wa-transition-base);
+  white-space: nowrap;
+}
+
+.moreOptionsButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--wa-border-strong);
+  color: var(--wa-text-primary);
+  transform: translateY(-2px);
+}
+
+.moreOptionsButton:active {
+  transform: translateY(0);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   CONTACT OPTIONS
+   ─────────────────────────────────────────────────────────────── */
+.contactOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+  animation: ctaSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.contactOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.25);
+  border-radius: var(--wa-radius-md);
+  color: var(--wa-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--wa-transition-base);
+}
+
+.contactOption:hover {
+  background: rgba(37, 211, 102, 0.15);
+  border-color: rgba(37, 211, 102, 0.4);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
+.contactOption:active {
+  transform: translateX(2px);
+}
+
+.contactOption svg {
+  flex-shrink: 0;
+  color: var(--wa-primary);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   CHAT FOOTER
+   ─────────────────────────────────────────────────────────────── */
+.chatFooter {
+  padding: 16px 22px;
+  border-top: 1px solid var(--wa-border-subtle);
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.footerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  color: var(--wa-text-tertiary);
+  letter-spacing: 0.01em;
+}
+
+.footerIcon {
+  opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Tablet Landscape */
+@media (max-width: 1024px) {
+  .chatPanel {
+    width: 380px;
+    max-height: 600px;
+  }
+}
+
+/* Tablet Portrait */
+@media (max-width: 768px) {
+  .chatPanel {
+    width: 360px;
+    max-height: 560px;
+    bottom: 100px;
+    right: 20px;
+  }
+  
+  .notificationBubble {
+    width: 280px;
+    bottom: 100px;
+    right: 20px;
+  }
+  
+  .fabContainer {
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 480px) {
+  .fabContainer {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .fab {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .fab:hover {
+    width: 60px;
+    border-radius: var(--wa-radius-full);
+  }
+  
+  .fab:hover .fabLabel {
+    opacity: 0;
+    max-width: 0;
+  }
+  
+  .chatPanel {
+    bottom: 96px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-height: 75vh;
+    border-radius: var(--wa-radius-xl);
+  }
+  
+  .notificationBubble {
+    bottom: 96px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-width: 320px;
+  }
+  
+  .serviceCardsGrid {
+    gap: 8px;
+  }
+  
+  .serviceCard {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  
+  .cardIcon {
+    font-size: 15px;
+  }
+  
+  .messageRow {
+    max-width: 90%;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .whatsappButton,
+  .moreOptionsButton {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .contactOption {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+  .chatPanel {
+    max-height: 70vh;
+  }
+  
+  .headerName {
+    font-size: 15px;
+  }
+  
+  .headerStatus {
+    font-size: 11px;
+  }
+  
+  .messageText {
+    font-size: 13px;
+  }
+  
+  .serviceCard {
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+  
+  .cardIcon {
+    font-size: 14px;
+  }
+  
+  .whatsappButton,
+  .moreOptionsButton {
+    font-size: 12px;
+    padding: 9px 14px;
+  }
+  
+  .contactOption {
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Focus States */
+.fab:focus-visible,
+.headerAction:focus-visible,
+.serviceCard:focus-visible,
+.whatsappCTA:focus-visible {
+  outline: 3px solid var(--wa-primary);
+  outline-offset: 3px;
+}
+
+.notifClose:focus-visible {
+  outline: 2px solid var(--wa-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .fabPulse,
+  .fabPulse2,
+  .onlinePulse,
+  .onlineDot,
+  .typingDots span {
+    animation: none !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .chatPanel,
+  .notificationBubble,
+  .fab,
+  .serviceCard,
+  .messageBubble {
+    border-width: 2px;
+  }
+  
+  .headerAction,
+  .whatsappCTA {
+    border-width: 2px;
+  }
+}
+
+/* Dark Mode Adjustments (if system preference) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wa-bg-panel: #0A0A0A;
+    --wa-bg-dark: #000000;
+  }
+}
+
+/* Light Mode Support */
+@media (prefers-color-scheme: light) {
+  :root {
+    --wa-bg-panel: rgba(249, 249, 249, 0.95);
+    --wa-bg-dark: #F5F5F5;
+    --wa-text-primary: #1A1A1A;
+    --wa-text-secondary: rgba(0, 0, 0, 0.75);
+    --wa-text-tertiary: rgba(0, 0, 0, 0.5);
+    --wa-text-muted: rgba(0, 0, 0, 0.35);
+    --wa-border-subtle: rgba(0, 0, 0, 0.08);
+    --wa-border-medium: rgba(0, 0, 0, 0.12);
+    --wa-bg-message-agent: rgba(240, 240, 240, 0.95);
+  }
+  
+  .dateLabel {
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .serviceCard {
+    background: rgba(0, 0, 0, 0.03);
+  }
+  
+  .serviceCard:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+  
+  .chatFooter {
+    background: rgba(249, 249, 249, 0.8);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PERFORMANCE OPTIMIZATIONS
+   ═══════════════════════════════════════════════════════════════ */
+.chatPanel,
+.notificationBubble,
+.fab,
+.serviceCard {
+  will-change: transform, opacity;
+}
+
+.fabIcon,
+.cardArrow,
+.ctaArrow {
+  will-change: transform;
+}
+
+/* GPU Acceleration */
+.chatPanel,
+.fab,
+.messageRow,
+.serviceCard,
+.whatsappCTA {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}

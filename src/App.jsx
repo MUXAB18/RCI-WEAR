@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -8,6 +8,9 @@ import Portfolio from './components/Portfolio'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import CustomCursor from './components/CustomCursor'
+import QuoteModal from './components/QuoteModal'
+import ContactModal from './components/ContactModal'
+import WhatsAppChatBot from './components/WhatsAppChatBot'
 
 /* ── Marquee items ── */
 const MARQUEE = [
@@ -18,6 +21,8 @@ const MARQUEE = [
 ]
 
 export default function App() {
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
   /* ── Lenis Smooth Scroll ── */
   useEffect(() => {
@@ -166,9 +171,12 @@ export default function App() {
       <div id="scroll-progress" />
 
       <CustomCursor />
-      <Navbar />
+      <Navbar 
+        onGetQuote={() => setIsQuoteModalOpen(true)}
+        onContact={() => setIsContactModalOpen(true)}
+      />
       <main>
-        <Hero />
+        <Hero onGetQuote={() => setIsQuoteModalOpen(true)} />
 
         {/* Marquee ticker */}
         <div className="marquee-track" aria-hidden="true">
@@ -187,6 +195,11 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      
+      {/* Floating components */}
+      <QuoteModal isOpen={isQuoteModalOpen} onClose={() => setIsQuoteModalOpen(false)} />
+      <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+      <WhatsAppChatBot />
     </>
   )
 }

@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ]
 
-export default function Navbar() {
+export default function Navbar({ onGetQuote, onContact }) {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -58,7 +58,17 @@ export default function Navbar() {
   const handleNav = (href, label) => {
     setMenuOpen(false)
     setActive(label)
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    
+    // For Contact, scroll directly to the form
+    if (label === 'Contact') {
+      const form = document.querySelector('#quote-form')
+      if (form) {
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    } else {
+      // Scroll to section for other links
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
@@ -107,10 +117,10 @@ export default function Navbar() {
         {/* CTA */}
         <button
           className={`btn-primary ${styles.navCta}`}
-          onClick={() => handleNav('#contact', 'Contact')}
+          onClick={onGetQuote}
           data-cursor
         >
-          Order Now
+          Get a Quote
         </button>
 
         {/* Burger */}
@@ -148,9 +158,12 @@ export default function Navbar() {
             <button
               className="btn-primary"
               style={{ width: '100%', justifyContent: 'center' }}
-              onClick={() => handleNav('#contact', 'Contact')}
+              onClick={() => {
+                setMenuOpen(false)
+                onGetQuote?.()
+              }}
             >
-              Get In Touch
+              Get a Quote
             </button>
           </div>
         </div>

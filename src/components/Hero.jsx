@@ -3,7 +3,7 @@ import styles from './Hero.module.css'
 import HeroCanvas from './HeroCanvas'
 import MagneticButton from './MagneticButton'
 
-export default function Hero() {
+export default function Hero({ onGetQuote }) {
   const heroRef = useRef(null)
   const eyebrowRef = useRef(null)
   const line1Ref = useRef(null)
