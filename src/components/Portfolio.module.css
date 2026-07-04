@@ -422,14 +422,15 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 10px;
-    padding: 0 24px 28px;
-    margin: 0 -24px;
+    padding: 0 20px 28px 20px;
+    margin: 0;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    max-width: 100vw;
   }
   .grid::-webkit-scrollbar { display: none; }
   .card {
-    flex: 0 0 78%;
+    flex: 0 0 80%;
     scroll-snap-align: start;
   }
   .card .imageWrap { aspect-ratio: 3/4 !important; }
@@ -440,6 +441,7 @@
     padding-bottom: 10px;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    max-width: 100vw;
   }
   .filters::-webkit-scrollbar { display: none; }
   .pill { flex-shrink: 0; }
