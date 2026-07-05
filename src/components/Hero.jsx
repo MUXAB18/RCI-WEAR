@@ -57,15 +57,15 @@ export default function Hero({ onGetQuote }) {
             0.8
           )
 
-          // Title lines — clip-path reveal
+          // Title lines — fade and slide in (no clip-path)
           tl.fromTo(line1Ref.current,
-            { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
-            { clipPath: 'inset(0 0% 0 0)', duration: 1.0, ease: 'power3.inOut' },
+            { opacity: 0, x: -30 },
+            { opacity: 1, x: 0, duration: 1.0, ease: 'power3.out' },
             1.0
           )
           tl.fromTo(line2Ref.current,
-            { clipPath: 'inset(0 100% 0 0)', opacity: 1 },
-            { clipPath: 'inset(0 0% 0 0)', duration: 1.0, ease: 'power3.inOut' },
+            { opacity: 0, x: -30 },
+            { opacity: 1, x: 0, duration: 1.0, ease: 'power3.out' },
             1.2
           )
 
