@@ -28,30 +28,44 @@ export default function Navbar({ onGetQuote, onContact }) {
       }))
       .filter((section) => section.el)
 
+    let lastScrollY = 0
+    let ticking = false
+
     const handler = () => {
-      if (scrollRafRef.current) return
+      const sy = window.scrollY
+      
+      // Only update if scroll changed significantly
+      if (Math.abs(sy - lastScrollY) < 2 && ticking) return
+      
+      if (!ticking) {
+        ticking = true
+        window.requestAnimationFrame(() => {
+          ticking = false
+          const scrollY = window.scrollY
+          
+          // Batch state updates
+          const newScrolled = scrollY > 40
+          const newHidden = scrollY > lastY.current && scrollY > 300
+          
+          setScrolled((prev) => (prev !== newScrolled ? newScrolled : prev))
+          setHidden((prev) => (prev !== newHidden ? newHidden : prev))
+          
+          lastY.current = scrollY
 
-      scrollRafRef.current = window.requestAnimationFrame(() => {
-        scrollRafRef.current = 0
-        const sy = window.scrollY
-        setScrolled((prev) => (prev === (sy > 40) ? prev : sy > 40))
-        setHidden((prev) => (prev === (sy > lastY.current && sy > 300) ? prev : sy > lastY.current && sy > 300))
-        lastY.current = sy
-
-        let cur = sectionsRef.current[0]?.label || 'Home'
-        for (const { label, el } of sectionsRef.current) {
-          if (el.getBoundingClientRect().top <= 100) cur = label
-        }
-        setActive((prev) => (prev === cur ? prev : cur))
-      })
+          // Update active section
+          let cur = sectionsRef.current[0]?.label || 'Home'
+          for (const { label, el } of sectionsRef.current) {
+            if (el.getBoundingClientRect().top <= 100) cur = label
+          }
+          setActive((prev) => (prev === cur ? prev : cur))
+        })
+      }
     }
 
     window.addEventListener('scroll', handler, { passive: true })
     return () => {
       window.removeEventListener('scroll', handler)
-      if (scrollRafRef.current) {
-        window.cancelAnimationFrame(scrollRafRef.current)
-      }
+      ticking = false
     }
   }, [])
 

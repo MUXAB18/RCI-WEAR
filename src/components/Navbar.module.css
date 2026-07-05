@@ -8,12 +8,15 @@
   z-index: 1000;
   padding: 20px 0;
   background: #3B3B3B;
+  will-change: transform;
   transition:
-    padding         0.7s var(--ease-luxury),
-    background      0.7s ease,
-    backdrop-filter 0.7s ease,
-    border-color    0.7s ease,
-    transform       0.55s var(--ease-luxury);
+    padding         0.5s var(--ease-luxury),
+    background      0.5s ease,
+    backdrop-filter 0.5s ease,
+    border-color    0.5s ease,
+    transform       0.35s var(--ease-luxury);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Scrolled: true glassmorphism */
@@ -84,6 +87,9 @@
   z-index: -1;
   opacity: 0;
   transition: opacity 0.4s ease;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .brand:hover .logoMark::before { opacity: 1; }
@@ -241,9 +247,10 @@
   -webkit-backdrop-filter: blur(48px) saturate(200%);
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.7s var(--ease-luxury), border-color 0.5s ease;
+  transition: max-height 0.5s var(--ease-luxury), border-color 0.3s ease;
   border-top: 1px solid transparent;
   position: relative;
+  will-change: max-height;
 }
 
 .mobileMenu::before {
@@ -253,7 +260,7 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .mobileMenu.mobileOpen { max-height: 640px; border-color: rgba(255,255,255,0.12); }
@@ -272,12 +279,14 @@
   padding: 20px 40px;
   cursor: none;
   transition:
-    opacity  0.6s var(--ease-luxury),
-    transform 0.6s var(--ease-luxury),
-    background 0.3s ease;
+    opacity  0.4s var(--ease-luxury),
+    transform 0.4s var(--ease-luxury),
+    background 0.2s ease;
   opacity: 0;
   transform: translateX(-24px);
   text-align: left;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
 }
 
 .mobileMenu.mobileOpen .mobileLink {
@@ -354,4 +363,30 @@
   .inner { padding: 0 20px; }
   .mobileLink { padding: 18px 20px; gap: 16px; }
   .mobileCtaWrap { padding: 28px 20px 0; }
+  
+  /* Optimize for mobile performance - reduce jittering */
+  .nav {
+    transition: transform 0.3s ease-out, padding 0.3s ease;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  .nav.scrolled {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #3B3B3B;
+  }
+  
+  .logoMark::before {
+    animation: none;
+    display: none;
+  }
+  
+  .mobileMenu {
+    transition: max-height 0.4s ease;
+  }
+  
+  .mobileLink {
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+  }
 }
