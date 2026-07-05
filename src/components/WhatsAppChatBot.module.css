@@ -80,10 +80,24 @@
    FLOATING ACTION BUTTON (FAB)
    ═══════════════════════════════════════════════════════════════ */
 .fabContainer {
-  position: fixed;
-  bottom: 28px;
-  right: 28px;
-  z-index: var(--wa-z-fab);
+  position: fixed !important;
+  bottom: calc(28px + env(safe-area-inset-bottom, 0px)) !important;
+  right: calc(28px + env(safe-area-inset-right, 0px)) !important;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  will-change: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .fab {
@@ -99,9 +113,13 @@
   cursor: pointer;
   box-shadow: 0 8px 32px rgba(211, 211, 211, 0.3), 0 4px 16px rgba(0, 0, 0, 0.8);
   transition: all var(--wa-transition-spring);
-  overflow: hidden;
+  overflow: visible;
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
   user-select: none;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .fab::before {
@@ -217,8 +235,8 @@
   bottom: calc(100% + 16px);
   right: 0;
   background: #000000;
-  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
   border: 2px solid #D3D3D3;
   border-radius: 12px;
   padding: 12px 16px;
@@ -394,13 +412,13 @@
   right: 28px;
   width: 300px;
   background: #000000;
-  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
   border: 2px solid #D3D3D3;
   border-radius: var(--wa-radius-xl);
   padding: 18px;
   box-shadow: 0 8px 32px rgba(211, 211, 211, 0.2), inset 0 1px 0 rgba(211, 211, 211, 0.1);
-  z-index: var(--wa-z-notif);
+  z-index: 99997;
   animation: slideInNotif 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   gap: 14px;
@@ -419,8 +437,8 @@
   border-right: 2px solid #D3D3D3;
   border-bottom: 2px solid #D3D3D3;
   transform: rotate(45deg);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
 }
 
 @keyframes slideInNotif {
@@ -521,15 +539,15 @@
   width: 420px;
   max-height: 680px;
   background: #000000;
-  backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
   border: 2px solid #D3D3D3;
   border-radius: var(--wa-radius-2xl);
   box-shadow: 0 8px 32px rgba(211, 211, 211, 0.2), inset 0 1px 0 rgba(211, 211, 211, 0.1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: var(--wa-z-panel);
+  z-index: 99998;
   opacity: 0;
   transform: translateY(30px) scale(0.9);
   pointer-events: none;
@@ -823,8 +841,8 @@
   border-radius: var(--wa-radius-lg);
   position: relative;
   box-shadow: var(--wa-shadow-sm);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .bubbleAgent {
@@ -971,8 +989,8 @@
   gap: 8px;
   padding: 10px 16px;
   background: rgba(128, 128, 128, 0.1);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(128, 128, 128, 0.3);
   border-radius: var(--wa-radius-full);
   cursor: pointer;
@@ -1142,8 +1160,8 @@
   padding: 16px 22px;
   border-top: 1px solid #D3D3D3;
   background: #1a1a1a;
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   flex-shrink: 0;
 }
 
@@ -1192,16 +1210,16 @@
   }
   
   .fabContainer {
-    bottom: 24px;
-    right: 24px;
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    right: calc(24px + env(safe-area-inset-right, 0px));
   }
 }
 
 /* Mobile Devices */
 @media (max-width: 480px) {
   .fabContainer {
-    bottom: 20px;
-    right: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: calc(20px + env(safe-area-inset-right, 0px));
   }
   
   .fab {
@@ -1457,6 +1475,6 @@
 .messageRow,
 .serviceCard,
 .whatsappCTA {
-  transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }

@@ -16,30 +16,43 @@ export default function Navbar({ onGetQuote, onContact }) {
   const [active, setActive] = useState('Home')
   const lastY = useRef(0)
   const navRef = useRef(null)
+  const scrollRafRef = useRef(0)
+  const sectionsRef = useRef([])
 
   /* ── Scroll behavior ── */
   useEffect(() => {
+    sectionsRef.current = navLinks
+      .map((link) => ({
+        label: link.label,
+        el: document.querySelector(link.href),
+      }))
+      .filter((section) => section.el)
+
     const handler = () => {
-      const sy = window.scrollY
-      setScrolled(sy > 40)
-      setHidden(sy > lastY.current && sy > 300)
-      lastY.current = sy
+      if (scrollRafRef.current) return
 
-      // Active detection
-      const sections = navLinks.map(l => ({
-        label: l.label,
-        el: document.querySelector(l.href)
-      })).filter(s => s.el)
+      scrollRafRef.current = window.requestAnimationFrame(() => {
+        scrollRafRef.current = 0
+        const sy = window.scrollY
+        setScrolled((prev) => (prev === (sy > 40) ? prev : sy > 40))
+        setHidden((prev) => (prev === (sy > lastY.current && sy > 300) ? prev : sy > lastY.current && sy > 300))
+        lastY.current = sy
 
-      let cur = sections[0]?.label || 'Home'
-      sections.forEach(({ label, el }) => {
-        if (el.getBoundingClientRect().top <= 100) cur = label
+        let cur = sectionsRef.current[0]?.label || 'Home'
+        for (const { label, el } of sectionsRef.current) {
+          if (el.getBoundingClientRect().top <= 100) cur = label
+        }
+        setActive((prev) => (prev === cur ? prev : cur))
       })
-      setActive(cur)
     }
 
     window.addEventListener('scroll', handler, { passive: true })
-    return () => window.removeEventListener('scroll', handler)
+    return () => {
+      window.removeEventListener('scroll', handler)
+      if (scrollRafRef.current) {
+        window.cancelAnimationFrame(scrollRafRef.current)
+      }
+    }
   }, [])
 
   /* ── Magnetic nav links ── */

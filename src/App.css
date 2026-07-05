@@ -8,6 +8,29 @@ main {
   z-index: 1;
 }
 
+/* Section Separators */
+section {
+  border-bottom: 1px solid rgba(200, 169, 110, 0.2);
+  padding-bottom: 80px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+section:last-child {
+  border-bottom: none;
+}
+
+section::after {
+  content: '';
+  position: absolute;
+  bottom: -41px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(200, 169, 110, 0.3), transparent);
+}
+
 .cursor-ring.hover-text {
   width: 72px;
   height: 72px;

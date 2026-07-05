@@ -6,7 +6,7 @@ import styles from './WhatsAppChatBot.module.css'
    ═══════════════════════════════════════════════ */
 const CONFIG = {
   whatsappNumber: '923496014611',
-  phone: '+92 349 6014611',
+  phone: '+923496014611',
   email: 'rasheedclothingintl@gmail.com',
   linkedin: 'https://www.linkedin.com/company/rasheed-clothing-international', // Add your LinkedIn URL here
   businessName: 'Rasheed Clothing International',
@@ -274,6 +274,7 @@ export default function WhatsAppChatBot() {
   
   const messagesEndRef = useRef(null)
   const timerRefs = useRef([])
+  const interactionTimersRef = useRef([])
 
   /* ─────────────────────────────────────────────
      AUTO SCROLL TO BOTTOM
@@ -345,6 +346,20 @@ export default function WhatsAppChatBot() {
     return () => timerRefs.current.forEach(clearTimeout)
   }, [isOpen, greetingComplete])
 
+  const clearInteractionTimers = useCallback(() => {
+    interactionTimersRef.current.forEach(clearTimeout)
+    interactionTimersRef.current = []
+  }, [])
+
+  const scheduleInteractionTimer = useCallback((callback, delay) => {
+    const timer = setTimeout(() => {
+      interactionTimersRef.current = interactionTimersRef.current.filter((id) => id !== timer)
+      callback()
+    }, delay)
+    interactionTimersRef.current.push(timer)
+    return timer
+  }, [])
+
   /* ─────────────────────────────────────────────
      HANDLE SERVICE SELECTION
      ───────────────────────────────────────────── */
@@ -361,9 +376,9 @@ export default function WhatsAppChatBot() {
     ])
 
     // Show typing and description
-    setTimeout(() => {
+    scheduleInteractionTimer(() => {
       setIsTyping(true)
-      setTimeout(() => {
+      scheduleInteractionTimer(() => {
         setIsTyping(false)
         
         // For general inquiry, show contact options
@@ -407,7 +422,7 @@ export default function WhatsAppChatBot() {
         }
       }, 900)
     }, 400)
-  }, [])
+  }, [scheduleInteractionTimer])
 
   /* ─────────────────────────────────────────────
      SHOW MORE OPTIONS
@@ -441,10 +456,11 @@ export default function WhatsAppChatBot() {
   const handleClose = useCallback(() => {
     setIsOpen(false)
     timerRefs.current.forEach(clearTimeout)
+    clearInteractionTimers()
     setIsTyping(false)
     setGreetingComplete(false)
     setMessages([])
-  }, [])
+  }, [clearInteractionTimers])
 
   const dismissNotification = useCallback(() => {
     setShowNotification(false)

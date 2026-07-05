@@ -115,7 +115,6 @@ body {
   width: 100%;
   max-width: 100vw;
   position: relative;
-  transform: translateZ(0);
   backface-visibility: hidden;
 }
 
@@ -228,6 +227,21 @@ html.lenis, html.lenis body { height: auto; }
 
 a, button, [data-cursor] { cursor: none; }
 
+@media (hover: none), (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+
+  a, button, [data-cursor] {
+    cursor: pointer;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+}
+
 /* ══════════════════════════════════
    SCROLL PROGRESS
    ══════════════════════════════════ */
@@ -270,6 +284,12 @@ body::before {
 .section {
   padding: 140px 0;
   position: relative;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  scroll-margin-top: 100px;
+}
+
+.section:last-child {
+  border-bottom: none;
 }
 
 .container {
@@ -828,7 +848,7 @@ body::before {
   .section { padding: 88px 0; }
   .container { padding: 0 24px; }
   .container-tight { padding: 0 24px; }
-  .cursor-dot, .cursor-ring { display: none; }
+  /* Cursor now visible on all screen sizes */
   body { cursor: auto; }
   a, button, [data-cursor] { cursor: pointer; }
   .btn-primary, .btn-outline { padding: 15px 32px; }

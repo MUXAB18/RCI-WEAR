@@ -2,6 +2,11 @@
    FOOTER — Architectural Luxury Footer
    ═══════════════════════════════════════════════ */
 
+/* ── Floating WhatsApp Button ── (DISABLED - Using WhatsAppChatBot component instead) */
+.whatsappFloating {
+  display: none !important;
+}
+
 .footer {
   background: #3B3B3B;
   position: relative;
