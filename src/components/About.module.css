@@ -179,11 +179,11 @@
 
 /* ── Body text ── */
 .body {
-  color: var(--text-muted);
+  color: #1A1A1A;
   line-height: 2;
   font-size: 0.9rem;
   font-family: var(--font-sans);
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 22px;
   letter-spacing: 0.15px;
 }
@@ -256,8 +256,8 @@
   display: block;
   font-family: var(--font-sans);
   font-size: 12px;
-  color: var(--text-secondary);
-  font-weight: 400;
+  color: #000000;
+  font-weight: 500;
   letter-spacing: 0.2px;
 }
 
@@ -318,7 +318,7 @@
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000000;
   margin-bottom: 7px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -327,9 +327,9 @@
 .valueDesc {
   font-family: var(--font-sans);
   font-size: 11px;
-  color: var(--text-muted);
+  color: #2A2A2A;
   line-height: 1.75;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 /* ── Responsive ── */

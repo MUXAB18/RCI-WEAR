@@ -42,11 +42,11 @@
 
 /* ── Info column ── */
 .infoText {
-  color: var(--text-muted);
+  color: #1A1A1A;
   line-height: 2;
   font-size: 0.9rem;
   font-family: var(--font-sans);
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 56px;
   letter-spacing: 0.15px;
 }
@@ -119,7 +119,7 @@
   font-size: 8px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #2A2A2A;
   margin-bottom: 4px;
 }
 
@@ -127,8 +127,8 @@
   display: block;
   font-family: var(--font-sans);
   font-size: 13px;
-  color: var(--text-secondary);
-  font-weight: 400;
+  color: #000000;
+  font-weight: 500;
   letter-spacing: 0.2px;
   transition: color 0.3s ease;
 }
@@ -181,12 +181,15 @@
    FORM — Premium Treatment
    ══════════════════════════════ */
 .form {
-  background: rgba(22, 22, 22, 0.4);
+  background: linear-gradient(135deg, rgba(220, 220, 220, 0.98) 0%, rgba(200, 200, 200, 0.98) 100%);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 2px solid rgba(0, 0, 0, 0.25);
   border-radius: var(--radius-md);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  box-shadow: 
+    0 24px 64px rgba(0,0,0,0.4),
+    0 8px 16px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.9);
   padding: 56px 52px;
   display: flex;
   flex-direction: column;
@@ -203,7 +206,7 @@
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(0,0,0,0.35) 50%,
+    rgba(0,0,0,0.2) 50%,
     transparent 100%
   );
 }
@@ -214,8 +217,8 @@
   position: absolute;
   bottom: 0; right: 0;
   width: 80px; height: 80px;
-  border-right: 1px solid rgba(0,0,0,0.07);
-  border-bottom: 1px solid rgba(0,0,0,0.07);
+  border-right: 1px solid rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(0,0,0,0.15);
 }
 
 /* Ambient inner glow */
@@ -223,7 +226,7 @@
   position: absolute;
   top: -100px; right: -100px;
   width: 300px; height: 300px;
-  background: radial-gradient(ellipse, rgba(0,0,0,0.03) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(255,255,255,0.3) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -259,7 +262,7 @@
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 600;
-  color: #000000;
+  color: #0A0A0A;
   position: absolute;
   top: 14px;
   left: 0;
@@ -274,18 +277,18 @@
 .field:focus-within .label,
 .field.has-value .label {
   transform: translateY(-20px) scale(0.8);
-  color: #000000;
+  color: #0A0A0A;
 }
 
 .input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
   border-radius: 0;
-  color: var(--text-primary);
+  color: #0A0A0A;
   font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 500;
   padding: 14px 0;
   outline: none;
   width: 100%;
@@ -299,14 +302,15 @@
 }
 
 .input:focus {
-  border-bottom-color: rgba(0,0,0,0.45);
+  border-bottom-color: rgba(0,0,0,0.6);
   outline: none;
 }
 
 /* Select styling */
 .input option {
-  background: var(--surface-2);
-  color: var(--text-primary);
+  background: #D8D8D8;
+  color: #0A0A0A;
+  font-weight: 500;
 }
 
 .select-placeholder {
@@ -317,13 +321,15 @@
   resize: vertical;
   min-height: 120px;
   border: none;
-  border-bottom: 1px solid rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
   transition: border-color 0.4s ease, background 0.4s ease;
   line-height: 1.8;
   margin-top: 6px;
+  color: #0A0A0A;
+  font-weight: 500;
 }
 
-.textarea:focus { border-bottom-color: rgba(0,0,0,0.45); }
+.textarea:focus { border-bottom-color: rgba(0,0,0,0.6); }
 
 .submitBtn {
   align-self: flex-start;

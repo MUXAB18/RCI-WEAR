@@ -138,24 +138,24 @@
   font-family: var(--font-display);
   font-size: clamp(1.3rem, 2.8vw, 1.9rem);
   font-weight: 400;
-  color: var(--text-primary);
+  color: #000000;
   line-height: 1.15;
   letter-spacing: -0.02em;
   transition: color 0.35s ease;
 }
 
-.item:hover .itemTitle { color: var(--gold-light); }
+.item:hover .itemTitle { color: #1A1A1A; }
 
 .itemSubtitle {
   font-family: var(--font-italic);
   font-size: 0.95rem;
   font-style: italic;
-  color: var(--text-muted);
+  color: #2A2A2A;
   letter-spacing: 0.2px;
   transition: color 0.35s ease;
 }
 
-.item:hover .itemSubtitle { color: var(--text-secondary); }
+.item:hover .itemSubtitle { color: #1A1A1A; }
 
 /* Right — description + CTA */
 .itemRight {
@@ -168,15 +168,15 @@
 .itemDesc {
   font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 300;
-  color: var(--text-muted);
+  font-weight: 400;
+  color: #2A2A2A;
   line-height: 1.85;
   max-width: 320px;
   letter-spacing: 0.1px;
   transition: color 0.35s ease;
 }
 
-.item:hover .itemDesc { color: var(--text-secondary); }
+.item:hover .itemDesc { color: #1A1A1A; }
 
 .itemBtn {
   display: inline-flex;

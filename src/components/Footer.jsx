@@ -23,7 +23,7 @@ export default function Footer() {
               </div>
               <div className={styles.brandNameWrap}>
                 <span className={styles.brandName}>Rasheed Clothing</span>
-                <span className={styles.brandSub}>International</span>
+                <span className={styles.brandSub}>International · Est. 2017</span>
               </div>
             </div>
             <p className={styles.brandDesc}>

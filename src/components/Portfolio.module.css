@@ -47,8 +47,8 @@
   align-items: center;
   gap: 10px;
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.07);
-  color: var(--text-muted);
+  border: 1px solid rgba(0,0,0,0.15);
+  color: #1A1A1A;
   font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 600;
@@ -76,8 +76,8 @@
 }
 
 .pill:hover {
-  color: var(--text-primary);
-  border-color: rgba(0,0,0,0.28);
+  color: #000000;
+  border-color: rgba(0,0,0,0.4);
 }
 
 .pill:hover::before { transform: scaleX(1); }
@@ -256,7 +256,7 @@
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 400;
-  color: var(--text-primary);
+  color: #FFFFFF;
   margin-bottom: 8px;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -265,8 +265,8 @@
 .overlayDesc {
   font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 300;
-  color: var(--text-muted);
+  font-weight: 400;
+  color: #E0E0E0;
   line-height: 1.7;
   margin-bottom: 22px;
   letter-spacing: 0.1px;

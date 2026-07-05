@@ -87,9 +87,10 @@
 }
 
 .brandName {
-  font-family: var(--font-sans);
+  font-family: var(--font-italic);
   font-size: 13px;
   font-weight: 600;
+  font-style: italic;
   color: #FFFFFF;
   text-transform: uppercase;
   letter-spacing: 2px;

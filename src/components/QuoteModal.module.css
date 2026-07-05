@@ -17,13 +17,13 @@
   position: relative;
   width: 100%;
   max-width: 640px;
-  background: #111111;
-  border: 1px solid rgba(200, 169, 110, 0.15);
+  background: linear-gradient(135deg, #D8D8D8 0%, #CACACA 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 24px;
   box-shadow:
     0 40px 100px rgba(0, 0, 0, 0.8),
     0 10px 40px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   overflow: hidden;
   transform: translateY(30px) scale(0.95);
   opacity: 0;
@@ -45,21 +45,22 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #A6A09A;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #0A0A0A;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10;
+  font-weight: bold;
 }
 
 .closeBtn:hover {
-  background: rgba(200, 169, 110, 0.1);
-  border-color: rgba(200, 169, 110, 0.3);
-  color: #0A0A0A;
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.4);
+  color: #000000;
   transform: rotate(90deg);
 }
 
@@ -73,7 +74,7 @@
 .content::-webkit-scrollbar { width: 4px; }
 .content::-webkit-scrollbar-track { background: transparent; }
 .content::-webkit-scrollbar-thumb {
-  background: rgba(200, 169, 110, 0.2);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 4px;
 }
 
@@ -88,7 +89,7 @@
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: #000000;
+  color: #0A0A0A;
   margin-bottom: 12px;
 }
 
@@ -96,7 +97,7 @@
   font-family: 'DM Serif Display', 'Playfair Display', serif;
   font-size: 2.5rem;
   font-weight: 400;
-  color: #F2EDE4;
+  color: #0A0A0A;
   line-height: 1.1;
   margin-bottom: 20px;
 }
@@ -104,14 +105,14 @@
 .divider {
   width: 40px;
   height: 2px;
-  background: #000000;
+  background: #0A0A0A;
   margin: 0 auto 20px;
 }
 
 .subtitle {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: #A6A09A;
+  color: #1A1A1A;
   line-height: 1.6;
   max-width: 400px;
   margin: 0 auto;
@@ -139,7 +140,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #000000;
+  color: #0A0A0A;
   letter-spacing: 0.5px;
 }
 
@@ -147,13 +148,14 @@
 .field select,
 .field textarea {
   width: 100%;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   padding: 14px 16px;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: #000000;
+  color: #0A0A0A;
+  font-weight: 500;
   transition: all 0.3s ease;
   outline: none;
   -webkit-appearance: none;
@@ -162,14 +164,14 @@
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: #000000;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 .field input::placeholder,
 .field textarea::placeholder {
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .field textarea {
@@ -187,7 +189,7 @@
   right: 16px;
   transform: translateY(-50%);
   pointer-events: none;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .field select {
@@ -196,9 +198,10 @@
 }
 
 .field select option {
-  background: #111111;
-  color: #F2EDE4;
+  background: #D8D8D8;
+  color: #0A0A0A;
   padding: 10px;
+  font-weight: 500;
 }
 
 .submitBtn {
@@ -231,26 +234,26 @@
   width: 80px;
   height: 80px;
   margin: 0 auto 24px;
-  background: rgba(200, 169, 110, 0.1);
-  border: 2px solid #000000;
+  background: rgba(0, 0, 0, 0.15);
+  border: 2px solid #0A0A0A;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000000;
+  color: #0A0A0A;
 }
 
 .successState h3 {
   font-family: 'DM Serif Display', 'Playfair Display', serif;
   font-size: 2rem;
-  color: #F2EDE4;
+  color: #0A0A0A;
   margin-bottom: 16px;
 }
 
 .successState p {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
-  color: #A6A09A;
+  color: #2A2A2A;
   line-height: 1.6;
 }
 
