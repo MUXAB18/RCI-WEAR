@@ -164,27 +164,28 @@ export default function Hero({ onGetQuote }) {
     }
   }, [])
 
-  /* ── Scroll parallax ── */
+  /* ── Scroll parallax - DISABLED to prevent jitter ── */
   useEffect(() => {
-    const content = heroRef.current?.querySelector(`.${styles.content}`)
-    let ticking = false
+    // Parallax disabled for smooth scrolling
+    // const content = heroRef.current?.querySelector(`.${styles.content}`)
+    // let ticking = false
     
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const sy = window.scrollY
-          if (content) {
-            content.style.transform = `translateY(${sy * 0.22}px)`
-            content.style.opacity = Math.max(0, 1 - sy / 600)
-          }
-          ticking = false
-        })
-        ticking = true
-      }
-    }
+    // const onScroll = () => {
+    //   if (!ticking) {
+    //     window.requestAnimationFrame(() => {
+    //       const sy = window.scrollY
+    //       if (content) {
+    //         content.style.transform = `translateY(${sy * 0.22}px)`
+    //         content.style.opacity = Math.max(0, 1 - sy / 600)
+    //       }
+    //       ticking = false
+    //     })
+    //     ticking = true
+    //   }
+    // }
     
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    // window.addEventListener('scroll', onScroll, { passive: true })
+    // return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   const scrollTo = (id) => document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
