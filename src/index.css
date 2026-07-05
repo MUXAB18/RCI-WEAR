@@ -704,7 +704,7 @@ body::before {
 
 .loader-brand {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-size: clamp(1.8rem, 5.5vw, 3rem);
   font-weight: 400;
   color: var(--text-primary);
   letter-spacing: 0.08em;
@@ -712,11 +712,29 @@ body::before {
   opacity: 0;
   margin-bottom: 40px;
   animation: loaderFadeUp 0.9s var(--ease-luxury) 0.5s both;
+  text-align: center;
+  max-width: 90vw;
+  line-height: 1.2;
+  display: block;
 }
 
 .loader-brand em {
   font-style: italic;
-  color: var(--gold);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+}
+
+.loader-brand-gold {
+  background: linear-gradient(
+    125deg,
+    var(--gold-bright) 0%,
+    var(--gold)        38%,
+    var(--gold-dim)   100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
 }
 
 .loader-line-wrap {

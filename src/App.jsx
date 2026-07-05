@@ -167,7 +167,10 @@ export default function App() {
         <div className="lc lc-bl" />
         <div className="lc lc-br" />
         <span className="loader-eyebrow">Est. 2017 · Sialkot, Pakistan</span>
-        <span className="loader-brand"><em>RCI</em> Wear</span>
+        <span className="loader-brand">
+          <em>Rasheed</em> Clothing<br />
+          <span className="loader-brand-gold">International</span>
+        </span>
         <div className="loader-line-wrap">
           <div className="loader-line" />
         </div>
