@@ -80,10 +80,17 @@ export default function App() {
     const bar = document.getElementById('scroll-progress')
     if (!bar) return
 
+    let ticking = false
     const onScroll = () => {
-      const st = window.scrollY
-      const dh = document.documentElement.scrollHeight - window.innerHeight
-      bar.style.transform = `scaleX(${dh > 0 ? st / dh : 0})`
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const st = window.scrollY
+          const dh = document.documentElement.scrollHeight - window.innerHeight
+          bar.style.transform = `scaleX(${dh > 0 ? st / dh : 0})`
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })

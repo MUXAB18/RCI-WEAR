@@ -98,6 +98,8 @@ html {
   width: 100%;
   overflow-x: hidden;
   position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -113,6 +115,8 @@ body {
   width: 100%;
   max-width: 100vw;
   position: relative;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Prevent horizontal scroll on all elements */

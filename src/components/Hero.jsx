@@ -167,13 +167,22 @@ export default function Hero({ onGetQuote }) {
   /* ── Scroll parallax ── */
   useEffect(() => {
     const content = heroRef.current?.querySelector(`.${styles.content}`)
+    let ticking = false
+    
     const onScroll = () => {
-      const sy = window.scrollY
-      if (content) {
-        content.style.transform = `translateY(${sy * 0.22}px)`
-        content.style.opacity = Math.max(0, 1 - sy / 600)
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const sy = window.scrollY
+          if (content) {
+            content.style.transform = `translateY(${sy * 0.22}px)`
+            content.style.opacity = Math.max(0, 1 - sy / 600)
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
+    
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])

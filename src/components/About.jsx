@@ -22,14 +22,24 @@ export default function About() {
       sectionRef.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right')?.forEach(el => observer.observe(el))
     }, 100)
 
-    // Parallax
+    // Parallax with throttling
+    let ticking = false
     const handleScroll = () => {
-      if (!imgRef.current) return
-      const rect = sectionRef.current.getBoundingClientRect()
-      // Only parallax if section is somewhat in view
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        const yOffset = (window.innerHeight - rect.top) * 0.05
-        imgRef.current.style.transform = `translateY(${yOffset - 30}px)`
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (!imgRef.current) {
+            ticking = false
+            return
+          }
+          const rect = sectionRef.current?.getBoundingClientRect()
+          // Only parallax if section is somewhat in view
+          if (rect && rect.top < window.innerHeight && rect.bottom > 0) {
+            const yOffset = (window.innerHeight - rect.top) * 0.05
+            imgRef.current.style.transform = `translateY(${yOffset - 30}px)`
+          }
+          ticking = false
+        })
+        ticking = true
       }
     }
     
