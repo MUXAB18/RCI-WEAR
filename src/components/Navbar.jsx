@@ -16,8 +16,9 @@ export default function Navbar({ onGetQuote, onContact }) {
   const [active, setActive] = useState('Home')
   const lastY = useRef(0)
   const navRef = useRef(null)
-  const scrollRafRef = useRef(0)
   const sectionsRef = useRef([])
+  const tickingRef = useRef(false)
+  const scrollThrottle = useRef(0)
 
   /* ── Scroll behavior ── */
   useEffect(() => {
@@ -28,46 +29,56 @@ export default function Navbar({ onGetQuote, onContact }) {
       }))
       .filter((section) => section.el)
 
-    let lastScrollY = 0
-    let ticking = false
-
-    const handler = () => {
-      const sy = window.scrollY
+    let lastScrollY = window.scrollY
+    
+    const updateNav = () => {
+      const currentScrollY = window.scrollY
       
-      // Only update if scroll changed significantly
-      if (Math.abs(sy - lastScrollY) < 2 && ticking) return
+      // Update scrolled state
+      if ((currentScrollY > 40) !== scrolled) {
+        setScrolled(currentScrollY > 40)
+      }
       
-      if (!ticking) {
-        ticking = true
-        window.requestAnimationFrame(() => {
-          ticking = false
-          const scrollY = window.scrollY
-          
-          // Batch state updates
-          const newScrolled = scrollY > 40
-          const newHidden = scrollY > lastY.current && scrollY > 300
-          
-          setScrolled((prev) => (prev !== newScrolled ? newScrolled : prev))
-          setHidden((prev) => (prev !== newHidden ? newHidden : prev))
-          
-          lastY.current = scrollY
+      // Update hidden state
+      const shouldHide = currentScrollY > lastY.current && currentScrollY > 300
+      if (shouldHide !== hidden) {
+        setHidden(shouldHide)
+      }
+      
+      lastY.current = currentScrollY
+      
+      // Update active section (less frequently)
+      if (Math.abs(currentScrollY - lastScrollY) > 50) {
+        let cur = sectionsRef.current[0]?.label || 'Home'
+        for (const { label, el } of sectionsRef.current) {
+          if (el.getBoundingClientRect().top <= 100) cur = label
+        }
+        if (cur !== active) setActive(cur)
+        lastScrollY = currentScrollY
+      }
+      
+      tickingRef.current = false
+    }
 
-          // Update active section
-          let cur = sectionsRef.current[0]?.label || 'Home'
-          for (const { label, el } of sectionsRef.current) {
-            if (el.getBoundingClientRect().top <= 100) cur = label
-          }
-          setActive((prev) => (prev === cur ? prev : cur))
-        })
+    const handleScroll = () => {
+      // Throttle scroll events
+      const now = Date.now()
+      if (now - scrollThrottle.current < 16) return // ~60fps
+      scrollThrottle.current = now
+      
+      if (!tickingRef.current) {
+        window.requestAnimationFrame(updateNav)
+        tickingRef.current = true
       }
     }
 
-    window.addEventListener('scroll', handler, { passive: true })
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
     return () => {
-      window.removeEventListener('scroll', handler)
-      ticking = false
+      window.removeEventListener('scroll', handleScroll)
+      tickingRef.current = false
     }
-  }, [])
+  }, [scrolled, hidden, active])
 
   /* ── Magnetic nav links ── */
   const handleMagnet = useCallback((e) => {

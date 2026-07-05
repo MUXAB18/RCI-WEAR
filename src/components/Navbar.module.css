@@ -9,14 +9,11 @@
   padding: 20px 0;
   background: #3B3B3B;
   will-change: transform;
-  transition:
-    padding         0.5s var(--ease-luxury),
-    background      0.5s ease,
-    backdrop-filter 0.5s ease,
-    border-color    0.5s ease,
-    transform       0.35s var(--ease-luxury);
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Scrolled: true glassmorphism */
@@ -29,7 +26,9 @@
   box-shadow: var(--shadow-3d);
 }
 
-.nav.hidden { transform: translateY(-100%); }
+.nav.hidden { 
+  transform: translate3d(0, -100%, 0);
+}
 
 /* ── Inner ── */
 .inner {
@@ -40,6 +39,9 @@
   align-items: center;
   gap: 0;
   position: relative;
+  transition: padding 0.3s ease;
+  will-change: padding;
+  transform: translateZ(0);
 }
 
 /* ── Brand ── */
@@ -216,12 +218,13 @@
   background: #FFFFFF;
   border-radius: var(--radius-full);
   transform-origin: center;
-  transition:
-    transform 0.5s var(--ease-luxury),
-    opacity 0.35s ease,
-    width 0.5s var(--ease-luxury),
-    background 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+              opacity 0.2s ease,
+              width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+              background 0.2s ease;
   width: 100%;
+  will-change: transform, width;
+  backface-visibility: hidden;
 }
 
 .burgerLine:last-child { width: 65%; }
@@ -247,10 +250,13 @@
   -webkit-backdrop-filter: blur(48px) saturate(200%);
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s var(--ease-luxury), border-color 0.3s ease;
+  transition: max-height 0.4s cubic-bezier(0.4, 0.0, 0.2, 1), 
+              border-color 0.2s ease;
   border-top: 1px solid transparent;
   position: relative;
   will-change: max-height;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .mobileMenu::before {
@@ -260,7 +266,7 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .mobileMenu.mobileOpen { max-height: 640px; border-color: rgba(255,255,255,0.12); }
@@ -278,12 +284,11 @@
   border-bottom: 1px solid rgba(255,255,255,0.03);
   padding: 20px 40px;
   cursor: none;
-  transition:
-    opacity  0.4s var(--ease-luxury),
-    transform 0.4s var(--ease-luxury),
-    background 0.2s ease;
+  transition: opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+              background 0.15s ease;
   opacity: 0;
-  transform: translateX(-24px);
+  transform: translate3d(-24px, 0, 0);
   text-align: left;
   will-change: opacity, transform;
   backface-visibility: hidden;
@@ -291,7 +296,7 @@
 
 .mobileMenu.mobileOpen .mobileLink {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate3d(0, 0, 0);
 }
 
 .mobileLink:hover { background: rgba(255,255,255,0.05); }
@@ -360,21 +365,26 @@
 }
 
 @media (max-width: 480px) {
-  .inner { padding: 0 20px; }
+  .inner { 
+    padding: 0 20px;
+    transition: none; /* Instant on mobile for better performance */
+  }
   .mobileLink { padding: 18px 20px; gap: 16px; }
   .mobileCtaWrap { padding: 28px 20px 0; }
   
-  /* Optimize for mobile performance - reduce jittering */
+  /* Ultra-smooth mobile optimizations */
   .nav {
-    transition: transform 0.3s ease-out, padding 0.3s ease;
+    transition: transform 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    will-change: transform;
   }
   
   .nav.scrolled {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     background: #3B3B3B;
+    padding: 12px 0;
   }
   
   .logoMark::before {
@@ -383,10 +393,25 @@
   }
   
   .mobileMenu {
-    transition: max-height 0.4s ease;
+    transition: max-height 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   
   .mobileLink {
-    transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.15s ease;
+  }
+  
+  .burgerLine {
+    transition: transform 0.25s cubic-bezier(0.4, 0.0, 0.2, 1),
+                opacity 0.15s ease,
+                width 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+  
+  /* Remove hover effects on mobile */
+  .navLink:hover,
+  .brand:hover,
+  .mobileLink:hover {
+    transform: none;
   }
 }
