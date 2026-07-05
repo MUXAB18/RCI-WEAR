@@ -219,7 +219,7 @@ export default function Hero({ onGetQuote }) {
         {/* Main title */}
         <h1 className={styles.title}>
           <span ref={line1Ref} className={styles.titleLine}>
-            <em>Rasheed</em> Clothing
+            Rasheed Clothing
           </span>
           <span ref={line2Ref} className={`${styles.titleLine} ${styles.titleLineGold}`}>
             International

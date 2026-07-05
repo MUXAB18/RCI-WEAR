@@ -114,10 +114,10 @@
 }
 
 .brandName {
-  font-family: var(--font-italic);
+  font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
   color: #FFFFFF;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -125,10 +125,10 @@
 }
 
 .brandSub {
-  font-family: var(--font-italic);
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   letter-spacing: 1px;
   color: #FFFFFF;
   opacity: 0.8;

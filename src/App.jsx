@@ -168,7 +168,7 @@ export default function App() {
         <div className="lc lc-br" />
         <span className="loader-eyebrow">Est. 2017 · Sialkot, Pakistan</span>
         <span className="loader-brand">
-          <em>Rasheed</em> Clothing<br />
+          Rasheed Clothing<br />
           <span className="loader-brand-gold">International</span>
         </span>
         <div className="loader-line-wrap">

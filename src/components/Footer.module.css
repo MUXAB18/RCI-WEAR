@@ -92,27 +92,25 @@
 }
 
 .brandName {
-  font-family: var(--font-italic);
-  font-size: 13px;
+  font-family: var(--font-sans);
+  font-size: 12px;
   font-weight: 600;
-  font-style: italic;
+  font-style: normal;
   color: #FFFFFF;
-  text-transform: uppercase;
   letter-spacing: 2px;
+  text-transform: uppercase;
   line-height: 1;
-  display: block;
 }
 
 .brandSub {
-  font-family: var(--font-italic);
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
   letter-spacing: 1px;
   color: #FFFFFF;
-  opacity: 1;
-  display: block;
-  margin-top: 2px;
+  opacity: 0.8;
+  line-height: 1;
 }
 
 .brandDesc {
