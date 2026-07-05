@@ -34,12 +34,82 @@
 .subtitle { margin-top: 14px; }
 
 /* ── Filter Pills ── */
+.filtersWrapper {
+  position: relative;
+  margin-bottom: 64px;
+}
+
+/* Gradient fade indicators for scroll */
+.filtersWrapper::before,
+.filtersWrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 52px; /* Above scroll hint */
+  width: 40px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.filtersWrapper::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--ink) 0%, transparent 100%);
+}
+
+.filtersWrapper::after {
+  right: 0;
+  background: linear-gradient(90deg, transparent 0%, var(--ink) 100%);
+}
+
 .filters {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 64px;
+  position: relative;
+}
+
+/* Scroll hint for mobile - hidden by default */
+.scrollHint {
+  display: none;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, rgba(200,169,110,0.08) 0%, transparent 100%);
+  border: 1px solid rgba(200,169,110,0.2);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  animation: pulseGlow 2s ease-in-out infinite;
+  max-width: fit-content;
+}
+
+.scrollHint svg {
+  color: var(--gold);
+  animation: slideRight 1.5s ease-in-out infinite;
+}
+
+@keyframes slideRight {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(8px); opacity: 0.5; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(200,169,110,0);
+    border-color: rgba(200,169,110,0.2);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(200,169,110,0.3);
+    border-color: rgba(200,169,110,0.5);
+  }
 }
 
 .pill {
@@ -445,6 +515,17 @@
   }
   .filters::-webkit-scrollbar { display: none; }
   .pill { flex-shrink: 0; }
+  
+  /* Show scroll hint on mobile */
+  .scrollHint {
+    display: flex;
+  }
+  
+  /* Show gradient fade indicators on mobile */
+  .filtersWrapper::before,
+  .filtersWrapper::after {
+    opacity: 0.8;
+  }
 }
 
 @media (max-width: 480px) {

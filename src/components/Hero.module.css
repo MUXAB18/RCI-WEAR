@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: #4A4A4A;
+  background: #4A4A48;
 }
 
 /* ── Wipe overlay (initial cinematic reveal) ── */
@@ -33,17 +33,17 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 72% 44%, rgba(255,255,255,0.03) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 15% 75%, rgba(255,255,255,0.02) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 90% 10%,  rgba(255,255,255,0.015) 0%, transparent 50%),
-    linear-gradient(155deg, #5A5A5A 0%, #4E4E4E 45%, #424242 100%);
+    radial-gradient(ellipse 80% 60% at 72% 44%, rgba(255,255,255,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 15% 75%, rgba(255,255,255,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 90% 10%,  rgba(255,255,255,0.06) 0%, transparent 50%),
+    linear-gradient(155deg, #6A6A68 0%, #5E5E5C 45%, #525250 100%);
 }
 
 .bgTint {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 110% 110% at 50% 50%, transparent 38%, rgba(60,60,60,0.85) 100%);
+    radial-gradient(ellipse 110% 110% at 50% 50%, transparent 38%, rgba(70,70,68,0.65) 100%);
 }
 
 /* ── Flashlight ── */
@@ -393,7 +393,7 @@
   position: absolute;
   width: 48px;
   height: 48px;
-  border-color: rgba(0,0,0,0.14);
+  border-color: rgba(200,169,110,0.25);
   border-style: solid;
   z-index: 5;
 }
@@ -406,7 +406,7 @@
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.12) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(200,169,110,0.3) 50%, transparent 100%);
 }
 
 /* ── Responsive ── */

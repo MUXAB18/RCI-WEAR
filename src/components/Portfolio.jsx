@@ -269,22 +269,31 @@ export default function Portfolio() {
         </div>
 
         {/* Filter Pills */}
-        <div className={`${styles.filters} reveal`} style={{ transitionDelay: '0.1s' }}>
-          {filters.map(f => {
-            const count = f === 'All' ? items.length : items.filter(i => i.cat === f).length
-            if (f !== 'All' && count === 0) return null
-            return (
-              <button
-                key={f}
-                className={[styles.pill, active === f ? styles.pillActive : ''].join(' ')}
-                onClick={() => setActive(f)}
-                data-cursor
-              >
-                <span>{f}</span>
-                <span className={styles.pillCount}>{count}</span>
-              </button>
-            )
-          })}
+        <div className={styles.filtersWrapper}>
+          <div className={`${styles.filters} reveal`} style={{ transitionDelay: '0.1s' }}>
+            {filters.map(f => {
+              const count = f === 'All' ? items.length : items.filter(i => i.cat === f).length
+              if (f !== 'All' && count === 0) return null
+              return (
+                <button
+                  key={f}
+                  className={[styles.pill, active === f ? styles.pillActive : ''].join(' ')}
+                  onClick={() => setActive(f)}
+                  data-cursor
+                >
+                  <span>{f}</span>
+                  <span className={styles.pillCount}>{count}</span>
+                </button>
+              )
+            })}
+          </div>
+          {/* Scroll hint for mobile */}
+          <div className={styles.scrollHint}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+            <span>Scroll to see more categories</span>
+          </div>
         </div>
 
         {/* Grid */}

@@ -188,16 +188,16 @@ html.lenis, html.lenis body { height: auto; }
 .cursor-dot {
   width: 4px;
   height: 4px;
-  background: #000000;
+  background: #C8A96E;
   transition: opacity 0.2s ease, transform 0.1s ease;
-  mix-blend-mode: difference;
+  mix-blend-mode: normal;
 }
 
 .cursor-ring {
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(0,0,0,0.4);
-  mix-blend-mode: difference;
+  border: 1px solid rgba(200,169,110,0.6);
+  mix-blend-mode: normal;
   transition:
     width 0.4s var(--ease-luxury),
     height 0.4s var(--ease-luxury),
@@ -209,7 +209,7 @@ html.lenis, html.lenis body { height: auto; }
 .cursor-ring.hover {
   width: 56px;
   height: 56px;
-  background: rgba(0,0,0,0.06);
+  background: rgba(200,169,110,0.1);
   border-color: var(--gold);
 }
 
@@ -243,7 +243,7 @@ a, button, [data-cursor] { cursor: none; }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, #0A0A0A, #000000, #000000);
+  background: linear-gradient(90deg, transparent, #D4B876, #C8A96E, #C8A96E);
 }
 
 /* ══════════════════════════════════
@@ -615,8 +615,8 @@ body::before {
 }
 
 .marquee-item span {
-  color: #1A1A1A;
-  opacity: 0.4;
+  color: #C8A96E;
+  opacity: 0.6;
   font-size: 14px;
   line-height: 1;
 }
