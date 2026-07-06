@@ -65,8 +65,6 @@ export default function About() {
                 <OptimizedImage 
                   src="/about_img.jpg" 
                   alt="Rasheed Clothing International craftsmanship"
-                  priority={true}
-                  sizes="(max-width: 640px) 100vw, 50vw"
                   width={600}
                   height={800}
                 />
@@ -100,7 +98,7 @@ export default function About() {
             {/* Chamber badge */}
             <div className={styles.memberBadge}>
               <div className={styles.badgeImgWrap}>
-                <img src="/chamber.png" alt="Sialkot Chamber" />
+                <img src="/chamber.png" alt="Sialkot Chamber" width={60} height={60} />
               </div>
               <div>
                 <span className={styles.badgeLabel}>Approved Member</span>

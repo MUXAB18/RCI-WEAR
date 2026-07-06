@@ -85,13 +85,9 @@
     rgba(255,255,255,0.3) 300deg,
     transparent 360deg
   );
-  animation: rotateSlow 8s linear infinite;
   z-index: -1;
   opacity: 0;
   transition: opacity 0.4s ease;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
 .brand:hover .logoMark::before { opacity: 1; }

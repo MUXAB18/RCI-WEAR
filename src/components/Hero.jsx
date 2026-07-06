@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import styles from './Hero.module.css'
-import HeroCanvas from './HeroCanvas'
 import MagneticButton from './MagneticButton'
 import OptimizedImage from './OptimizedImage'
 
@@ -14,12 +13,7 @@ export default function Hero({ onGetQuote }) {
   const actionsRef = useRef(null)
   const statsRef = useRef(null)
   const scrollRef = useRef(null)
-  const sideLabelRef = useRef(null)
   const overlayRef = useRef(null)
-  const bgRef = useRef(null)
-  const mouseRef = useRef({ x: 0, y: 0 })
-  const curRef = useRef({ x: 0, y: 0 })
-  const rafRef = useRef(null)
 
   /* ── Cinematic entrance with GSAP ── */
   useEffect(() => {
@@ -126,86 +120,19 @@ export default function Hero({ onGetQuote }) {
     return () => ctx?.revert()
   }, [])
 
-  /* ── Mouse parallax ── */
-  const flashlightRef = useRef(null)
-
-  useEffect(() => {
-    const onMove = (e) => {
-      mouseRef.current = {
-        x: (e.clientX / window.innerWidth - 0.5) * 2,
-        y: (e.clientY / window.innerHeight - 0.5) * 2,
-        clientX: e.clientX,
-        clientY: e.clientY
-      }
-    }
-
-    const lerp = (a, b, t) => a + (b - a) * t
-
-    const tick = () => {
-      curRef.current.x = lerp(curRef.current.x, mouseRef.current.x, 0.04)
-      curRef.current.y = lerp(curRef.current.y, mouseRef.current.y, 0.04)
-
-      if (bgRef.current) {
-        bgRef.current.style.transform = `scale(1.06) translate(${curRef.current.x * -12}px, ${curRef.current.y * -10}px)`
-      }
-      
-      if (flashlightRef.current && mouseRef.current.clientX) {
-        flashlightRef.current.style.background = `radial-gradient(800px circle at ${mouseRef.current.clientX}px ${mouseRef.current.clientY}px, rgba(200,169,110,0.08), transparent 40%)`
-      }
-      
-      rafRef.current = requestAnimationFrame(tick)
-    }
-
-    window.addEventListener('mousemove', onMove, { passive: true })
-    rafRef.current = requestAnimationFrame(tick)
-
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      cancelAnimationFrame(rafRef.current)
-    }
-  }, [])
-
-  /* ── Scroll parallax - DISABLED to prevent jitter ── */
-  useEffect(() => {
-    // Parallax disabled for smooth scrolling
-    // const content = heroRef.current?.querySelector(`.${styles.content}`)
-    // let ticking = false
-    
-    // const onScroll = () => {
-    //   if (!ticking) {
-    //     window.requestAnimationFrame(() => {
-    //       const sy = window.scrollY
-    //       if (content) {
-    //         content.style.transform = `translateY(${sy * 0.22}px)`
-    //         content.style.opacity = Math.max(0, 1 - sy / 600)
-    //       }
-    //       ticking = false
-    //     })
-    //     ticking = true
-    //   }
-    // }
-    
-    // window.addEventListener('scroll', onScroll, { passive: true })
-    // return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
   const scrollTo = (id) => document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
 
   return (
     <section id="home" ref={heroRef} className={styles.hero}>
-      <HeroCanvas />
 
       {/* Wipe overlay */}
       <div ref={overlayRef} className={styles.wipeOverlay} />
 
-      {/* Background image with parallax */}
-      <div ref={bgRef} className={styles.bg}>
+      {/* Background image */}
+      <div className={styles.bg}>
         <div className={styles.bgImage} />
         <div className={styles.bgTint} />
       </div>
-
-      {/* Flashlight overlay */}
-      <div ref={flashlightRef} className={styles.flashlight} />
 
       {/* Cinematic grid lines */}
       <div className={styles.gridLines}>
@@ -277,21 +204,6 @@ export default function Hero({ onGetQuote }) {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Logo circle — floating */}
-      <div className={styles.logoFloat} id="hero-logo-area">
-        <div className={styles.logoRing} />
-        <div className={styles.logoRing2} />
-        <div className={styles.logoInner}>
-          <img src="/logo.jpg" alt="RCI" className={styles.logoImg} />
-        </div>
-      </div>
-
-      {/* Vertical side label */}
-      <div className={styles.sideLabel} ref={sideLabelRef}>
-        <div className={styles.sideLabelLine} />
-        <span className={styles.sideLabelText}>Premium · Since 2017</span>
       </div>
 
       {/* Scroll indicator */}

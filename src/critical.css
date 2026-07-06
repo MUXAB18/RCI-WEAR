@@ -1,0 +1,171 @@
+/**
+ * Critical CSS - Inline for Fastest First Paint
+ * 
+ * This CSS should be inlined in <head> for instant rendering
+ * Covers above-the-fold styling
+ */
+
+:root {
+  --ink: #0a0a0a;
+  --obsidian: #1a1a1a;
+  --charcoal: #2a2a2a;
+  --surface: #1a1a1a;
+  --surface-2: #262626;
+  --gold: #c9a84c;
+  --gold-bright: #e2c97e;
+  --text-muted: #999999;
+  --ease-luxury: cubic-bezier(0.23, 1, 0.320, 1);
+  --blur-sm: blur(4px);
+  --blur-md: blur(8px);
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-full: 9999px;
+  --shadow-gold: 0 0 30px rgba(201, 168, 76, 0.3);
+  --font-display: 'Playfair Display', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--ink);
+  color: #ffffff;
+  line-height: 1.6;
+  overflow-x: hidden;
+  font-size: 16px;
+}
+
+/* Navigation skeleton */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--ink);
+  border-bottom: 1px solid rgba(200, 169, 110, 0.1);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* Hero section base */
+.section {
+  position: relative;
+  padding: 80px 20px;
+  background: var(--ink);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Button base */
+button {
+  font-family: var(--font-sans);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Image base */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Utility classes */
+.gold-text {
+  color: var(--gold);
+}
+
+/* Scroll progress bar */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 100%);
+  transform-origin: left;
+  transform: scaleX(0);
+  z-index: 1000;
+  transition: transform 0.1s linear;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  :root {
+    font-size: 14px;
+  }
+  
+  .section {
+    padding: 60px 16px;
+  }
+  
+  nav {
+    padding: 0 16px;
+  }
+}

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from './Portfolio.module.css'
 import LookbookModal from './LookbookModal'
 import OptimizedImage from './OptimizedImage'
@@ -39,88 +39,24 @@ const items = [
 
 /* ── Optimized Product Card ── */
 function ProductCard({ item, index, onOpen }) {
-  const cardRef = useRef(null)
-  const glowRef = useRef(null)
-  const imgRef = useRef(null)
-  const isHovering = useRef(false)
-  const animationId = useRef(null)
-
-  // Throttled mouse move handler
-  const onMouseMove = useCallback((e) => {
-    if (!isHovering.current || !cardRef.current) return
-    
-    // Use RAF to throttle expensive calculations
-    if (animationId.current) return
-    
-    animationId.current = requestAnimationFrame(() => {
-      const rect = cardRef.current?.getBoundingClientRect()
-      if (!rect) {
-        animationId.current = null
-        return
-      }
-      
-      const cx = rect.left + rect.width / 2
-      const cy = rect.top + rect.height / 2
-      const x = ((e.clientY - cy) / (rect.height / 2)) * -4 // Reduced intensity
-      const y = ((e.clientX - cx) / (rect.width / 2)) * 4
-
-      // Apply transforms directly without lerping for better performance
-      if (cardRef.current) {
-        cardRef.current.style.transform = 
-          `perspective(800px) rotateX(${x}deg) rotateY(${y}deg) scale3d(1.01,1.01,1)`
-      }
-      
-      animationId.current = null
-    })
-  }, [])
-
-  const onEnter = useCallback(() => {
-    isHovering.current = true
-    if (cardRef.current) {
-      cardRef.current.classList.add('is-hovering')
-    }
-  }, [])
-  
-  const onLeave = useCallback(() => {
-    isHovering.current = false
-    if (animationId.current) {
-      cancelAnimationFrame(animationId.current)
-      animationId.current = null
-    }
-    if (cardRef.current) {
-      cardRef.current.classList.remove('is-hovering')
-      cardRef.current.style.transform = 'none'
-    }
-  }, [])
-
   return (
     <div
       className={`${styles.card} reveal`}
-      style={{ transitionDelay: `${(index % 6) * 0.05}s` }} // Reduced delay
+      style={{ transitionDelay: `${(index % 6) * 0.05}s` }}
       id={`portfolio-item-${item.id}`}
     >
       <div
-        ref={cardRef}
         className={styles.cardInner}
-        onMouseMove={onMouseMove}
-        onMouseEnter={onEnter}
-        onMouseLeave={onLeave}
         onClick={() => onOpen(item)}
         data-cursor-text="VIEW"
       >
-        {/* Simplified glow layer */}
-        <div ref={glowRef} className={styles.cardGlow} />
-
         {/* Image */}
         <div className={styles.imageWrap}>
           <OptimizedImage
-            ref={imgRef}
             src={item.img}
             alt={item.title}
             className={styles.cardImage}
             loading="lazy"
-            priority={index < 3} // Preload first 3 images
-            sizes="(max-width: 640px) 80vw, (max-width: 1100px) 45vw, 30vw"
             width={400}
             height={500}
           />
@@ -143,7 +79,6 @@ function ProductCard({ item, index, onOpen }) {
                   // Auto-fill contact form
                   const form = document.querySelector('#quote-form')
                   if (form) {
-                    // Prepare the message content
                     const messageContent = `Product: ${item.title}
 Category: ${item.cat}
 ${item.badge ? `Badge: ${item.badge}\n` : ''}
@@ -158,40 +93,28 @@ I'm interested in this product. Please provide:
 
 Thank you!`
                     
-                    // Fill the subject field with React event
                     const subjectField = form.querySelector('select[name="subject"]')
                     if (subjectField) {
                       const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set
                       nativeInputValueSetter.call(subjectField, 'Custom Order')
-                      const event = new Event('change', { bubbles: true })
-                      subjectField.dispatchEvent(event)
+                      subjectField.dispatchEvent(new Event('change', { bubbles: true }))
                     }
                     
-                    // Fill the message field with React event
                     const messageField = form.querySelector('textarea[name="message"]')
                     if (messageField) {
                       const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set
                       nativeTextAreaValueSetter.call(messageField, messageContent)
-                      const inputEvent = new Event('input', { bubbles: true })
-                      const changeEvent = new Event('change', { bubbles: true })
-                      messageField.dispatchEvent(inputEvent)
-                      messageField.dispatchEvent(changeEvent)
+                      messageField.dispatchEvent(new Event('input', { bubbles: true }))
+                      messageField.dispatchEvent(new Event('change', { bubbles: true }))
                     }
                     
-                    // Close the modal if on mobile
-                    if (window.innerWidth <= 640) {
-                      onOpen(null)
-                    }
+                    if (window.innerWidth <= 640) onOpen(null)
                     
-                    // Wait briefly, then scroll to form
                     setTimeout(() => {
                       form.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                      
-                      // Focus on name field after scroll completes
                       setTimeout(() => {
-                        const nameField = form.querySelector('input[name="name"]')
-                        if (nameField) nameField.focus()
-                      }, 800)
+                        form.querySelector('input[name="name"]')?.focus()
+                      }, 600)
                     }, window.innerWidth <= 640 ? 300 : 100)
                   }
                 }}

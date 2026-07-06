@@ -115,7 +115,6 @@ body {
   width: 100%;
   max-width: 100vw;
   position: relative;
-  backface-visibility: hidden;
 }
 
 /* Prevent horizontal scroll on all elements */
@@ -161,9 +160,9 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* ── Lenis ── */
-html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
+
 
 /* ══════════════════════════════════
    SCROLLBAR
@@ -267,19 +266,7 @@ a, button, [data-cursor] { cursor: none; }
   background: linear-gradient(90deg, transparent, #D4B876, #C8A96E, #C8A96E);
 }
 
-/* ══════════════════════════════════
-   NOISE OVERLAY
-   ══════════════════════════════════ */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9997;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px;
-}
+/* ── (noise overlay removed for performance) ── */
 
 /* ══════════════════════════════════
    LAYOUT
@@ -575,39 +562,33 @@ body::before {
 /* Legacy classes */
 .reveal {
   opacity: 0;
-  transform: translateY(48px) scale(0.95);
-  filter: blur(8px);
+  transform: translateY(32px);
   transition:
-    opacity 1s var(--ease-luxury),
-    transform 1s var(--ease-luxury),
-    filter 1s var(--ease-luxury);
+    opacity 0.7s var(--ease-luxury),
+    transform 0.7s var(--ease-luxury);
 }
 
-.reveal.visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
 .reveal-left {
   opacity: 0;
-  transform: translateX(-48px) scale(0.95);
-  filter: blur(8px);
+  transform: translateX(-32px);
   transition:
-    opacity 1s var(--ease-luxury),
-    transform 1s var(--ease-luxury),
-    filter 1s var(--ease-luxury);
+    opacity 0.7s var(--ease-luxury),
+    transform 0.7s var(--ease-luxury);
 }
 
-.reveal-left.visible { opacity: 1; transform: translateX(0) scale(1); filter: blur(0px); }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
 
 .reveal-right {
   opacity: 0;
-  transform: translateX(48px) scale(0.95);
-  filter: blur(8px);
+  transform: translateX(32px);
   transition:
-    opacity 1s var(--ease-luxury),
-    transform 1s var(--ease-luxury),
-    filter 1s var(--ease-luxury);
+    opacity 0.7s var(--ease-luxury),
+    transform 0.7s var(--ease-luxury);
 }
 
-.reveal-right.visible { opacity: 1; transform: translateX(0) scale(1); filter: blur(0px); }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
 
 /* ══════════════════════════════════
    MARQUEE TICKER
@@ -624,8 +605,7 @@ body::before {
 
 .marquee-inner {
   display: inline-flex;
-  animation: marqueeScroll 28s linear infinite;
-  will-change: transform;
+  will-change: auto;
 }
 
 .marquee-item {
@@ -650,7 +630,7 @@ body::before {
 
 @keyframes marqueeScroll {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(0); } /* DISABLED: was -50% - causes slowness */
 }
 
 /* ══════════════════════════════════
@@ -812,21 +792,21 @@ body::before {
 
 @keyframes floatY {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-16px); }
+  50%       { transform: translateY(0); } /* DISABLED: was -16px - causes slowness */
 }
 
 @keyframes rotateSlow {
-  to { transform: rotate(360deg); }
+  to { transform: rotate(0deg); } /* DISABLED: was rotate(360deg) - causes slowness */
 }
 
 @keyframes pulsate {
-  0%   { opacity: 0.5; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.7); }
+  0%   { opacity: 0; transform: scale(1); } /* DISABLED: was 0.5 - causes slowness */
+  100% { opacity: 0; transform: scale(1); } /* DISABLED: was scale(1.7) */
 }
 
 @keyframes scrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 1; }
-  50%       { transform: translateY(12px); opacity: 0.25; }
+  0%, 100% { transform: translateY(0); opacity: 0; } /* DISABLED: was opacity: 1 - causes slowness */
+  50%       { transform: translateY(0); opacity: 0; } /* DISABLED: was translateY(12px); opacity: 0.25 */
 }
 
 @keyframes borderPulse {

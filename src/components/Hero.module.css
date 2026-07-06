@@ -26,7 +26,6 @@
 .bg {
   position: absolute;
   inset: 0;
-  will-change: transform;
 }
 
 .bgImage {
@@ -81,11 +80,10 @@
   position: relative;
   z-index: 5;
   padding: 0 clamp(20px, 5vw, 120px);
-  margin-top: 100px; /* Shift down to avoid navbar */
+  margin-top: 100px;
   max-width: 1000px;
   width: 100%;
   box-sizing: border-box;
-  will-change: transform, opacity;
   overflow: visible;
 }
 

@@ -68,11 +68,9 @@
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(0,0,0,0.025) 0%,
-    rgba(0,0,0,0.04) 100%
+    rgba(0,0,0,0.03) 0%,
+    rgba(0,0,0,0.06) 100%
   );
-  backdrop-filter: var(--blur-md);
-  -webkit-backdrop-filter: var(--blur-md);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.55s var(--ease-luxury);

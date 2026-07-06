@@ -128,7 +128,7 @@ export default function Navbar({ onGetQuote, onContact }) {
           data-cursor
         >
           <div className={styles.logoMark}>
-            <img src="/logo.jpg" alt="RCI" className={styles.logoImg} />
+            <img src="/logo.jpg" alt="RCI" className={styles.logoImg} width={40} height={40} />
           </div>
           <div className={styles.brandText}>
             <span className={styles.brandName}>Rasheed Clothing</span>

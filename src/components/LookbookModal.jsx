@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from './LookbookModal.module.css'
+import OptimizedImage from './OptimizedImage'
 
 export default function LookbookModal({ item, isOpen, onClose }) {
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -104,14 +105,15 @@ Thank you!`
               <div className={styles.spinner} />
             </div>
           )}
-          <img 
+          <OptimizedImage 
             src={item.img} 
             alt={item.title} 
             className={`${styles.image} ${imageLoaded ? styles.imageLoaded : ''}`}
             loading="eager"
-            decoding="async"
             onLoad={() => setImageLoaded(true)}
             style={{ opacity: imageLoaded ? 1 : 0 }}
+            width={600}
+            height={800}
           />
           {item.badge && <span className={styles.badge}>{item.badge}</span>}
         </div>

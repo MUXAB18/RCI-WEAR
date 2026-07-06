@@ -30,7 +30,73 @@
      crossorigin="anonymous"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Loading skeleton - shown until React renders -->
+    <style>
+      #app-skeleton {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        display: grid;
+        grid-template-rows: 60px 1fr;
+        animation: fadeOut 0.3s ease forwards;
+        animation-delay: 1.5s;
+      }
+      
+      @keyframes fadeOut {
+        to { opacity: 0; pointer-events: none; }
+      }
+      
+      .skeleton-loader {
+        background: linear-gradient(
+          90deg,
+          rgba(26, 26, 26, 0.8) 0%,
+          rgba(50, 50, 50, 0.8) 50%,
+          rgba(26, 26, 26, 0.8) 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+      }
+      
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      .nav-skeleton {
+        grid-column: 1/-1;
+        border-bottom: 1px solid rgba(200, 169, 110, 0.1);
+      }
+      
+      .hero-skeleton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 2px solid rgba(200, 169, 110, 0.3);
+        border-top: 2px solid #c9a84c;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    
+    <div id="root">
+      <!-- Skeleton shown while React loads -->
+      <div id="app-skeleton">
+        <div class="nav-skeleton skeleton-loader"></div>
+        <div class="hero-skeleton skeleton-loader">
+          <div class="loading-spinner"></div>
+        </div>
+      </div>
+    </div>
+    
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

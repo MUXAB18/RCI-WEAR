@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -24,35 +24,22 @@ export default function App() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
-  /* ── Optimized Lenis Smooth Scroll ── */
+  /* ── Hide skeleton loader when React mounts ── */
   useEffect(() => {
-    let lenis, rafId
-
-    const init = async () => {
-      try {
-        const { default: Lenis } = await import('lenis')
-        lenis = new Lenis({
-          duration: 1.2, // Reduced duration for better performance
-          easing: t => 1 - Math.pow(1 - t, 3), // Simplified easing
-          smoothWheel: true,
-          wheelMultiplier: 0.9,
-          touchMultiplier: 1.5,
-        })
-
-        const raf = (time) => {
-          lenis.raf(time)
-          rafId = requestAnimationFrame(raf)
-        }
-        rafId = requestAnimationFrame(raf)
-      } catch (e) {
-        console.warn('Lenis unavailable, using native scroll')
-      }
+    const skeleton = document.getElementById('app-skeleton')
+    if (skeleton) {
+      skeleton.style.animation = 'fadeOut 0.4s ease forwards'
     }
+  }, [])
 
-    init()
-    return () => {
-      cancelAnimationFrame(rafId)
-      lenis?.destroy()
+  /* ── Register Service Worker for offline support & caching ── */
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .catch((err) => {
+          console.warn('⚠️  Service Worker registration failed:', err)
+        })
     }
   }, [])
 
@@ -62,7 +49,7 @@ export default function App() {
       (entries) => entries.forEach(e => {
         if (e.isIntersecting) e.target.classList.add('visible')
       }),
-      { threshold: 0.07, rootMargin: '0px 0px -48px 0px' }
+      { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
     )
 
     const observe = () => {
@@ -71,11 +58,11 @@ export default function App() {
       })
     }
 
-    const t = setTimeout(observe, 200)
+    const t = setTimeout(observe, 100)
     return () => { clearTimeout(t); observer.disconnect() }
   }, [])
 
-  /* ── Optimized Scroll Progress Bar ── */
+  /* ── Scroll Progress Bar ── */
   useEffect(() => {
     const bar = document.getElementById('scroll-progress')
     if (!bar) return
@@ -93,71 +80,8 @@ export default function App() {
       }
     }
 
-    // Throttle scroll events for better performance
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  /* ── Optimized GSAP Section Animations ── */
-  useEffect(() => {
-    let gsap, ScrollTrigger, ctx
-
-    const initGSAP = async () => {
-      try {
-        const g = await import('gsap')
-        const st = await import('gsap/ScrollTrigger')
-        gsap = g.gsap || g.default
-        ScrollTrigger = st.ScrollTrigger
-
-        gsap.registerPlugin(ScrollTrigger)
-
-        ctx = gsap.context(() => {
-          // Lighter parallax effects
-          gsap.utils.toArray('[data-parallax]').forEach(el => {
-            const speed = parseFloat(el.dataset.parallax) || 0.2 // Reduced default speed
-            gsap.fromTo(el,
-              { y: 0 },
-              {
-                y: () => el.offsetHeight * speed * -0.5, // Reduced intensity
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: el.parentElement,
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: 1, // Less smooth but more performant
-                }
-              }
-            )
-          })
-
-          // Simplified counters
-          gsap.utils.toArray('[data-count]').forEach(el => {
-            const target = parseInt(el.dataset.count)
-            const obj = { val: 0 }
-            ScrollTrigger.create({
-              trigger: el,
-              start: 'top 85%',
-              onEnter: () => {
-                gsap.to(obj, {
-                  val: target,
-                  duration: 1.2, // Faster animation
-                  ease: 'power2.out',
-                  onUpdate: () => {
-                    el.textContent = Math.round(obj.val) + (el.dataset.suffix || '')
-                  }
-                })
-              }
-            })
-          })
-        })
-      } catch (e) {
-        // GSAP failed — use CSS animations as fallback
-        console.warn('GSAP unavailable, using CSS fallbacks')
-      }
-    }
-
-    const t = setTimeout(initGSAP, 300) // Reduced delay
-    return () => { clearTimeout(t); ctx?.revert() }
   }, [])
 
   return (

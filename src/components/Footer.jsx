@@ -20,11 +20,10 @@ export default function Footer() {
           <div className={`${styles.brand} reveal`}>
             <div className={styles.logoRow}>
               <div className={styles.logoCircle}>
-                <OptimizedImage 
+                <img 
                   src="/logo.jpg" 
                   alt="Rasheed Clothing International" 
                   className={styles.logoImg}
-                  priority={true}
                   width={60}
                   height={60}
                 />
@@ -124,7 +123,7 @@ export default function Footer() {
             </div>
 
             <div style={{ marginTop: '24px' }}>
-              <img src="/chamber.png" alt="Sialkot Chamber of Commerce & Industry" style={{ height: '42px', objectFit: 'contain', opacity: 0.95, backgroundColor: 'white', padding: '6px 12px', borderRadius: '4px' }} />
+              <img src="/chamber.png" alt="Sialkot Chamber of Commerce & Industry" width={120} height={42} style={{ height: '42px', objectFit: 'contain', opacity: 0.95, backgroundColor: 'white', padding: '6px 12px', borderRadius: '4px' }} />
             </div>
           </div>
         </div>

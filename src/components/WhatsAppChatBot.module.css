@@ -13,7 +13,7 @@
   --wa-primary-dark: #505050;
   --wa-primary-light: #A0A0A0;
   --wa-primary-hover: #909090;
-  
+
   /* Background Colors - Pure Black Theme */
   --wa-bg-dark: #000000;
   --wa-bg-panel: #000000;
@@ -21,23 +21,23 @@
   --wa-bg-message-agent: #1a1a1a;
   --wa-bg-message-user: #808080;
   --wa-bg-glass: rgba(0, 0, 0, 0.98);
-  
+
   /* Text Colors */
   --wa-text-primary: #FFFFFF;
   --wa-text-secondary: #B0B0B0;
   --wa-text-tertiary: #808080;
   --wa-text-muted: rgba(255, 255, 255, 0.5);
-  
+
   /* Border Colors - Light Grey */
   --wa-border-subtle: #D3D3D3;
   --wa-border-medium: #C0C0C0;
   --wa-border-strong: #A8A8A8;
-  
+
   /* Accent Colors - Grey Theme */
   --wa-accent-gold: #808080;
   --wa-accent-green: #808080;
   --wa-accent-blue: #808080;
-  
+
   /* Shadows */
   --wa-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
   --wa-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.16);
@@ -45,7 +45,7 @@
   --wa-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.32);
   --wa-shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.4);
   --wa-shadow-fab: 0 8px 32px rgba(37, 211, 102, 0.5), 0 4px 16px rgba(0, 0, 0, 0.4);
-  
+
   /* Border Radius */
   --wa-radius-xs: 6px;
   --wa-radius-sm: 8px;
@@ -54,13 +54,13 @@
   --wa-radius-xl: 20px;
   --wa-radius-2xl: 24px;
   --wa-radius-full: 9999px;
-  
+
   /* Transitions */
   --wa-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --wa-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
   --wa-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
   --wa-transition-spring: 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
-  
+
   /* Spacing */
   --wa-space-1: 4px;
   --wa-space-2: 8px;
@@ -69,7 +69,7 @@
   --wa-space-5: 20px;
   --wa-space-6: 24px;
   --wa-space-8: 32px;
-  
+
   /* Z-Index */
   --wa-z-fab: 9990;
   --wa-z-panel: 9985;
@@ -177,14 +177,19 @@
 @keyframes pulseRing {
   0% {
     transform: scale(1);
-    opacity: 1;
+    opacity: 0;
+    /* DISABLED: was 1 - causes slowness */
   }
+
   70% {
-    transform: scale(1.6);
+    transform: scale(1);
+    /* DISABLED: was 1.6 */
     opacity: 0;
   }
+
   100% {
-    transform: scale(1.6);
+    transform: scale(1);
+    /* DISABLED: was 1.6 */
     opacity: 0;
   }
 }
@@ -301,15 +306,23 @@
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
-    opacity: 1;
+
+  0%,
+  100% {
+    opacity: 0;
+    /* DISABLED: was 1 - causes slowness */
     transform: scale(1);
-    box-shadow: 0 0 12px rgba(128, 128, 128, 0.5), 0 0 24px rgba(128, 128, 128, 0.3);
+    box-shadow: none;
+    /* DISABLED: was glow shadow */
   }
+
   50% {
-    opacity: 0.8;
-    transform: scale(1.1);
-    box-shadow: 0 0 16px rgba(128, 128, 128, 0.7), 0 0 32px rgba(128, 128, 128, 0.4);
+    opacity: 0;
+    /* DISABLED: was 0.8 */
+    transform: scale(1);
+    /* DISABLED: was 1.1 */
+    box-shadow: none;
+    /* DISABLED: was glow shadow */
   }
 }
 
@@ -318,6 +331,7 @@
     transform: scale(1);
     opacity: 1;
   }
+
   100% {
     transform: scale(2);
     opacity: 0;
@@ -394,9 +408,11 @@
     transform: scale(0);
     opacity: 0;
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -445,6 +461,7 @@
     opacity: 0;
     transform: translateY(20px) scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -491,11 +508,16 @@
 }
 
 @keyframes avatarPulse {
-  0%, 100% {
-    box-shadow: 0 4px 12px rgba(128, 128, 128, 0.3);
+
+  0%,
+  100% {
+    box-shadow: none;
+    /* DISABLED: was shadow glow - causes slowness */
   }
+
   50% {
-    box-shadow: 0 4px 16px rgba(128, 128, 128, 0.5);
+    box-shadow: none;
+    /* DISABLED: was shadow glow */
   }
 }
 
@@ -615,11 +637,16 @@
 }
 
 @keyframes pulseOnline {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(128, 128, 128, 0.5);
+
+  0%,
+  100% {
+    box-shadow: none;
+    /* DISABLED: was pulse glow - causes slowness */
   }
+
   50% {
-    box-shadow: 0 0 0 8px rgba(128, 128, 128, 0);
+    box-shadow: none;
+    /* DISABLED: was pulse glow */
   }
 }
 
@@ -666,13 +693,19 @@
 }
 
 @keyframes dotPulse {
-  0%, 100% {
-    opacity: 1;
+
+  0%,
+  100% {
+    opacity: 0;
+    /* DISABLED: was 1 - causes slowness */
     transform: scale(1);
   }
+
   50% {
-    opacity: 0.7;
-    transform: scale(0.9);
+    opacity: 0;
+    /* DISABLED: was 0.7 */
+    transform: scale(1);
+    /* DISABLED: was 0.9 */
   }
 }
 
@@ -806,6 +839,7 @@
     opacity: 0;
     transform: translateY(15px) scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -950,13 +984,20 @@
 }
 
 @keyframes dotBounce {
-  0%, 60%, 100% {
+
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
-    opacity: 0.7;
+    opacity: 0;
+    /* DISABLED: was 0.7 - causes slowness */
   }
+
   30% {
-    transform: translateY(-8px);
-    opacity: 1;
+    transform: translateY(0);
+    /* DISABLED: was -8px */
+    opacity: 0;
+    /* DISABLED: was 1 */
   }
 }
 
@@ -976,6 +1017,7 @@
     opacity: 0;
     transform: translateY(15px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -1041,6 +1083,7 @@
     opacity: 0;
     transform: translateY(12px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -1200,14 +1243,15 @@
     bottom: 100px;
     right: 20px;
   }
-  
+
   .notificationBubble {
     width: 280px;
     bottom: 100px;
     right: 20px;
-    display: none; /* Hide notification bubble on tablet/mobile to avoid overlap */
+    display: none;
+    /* Hide notification bubble on tablet/mobile to avoid overlap */
   }
-  
+
   .fabContainer {
     bottom: calc(24px + env(safe-area-inset-bottom, 0px));
     right: calc(24px + env(safe-area-inset-right, 0px));
@@ -1220,17 +1264,17 @@
     bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     right: calc(20px + env(safe-area-inset-right, 0px));
   }
-  
+
   .fab {
     width: 60px;
     height: 60px;
   }
-  
+
   .fab:hover {
     width: 60px;
     border-radius: var(--wa-radius-full);
   }
-  
+
   /* Show tooltip on mobile with tap */
   .fabTooltip {
     display: block;
@@ -1242,36 +1286,39 @@
     right: -20px;
     min-width: 180px;
   }
-  
+
   @keyframes tooltipFloat {
-    0%, 100% {
+
+    0%,
+    100% {
       opacity: 1;
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-4px);
     }
   }
-  
+
   /* Hide tooltip after 5 seconds on mobile */
   .fab:not(:hover) .fabTooltip {
     animation: tooltipFadeOut 0.5s ease-out 5s forwards;
   }
-  
+
   @keyframes tooltipFadeOut {
     to {
       opacity: 0;
       visibility: hidden;
     }
   }
-  
+
   .fabNotificationDot {
     width: 10px;
     height: 10px;
     top: 6px;
     right: 6px;
   }
-  
+
   .chatPanel {
     bottom: 96px;
     right: 16px;
@@ -1280,40 +1327,41 @@
     max-height: 75vh;
     border-radius: var(--wa-radius-xl);
   }
-  
+
   .notificationBubble {
-    display: none; /* Hide notification bubble completely on mobile */
+    display: none;
+    /* Hide notification bubble completely on mobile */
   }
-  
+
   .serviceCardsGrid {
     gap: 8px;
   }
-  
+
   .serviceCard {
     padding: 8px 14px;
     font-size: 12px;
   }
-  
+
   .cardIcon {
     font-size: 15px;
   }
-  
+
   .messageRow {
     max-width: 90%;
   }
-  
+
   .actionButtons {
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .whatsappButton,
   .moreOptionsButton {
     width: 100%;
     padding: 10px 16px;
     font-size: 13px;
   }
-  
+
   .contactOption {
     padding: 11px 14px;
     font-size: 13px;
@@ -1325,34 +1373,34 @@
   .chatPanel {
     max-height: 70vh;
   }
-  
+
   .headerName {
     font-size: 15px;
   }
-  
+
   .headerStatus {
     font-size: 11px;
   }
-  
+
   .messageText {
     font-size: 13px;
   }
-  
+
   .serviceCard {
     padding: 7px 12px;
     font-size: 11px;
   }
-  
+
   .cardIcon {
     font-size: 14px;
   }
-  
+
   .whatsappButton,
   .moreOptionsButton {
     font-size: 12px;
     padding: 9px 14px;
   }
-  
+
   .contactOption {
     font-size: 12px;
     padding: 10px 12px;
@@ -1377,8 +1425,31 @@
   outline-offset: 2px;
 }
 
+/* Disable All Animations - Performance Optimization */
+/* Remove continuous infinite animations that slow down the site */
+.fab,
+.fabPulse,
+.fabPulse2,
+.onlinePulse,
+.onlineDot,
+.typingDots span,
+.pulseRing,
+.pulseGlow,
+.messageSlideIn,
+.dotBounce,
+.cardsSlideIn,
+.ctaSlideIn,
+.dotPulse,
+.avatarPulse,
+.badgePop,
+.slideInNotif,
+.tooltipFloat {
+  animation: none !important;
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -1386,7 +1457,7 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .fabPulse,
   .fabPulse2,
   .onlinePulse,
@@ -1398,6 +1469,7 @@
 
 /* High Contrast Mode */
 @media (prefers-contrast: high) {
+
   .chatPanel,
   .notificationBubble,
   .fab,
@@ -1405,7 +1477,7 @@
   .messageBubble {
     border-width: 2px;
   }
-  
+
   .headerAction,
   .whatsappCTA {
     border-width: 2px;
@@ -1433,20 +1505,20 @@
     --wa-border-medium: rgba(0, 0, 0, 0.12);
     --wa-bg-message-agent: rgba(240, 240, 240, 0.95);
   }
-  
+
   .dateLabel {
     background: rgba(0, 0, 0, 0.05);
     color: rgba(0, 0, 0, 0.5);
   }
-  
+
   .serviceCard {
     background: rgba(0, 0, 0, 0.03);
   }
-  
+
   .serviceCard:hover {
     background: rgba(0, 0, 0, 0.06);
   }
-  
+
   .chatFooter {
     background: rgba(249, 249, 249, 0.8);
   }

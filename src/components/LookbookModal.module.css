@@ -57,7 +57,7 @@
   inset: 0;
   background: linear-gradient(90deg, var(--surface) 0%, rgba(255,255,255,0.05) 50%, var(--surface) 100%);
   background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  animation: none; /* DISABLED: was shimmer 1.5s infinite - causes slowness */
   display: flex;
   align-items: center;
   justify-content: center;
