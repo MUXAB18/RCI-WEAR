@@ -132,17 +132,17 @@
 }
 
 .fab:hover {
-  transform: translateY(-4px) scale(1.05);
-  background: #808080;
-  box-shadow: 0 12px 40px rgba(128, 128, 128, 0.4), 0 6px 20px rgba(0, 0, 0, 0.6);
+  transform: translateY(-6px) scale(1.08);
+  background: linear-gradient(135deg, #808080 0%, #606060 100%);
+  box-shadow: 0 12px 40px rgba(128, 128, 128, 0.5), 0 6px 20px rgba(0, 0, 0, 0.7);
 }
 
 .fab:active {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-3px) scale(1.05);
 }
 
 .fab.fabOpen {
-  background: #000000;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
   border-color: #FFFFFF;
   box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.8);
 }
@@ -151,22 +151,39 @@
   transform: translateY(-2px) scale(1.05) rotate(90deg);
 }
 
-/* FAB Pulse Animation */
+/* Wiggle animation to attract attention (plays every 10s) */
+@keyframes fabWiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(8deg);
+  }
+}
+
+.fab:not(.fabOpen) {
+  animation: fabWiggle 0.5s ease-in-out 10s infinite;
+}
+
+/* FAB Pulse Animation - ATTRACTIVE GLOW */
 .fabPulse,
 .fabPulse2 {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 3px solid rgba(211, 211, 211, 0.4);
-  animation: pulseRing 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  border: 2px solid rgba(211, 211, 211, 0.5);
+  animation: fabPulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   pointer-events: none;
 }
 
 .fabPulse2 {
-  inset: -12px;
-  border-width: 2px;
+  inset: -14px;
+  border-width: 1.5px;
   border-color: rgba(211, 211, 211, 0.3);
-  animation-delay: 0.8s;
+  animation: fabPulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.5s;
 }
 
 .fabOpen .fabPulse,
@@ -174,24 +191,46 @@
   display: none;
 }
 
-@keyframes pulseRing {
+/* Smooth attractive pulse */
+@keyframes fabPulseGlow {
   0% {
     transform: scale(1);
-    opacity: 0;
-    /* DISABLED: was 1 - causes slowness */
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(211, 211, 211, 0.7);
   }
 
-  70% {
-    transform: scale(1);
-    /* DISABLED: was 1.6 */
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+    box-shadow: 0 0 8px 2px rgba(211, 211, 211, 0.4);
+  }
+
+  100% {
+    transform: scale(1.4);
     opacity: 0;
+    box-shadow: 0 0 15px 4px rgba(211, 211, 211, 0);
+  }
+}
+
+/* FAB entrance bounce animation */
+@keyframes fabBounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.1);
   }
 
   100% {
     transform: scale(1);
-    /* DISABLED: was 1.6 */
-    opacity: 0;
+    opacity: 1;
   }
+}
+
+.fabContainer {
+  animation: fabBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .fabIcon {
@@ -205,20 +244,26 @@
   transition: all var(--wa-transition-spring);
   position: relative;
   z-index: 1;
+  filter: drop-shadow(0 0 8px rgba(211, 211, 211, 0.3));
+  text-shadow: 0 0 10px rgba(211, 211, 211, 0.4);
 }
 
 .fab:hover .fabIcon {
   color: #FFFFFF;
+  filter: drop-shadow(0 0 12px rgba(211, 211, 211, 0.6));
+  text-shadow: 0 0 15px rgba(211, 211, 211, 0.7);
 }
 
 .fabOpen .fabIcon {
   transform: rotate(90deg);
   color: #FFFFFF;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 
 .fab.fabOpen:hover .fabIcon {
   transform: rotate(180deg);
   color: #FFFFFF;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
 }
 
 .fabLabel {
