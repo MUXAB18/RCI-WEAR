@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import styles from './Hero.module.css'
 import HeroCanvas from './HeroCanvas'
 import MagneticButton from './MagneticButton'
+import OptimizedImage from './OptimizedImage'
 
 export default function Hero({ onGetQuote }) {
   const heroRef = useRef(null)

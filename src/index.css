@@ -189,17 +189,18 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 .cursor-dot {
-  width: 4px;
-  height: 4px;
-  background: #C8A96E;
+  width: 8px;
+  height: 8px;
+  background: #000000;
   transition: opacity 0.2s ease, transform 0.1s ease;
   mix-blend-mode: normal;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
 }
 
 .cursor-ring {
-  width: 34px;
-  height: 34px;
-  border: 1px solid rgba(200,169,110,0.6);
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(0,0,0,0.5);
   mix-blend-mode: normal;
   transition:
     width 0.4s var(--ease-luxury),
@@ -207,13 +208,15 @@ html.lenis, html.lenis body { height: auto; }
     background 0.4s ease,
     border-color 0.4s ease,
     opacity 0.3s ease;
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
 }
 
 .cursor-ring.hover {
-  width: 56px;
-  height: 56px;
-  background: rgba(200,169,110,0.1);
-  border-color: var(--gold);
+  width: 64px;
+  height: 64px;
+  background: rgba(0,0,0,0.08);
+  border-color: #000000;
+  border-width: 2.5px;
 }
 
 .cursor-dot.hover {

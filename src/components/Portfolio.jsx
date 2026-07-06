@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import styles from './Portfolio.module.css'
 import LookbookModal from './LookbookModal'
+import OptimizedImage from './OptimizedImage'
 
 const filters = ['All', 'Hoodies', 'Tees and Essential Shorts', 'Tracksuits', 'Gymwear']
 
@@ -36,71 +37,66 @@ const items = [
   { id: 25, cat: 'Gymwear', title: 'Crimson Training Top', desc: 'Bold red B-logo performance singlet', img: '/portfolio/IMG_5464.jpg', badge: 'New' },
 ]
 
-/* ── Luxury Product Card with 3D tilt ── */
+/* ── Optimized Product Card ── */
 function ProductCard({ item, index, onOpen }) {
   const cardRef = useRef(null)
   const glowRef = useRef(null)
   const imgRef = useRef(null)
-  const rafRef = useRef(null)
-  const tiltRef = useRef({ x: 0, y: 0 })
-  const targetRef = useRef({ x: 0, y: 0 })
-  const hoverRef = useRef(false)
+  const isHovering = useRef(false)
+  const animationId = useRef(null)
 
-  const lerp = (a, b, t) => a + (b - a) * t
-
-  /* ── RAF tilt loop ── */
-  useEffect(() => {
-    const animate = () => {
-      tiltRef.current.x = lerp(tiltRef.current.x, targetRef.current.x, 0.09)
-      tiltRef.current.y = lerp(tiltRef.current.y, targetRef.current.y, 0.09)
-
-      const { x, y } = tiltRef.current
-      const scale = hoverRef.current ? 1.02 : 1
-
-      if (cardRef.current) {
-        cardRef.current.style.transform =
-          `perspective(1000px) rotateX(${x}deg) rotateY(${y}deg) scale3d(${scale},${scale},1)`
-      }
-      if (imgRef.current) {
-        imgRef.current.style.transform =
-          `scale(${hoverRef.current ? 1.07 : 1}) translate(${y * 0.4}px, ${x * -0.4}px)`
-      }
-      if (glowRef.current) {
-        const gx = (50 + y * 4).toFixed(1)
-        const gy = (50 - x * 4).toFixed(1)
-        glowRef.current.style.background =
-          `radial-gradient(circle at ${gx}% ${gy}%, rgba(200,169,110,0.15) 0%, transparent 55%)`
-        glowRef.current.style.opacity = hoverRef.current ? 1 : 0
-      }
-
-      rafRef.current = requestAnimationFrame(animate)
-    }
-
-    rafRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [])
-
+  // Throttled mouse move handler
   const onMouseMove = useCallback((e) => {
-    const rect = cardRef.current?.getBoundingClientRect()
-    if (!rect) return
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    targetRef.current = {
-      x: ((e.clientY - cy) / (rect.height / 2)) * -8,
-      y: ((e.clientX - cx) / (rect.width / 2)) * 8,
-    }
+    if (!isHovering.current || !cardRef.current) return
+    
+    // Use RAF to throttle expensive calculations
+    if (animationId.current) return
+    
+    animationId.current = requestAnimationFrame(() => {
+      const rect = cardRef.current?.getBoundingClientRect()
+      if (!rect) {
+        animationId.current = null
+        return
+      }
+      
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const x = ((e.clientY - cy) / (rect.height / 2)) * -4 // Reduced intensity
+      const y = ((e.clientX - cx) / (rect.width / 2)) * 4
+
+      // Apply transforms directly without lerping for better performance
+      if (cardRef.current) {
+        cardRef.current.style.transform = 
+          `perspective(800px) rotateX(${x}deg) rotateY(${y}deg) scale3d(1.01,1.01,1)`
+      }
+      
+      animationId.current = null
+    })
   }, [])
 
-  const onEnter = () => { hoverRef.current = true }
-  const onLeave = () => {
-    hoverRef.current = false
-    targetRef.current = { x: 0, y: 0 }
-  }
+  const onEnter = useCallback(() => {
+    isHovering.current = true
+    if (cardRef.current) {
+      cardRef.current.classList.add('is-hovering')
+    }
+  }, [])
+  
+  const onLeave = useCallback(() => {
+    isHovering.current = false
+    if (animationId.current) {
+      cancelAnimationFrame(animationId.current)
+      animationId.current = null
+    }
+    if (cardRef.current) {
+      cardRef.current.classList.remove('is-hovering')
+      cardRef.current.style.transform = 'none'
+    }
+  }, [])
 
   return (
     <div
       className={`${styles.card} reveal`}
-      style={{ transitionDelay: `${(index % 6) * 0.07}s` }}
+      style={{ transitionDelay: `${(index % 6) * 0.05}s` }} // Reduced delay
       id={`portfolio-item-${item.id}`}
     >
       <div
@@ -110,23 +106,24 @@ function ProductCard({ item, index, onOpen }) {
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
         onClick={() => onOpen(item)}
-        style={{ willChange: 'transform' }}
         data-cursor-text="VIEW"
       >
-        {/* Glow layer */}
+        {/* Simplified glow layer */}
         <div ref={glowRef} className={styles.cardGlow} />
 
         {/* Image */}
         <div className={styles.imageWrap}>
-          <img
+          <OptimizedImage
             ref={imgRef}
             src={item.img}
             alt={item.title}
             className={styles.cardImage}
             loading="lazy"
-            style={{ willChange: 'transform' }}
+            priority={index < 3} // Preload first 3 images
+            sizes="(max-width: 640px) 80vw, (max-width: 1100px) 45vw, 30vw"
+            width={400}
+            height={500}
           />
-
           {/* Badge */}
           {item.badge && (
             <span className={styles.badge}>{item.badge}</span>

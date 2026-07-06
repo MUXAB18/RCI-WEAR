@@ -177,7 +177,7 @@
 }
 
 /* ══════════════════════════════════
-   PRODUCT GRID — Editorial Layout
+   PRODUCT GRID — Editorial Layout (OPTIMIZED)
    ══════════════════════════════════ */
 .grid {
   display: grid;
@@ -193,10 +193,10 @@
 /* ── Card wrapper ── */
 .card {
   position: relative;
-  transform-style: preserve-3d;
+  /* Removed transform-style: preserve-3d for performance */
 }
 
-/* ── Card inner (3D tilt target) ── */
+/* ── Card inner (optimized hover effects) ── */
 .cardInner {
   position: relative;
   background: var(--surface);
@@ -204,34 +204,44 @@
   border: 1px solid rgba(255,255,255,0.03);
   overflow: hidden;
   cursor: none;
-  transform-style: preserve-3d;
   transition:
-    box-shadow 0.6s var(--ease-luxury),
-    border-color 0.6s var(--ease-luxury),
-    z-index 0s 0.6s;
+    box-shadow 0.4s ease,
+    border-color 0.4s ease,
+    transform 0.3s ease;
+  /* Use GPU acceleration only when needed */
+  will-change: auto;
 }
 
 .cardInner:hover {
   box-shadow:
-    0 40px 100px rgba(0,0,0,0.6),
-    0 20px 60px rgba(0,0,0,0.15),
-    0 0 40px rgba(0,0,0,0.05);
+    0 20px 60px rgba(0,0,0,0.4),
+    0 10px 30px rgba(0,0,0,0.1);
   border-color: rgba(0,0,0,0.3);
   z-index: 10;
 }
 
-/* ── Dynamic glow layer ── */
+/* Hover state for CSS-based animations */
+.cardInner.is-hovering {
+  transform: scale3d(1.02,1.02,1);
+}
+
+/* ── Simplified glow layer ── */
 .cardGlow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 3;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  background: radial-gradient(circle at 50% 50%, rgba(200,169,110,0.1) 0%, transparent 60%);
+  transition: opacity 0.4s ease;
   border-radius: inherit;
 }
 
-/* ── Image wrapper ── */
+.cardInner:hover .cardGlow {
+  opacity: 1;
+}
+
+/* ── Image wrapper (optimized) ── */
 .imageWrap {
   position: relative;
   aspect-ratio: 4/5;
@@ -244,15 +254,14 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition:
-    transform 0.8s var(--ease-luxury),
-    filter    0.6s ease;
-  filter: brightness(0.88) saturate(0.82) contrast(1.04);
-  will-change: transform;
+  transition: transform 0.4s ease;
+  filter: brightness(0.88) saturate(0.82);
+  /* Removed will-change for performance */
 }
 
 .cardInner:hover .cardImage {
-  filter: brightness(1.02) saturate(0.95) contrast(1.05);
+  filter: brightness(1.02) saturate(0.95);
+  transform: scale(1.05);
 }
 
 /* ── Badge ── */
@@ -278,7 +287,7 @@
   letter-spacing: 2px;
 }
 
-/* ── Hover overlay ── */
+/* ── Hover overlay (optimized) ── */
 .overlay {
   position: absolute;
   inset: 0;
@@ -289,15 +298,15 @@
     rgba(10,10,10,0.1)    72%,
     transparent        100%
   );
-  backdrop-filter: var(--blur-md);
-  -webkit-backdrop-filter: var(--blur-md);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: flex-end;
   opacity: 0;
-  transform: translateY(6px);
+  transform: translateY(4px);
   transition:
-    opacity   0.5s var(--ease-luxury),
-    transform 0.5s var(--ease-luxury);
+    opacity   0.3s ease,
+    transform 0.3s ease;
   z-index: 2;
 }
 
@@ -317,8 +326,8 @@
   font-weight: 600;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.7;
+  color: #FFFFFF;
+  opacity: 0.8;
   margin-bottom: 8px;
 }
 
@@ -347,8 +356,8 @@
   align-items: center;
   gap: 10px;
   background: transparent;
-  border: 1px solid rgba(0,0,0,0.3);
-  color: var(--gold-light);
+  border: 1px solid rgba(255,255,255,0.5);
+  color: #FFFFFF;
   font-family: var(--font-sans);
   font-size: 8px;
   font-weight: 700;
@@ -358,20 +367,20 @@
   border-radius: var(--radius-full);
   cursor: none;
   transition:
-    background    0.35s ease,
-    border-color  0.35s ease,
-    color         0.35s ease,
-    transform     0.35s var(--ease-luxury);
+    background    0.25s ease,
+    border-color  0.25s ease,
+    color         0.25s ease,
+    transform     0.25s ease;
 }
 
 .overlayBtn:hover {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--obsidian);
-  transform: translateY(-2px);
+  background: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #000000;
+  transform: translateY(-1px);
 }
 
-/* ── Card footer ── */
+/* ── Card footer (optimized) ── */
 .cardFooter {
   padding: 18px 22px;
   background: var(--surface);
@@ -379,7 +388,7 @@
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid rgba(255,255,255,0.03);
-  transition: background 0.35s ease;
+  transition: background 0.25s ease;
 }
 
 .cardInner:hover .cardFooter { background: var(--surface-2); }
@@ -393,29 +402,29 @@
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.45;
+  color: #FFFFFF;
+  opacity: 0.7;
   margin-bottom: 4px;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
-.cardInner:hover .cardCat { opacity: 0.75; }
+.cardInner:hover .cardCat { opacity: 1; }
 
 .cardTitle {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 400;
-  color: var(--text-secondary);
+  color: #FFFFFF;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
   letter-spacing: 0.2px;
 }
 
-.cardInner:hover .cardTitle { color: var(--text-primary); }
+.cardInner:hover .cardTitle { color: #FFFFFF; }
 
-/* Arrow circle */
+/* Arrow circle (optimized) */
 .cardArrowWrap {
   width: 34px;
   height: 34px;
@@ -426,9 +435,9 @@
   border-radius: 50%;
   flex-shrink: 0;
   transition:
-    border-color 0.35s ease,
-    background   0.35s ease,
-    transform    0.5s var(--ease-luxury);
+    border-color 0.25s ease,
+    background   0.25s ease,
+    transform    0.25s ease;
 }
 
 .cardInner:hover .cardArrowWrap {
@@ -439,7 +448,7 @@
 
 .cardArrow {
   color: var(--text-muted);
-  transition: color 0.35s ease;
+  transition: color 0.25s ease;
 }
 
 .cardInner:hover .cardArrow { color: var(--gold); }
@@ -531,3 +540,6 @@
 @media (max-width: 480px) {
   .card { flex: 0 0 88%; }
 }
+
+
+

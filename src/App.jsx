@@ -24,7 +24,7 @@ export default function App() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
-  /* ── Lenis Smooth Scroll ── */
+  /* ── Optimized Lenis Smooth Scroll ── */
   useEffect(() => {
     let lenis, rafId
 
@@ -32,11 +32,11 @@ export default function App() {
       try {
         const { default: Lenis } = await import('lenis')
         lenis = new Lenis({
-          duration: 1.4,
-          easing: t => 1 - Math.pow(1 - t, 5),
+          duration: 1.2, // Reduced duration for better performance
+          easing: t => 1 - Math.pow(1 - t, 3), // Simplified easing
           smoothWheel: true,
-          wheelMultiplier: 0.88,
-          touchMultiplier: 1.9,
+          wheelMultiplier: 0.9,
+          touchMultiplier: 1.5,
         })
 
         const raf = (time) => {
@@ -75,7 +75,7 @@ export default function App() {
     return () => { clearTimeout(t); observer.disconnect() }
   }, [])
 
-  /* ── Scroll Progress Bar ── */
+  /* ── Optimized Scroll Progress Bar ── */
   useEffect(() => {
     const bar = document.getElementById('scroll-progress')
     if (!bar) return
@@ -83,21 +83,22 @@ export default function App() {
     let ticking = false
     const onScroll = () => {
       if (!ticking) {
+        ticking = true
         window.requestAnimationFrame(() => {
           const st = window.scrollY
           const dh = document.documentElement.scrollHeight - window.innerHeight
           bar.style.transform = `scaleX(${dh > 0 ? st / dh : 0})`
           ticking = false
         })
-        ticking = true
       }
     }
 
+    // Throttle scroll events for better performance
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* ── GSAP Section Animations ── */
+  /* ── Optimized GSAP Section Animations ── */
   useEffect(() => {
     let gsap, ScrollTrigger, ctx
 
@@ -111,35 +112,35 @@ export default function App() {
         gsap.registerPlugin(ScrollTrigger)
 
         ctx = gsap.context(() => {
-          // Parallax on sections
+          // Lighter parallax effects
           gsap.utils.toArray('[data-parallax]').forEach(el => {
-            const speed = parseFloat(el.dataset.parallax) || 0.3
+            const speed = parseFloat(el.dataset.parallax) || 0.2 // Reduced default speed
             gsap.fromTo(el,
               { y: 0 },
               {
-                y: () => el.offsetHeight * speed * -1,
+                y: () => el.offsetHeight * speed * -0.5, // Reduced intensity
                 ease: 'none',
                 scrollTrigger: {
                   trigger: el.parentElement,
                   start: 'top bottom',
                   end: 'bottom top',
-                  scrub: true,
+                  scrub: 1, // Less smooth but more performant
                 }
               }
             )
           })
 
-          // Section number counters
+          // Simplified counters
           gsap.utils.toArray('[data-count]').forEach(el => {
             const target = parseInt(el.dataset.count)
             const obj = { val: 0 }
             ScrollTrigger.create({
               trigger: el,
-              start: 'top 80%',
+              start: 'top 85%',
               onEnter: () => {
                 gsap.to(obj, {
                   val: target,
-                  duration: 1.8,
+                  duration: 1.2, // Faster animation
                   ease: 'power2.out',
                   onUpdate: () => {
                     el.textContent = Math.round(obj.val) + (el.dataset.suffix || '')
@@ -150,11 +151,12 @@ export default function App() {
           })
         })
       } catch (e) {
-        // GSAP failed — CSS animations as fallback
+        // GSAP failed — use CSS animations as fallback
+        console.warn('GSAP unavailable, using CSS fallbacks')
       }
     }
 
-    const t = setTimeout(initGSAP, 500)
+    const t = setTimeout(initGSAP, 300) // Reduced delay
     return () => { clearTimeout(t); ctx?.revert() }
   }, [])
 

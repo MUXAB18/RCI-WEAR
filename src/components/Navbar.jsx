@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import styles from './Navbar.module.css'
+import OptimizedImage from './OptimizedImage'
 
 const navLinks = [
   { label: 'Home', href: '#home' },

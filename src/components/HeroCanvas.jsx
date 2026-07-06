@@ -3,8 +3,8 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, Sphere, MeshDistortMaterial, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 
-/* ── Gold Dust Particles ── */
-function GoldParticles({ count = 1200 }) {
+/* ── Optimized Gold Dust Particles ── */
+function GoldParticles({ count = 400 }) { // Reduced from 1200 to 400
   const mesh = useRef()
   const dummy = useMemo(() => new THREE.Object3D(), [])
 
@@ -14,13 +14,13 @@ function GoldParticles({ count = 1200 }) {
     const ph = []
     for (let i = 0; i < count; i++) {
       const theta = Math.random() * Math.PI * 2
-      const r = 1.5 + Math.random() * 5
+      const r = 1.5 + Math.random() * 3 // Reduced radius
       pos.push(
-        Math.cos(theta) * r + (Math.random() - 0.5) * 4,
-        (Math.random() - 0.5) * 6,
-        Math.sin(theta) * r + (Math.random() - 0.5) * 4
+        Math.cos(theta) * r + (Math.random() - 0.5) * 3,
+        (Math.random() - 0.5) * 4,
+        Math.sin(theta) * r + (Math.random() - 0.5) * 3
       )
-      spd.push(0.002 + Math.random() * 0.004)
+      spd.push(0.001 + Math.random() * 0.002) // Slower animation
       ph.push(Math.random() * Math.PI * 2)
     }
     return { positions: new Float32Array(pos), speeds: spd, phases: ph }
@@ -31,11 +31,11 @@ function GoldParticles({ count = 1200 }) {
     for (let i = 0; i < count; i++) {
       const ix = i * 3
       dummy.position.set(
-        positions[ix] + Math.sin(t * speeds[i] + phases[i]) * 0.3,
-        positions[ix + 1] + Math.cos(t * speeds[i] * 0.7 + phases[i]) * 0.4,
-        positions[ix + 2] + Math.sin(t * speeds[i] * 0.5 + phases[i]) * 0.2
+        positions[ix] + Math.sin(t * speeds[i] + phases[i]) * 0.2,
+        positions[ix + 1] + Math.cos(t * speeds[i] * 0.7 + phases[i]) * 0.3,
+        positions[ix + 2] + Math.sin(t * speeds[i] * 0.5 + phases[i]) * 0.1
       )
-      const scale = 0.015 + Math.sin(t * 1.2 + phases[i]) * 0.008
+      const scale = 0.01 + Math.sin(t * 0.8 + phases[i]) * 0.005 // Smaller particles
       dummy.scale.setScalar(scale)
       dummy.updateMatrix()
       mesh.current.setMatrixAt(i, dummy.matrix)
@@ -45,19 +45,19 @@ function GoldParticles({ count = 1200 }) {
 
   return (
     <instancedMesh ref={mesh} args={[null, null, count]}>
-      <sphereGeometry args={[1, 4, 4]} />
+      <sphereGeometry args={[1, 3, 3]} /> {/* Lower geometry complexity */}
       <meshStandardMaterial
         color="#c9a84c"
         emissive="#8b6914"
-        emissiveIntensity={0.6}
-        roughness={0.2}
-        metalness={0.9}
+        emissiveIntensity={0.4}
+        roughness={0.3}
+        metalness={0.8}
       />
     </instancedMesh>
   )
 }
 
-/* ── Luxury Orb ── */
+/* ── Simplified Luxury Orb ── */
 function LuxuryOrb() {
   const meshRef = useRef()
   const glowRef = useRef()
@@ -65,54 +65,42 @@ function LuxuryOrb() {
   useFrame(({ clock, mouse }) => {
     const t = clock.getElapsedTime()
     if (meshRef.current) {
-      meshRef.current.rotation.x = t * 0.08 + mouse.y * 0.15
-      meshRef.current.rotation.y = t * 0.12 + mouse.x * 0.15
+      meshRef.current.rotation.x = t * 0.05 + mouse.y * 0.1 // Slower rotation
+      meshRef.current.rotation.y = t * 0.08 + mouse.x * 0.1
     }
     if (glowRef.current) {
-      glowRef.current.rotation.x = -t * 0.05
-      glowRef.current.rotation.y = -t * 0.07
+      glowRef.current.rotation.x = -t * 0.03
+      glowRef.current.rotation.y = -t * 0.05
     }
   })
 
   return (
     <group>
-      {/* Core orb */}
-      <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.5}>
+      {/* Core orb - simplified */}
+      <Float speed={0.8} rotationIntensity={0.2} floatIntensity={0.3}>
         <mesh ref={meshRef} position={[0, 0, 0]}>
-          <sphereGeometry args={[0.9, 64, 64]} />
+          <sphereGeometry args={[0.9, 32, 32]} /> {/* Reduced geometry complexity */}
           <MeshDistortMaterial
             color="#1a1a2e"
             emissive="#c9a84c"
-            emissiveIntensity={0.12}
+            emissiveIntensity={0.08}
             metalness={1}
-            roughness={0.05}
-            distort={0.25}
-            speed={1.5}
+            roughness={0.1}
+            distort={0.15} // Reduced distortion
+            speed={1}
           />
         </mesh>
       </Float>
 
-      {/* Gold ring */}
+      {/* Gold ring - simplified */}
       <mesh ref={glowRef} rotation={[Math.PI / 2.4, 0, 0]}>
-        <torusGeometry args={[1.4, 0.018, 16, 120]} />
+        <torusGeometry args={[1.4, 0.018, 8, 60]} /> {/* Reduced segments */}
         <meshStandardMaterial
           color="#c9a84c"
           emissive="#c9a84c"
-          emissiveIntensity={1.2}
-          metalness={0.9}
-          roughness={0.1}
-        />
-      </mesh>
-
-      {/* Outer thin ring */}
-      <mesh rotation={[Math.PI / 3, 0.3, 0]}>
-        <torusGeometry args={[1.9, 0.008, 8, 100]} />
-        <meshStandardMaterial
-          color="#e2c97e"
-          emissive="#e2c97e"
           emissiveIntensity={0.8}
-          metalness={1}
-          roughness={0}
+          metalness={0.9}
+          roughness={0.2}
         />
       </mesh>
     </group>
@@ -134,21 +122,21 @@ function CameraRig() {
   return null
 }
 
-/* ── Light Rays ── */
+/* ── Simplified Light Rays ── */
 function LightRays() {
   const groupRef = useRef()
 
   useFrame(({ clock }) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = clock.getElapsedTime() * 0.05
+      groupRef.current.rotation.y = clock.getElapsedTime() * 0.03 // Slower rotation
     }
   })
 
   const rays = useMemo(() => {
-    return Array.from({ length: 6 }, (_, i) => ({
-      angle: (i / 6) * Math.PI * 2,
-      length: 3 + Math.random() * 2,
-      opacity: 0.03 + Math.random() * 0.04
+    return Array.from({ length: 4 }, (_, i) => ({ // Reduced from 6 to 4
+      angle: (i / 4) * Math.PI * 2,
+      length: 2 + Math.random() * 1.5,
+      opacity: 0.02 + Math.random() * 0.03
     }))
   }, [])
 
@@ -158,13 +146,13 @@ function LightRays() {
         <mesh
           key={i}
           position={[
-            Math.cos(ray.angle) * 2,
+            Math.cos(ray.angle) * 1.5,
             0,
-            Math.sin(ray.angle) * 2
+            Math.sin(ray.angle) * 1.5
           ]}
           rotation={[0, -ray.angle, 0]}
         >
-          <cylinderGeometry args={[0.01, 0.3, ray.length, 8, 1, true]} />
+          <cylinderGeometry args={[0.01, 0.2, ray.length, 6, 1, true]} /> {/* Reduced complexity */}
           <meshBasicMaterial
             color="#c9a84c"
             transparent
@@ -180,26 +168,32 @@ function LightRays() {
 export default function HeroCanvas() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 5], fov: 60 }}
-      dpr={[1, 1.5]}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      camera={{ position: [0, 0, 5], fov: 50 }} // Reduced FOV
+      dpr={[1, 1.2]} // Reduced pixel ratio for better performance
+      gl={{ 
+        antialias: false, // Disabled for performance
+        alpha: true, 
+        powerPreference: 'high-performance',
+        stencil: false,
+        depth: true
+      }}
       style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
     >
-      <ambientLight intensity={0.15} />
-      <pointLight position={[5, 5, 5]} intensity={0.8} color="#c9a84c" />
-      <pointLight position={[-5, -3, -5]} intensity={0.4} color="#4a3000" />
-      <directionalLight position={[0, 10, 5]} intensity={0.3} color="#fff8e7" />
+      <ambientLight intensity={0.12} />
+      <pointLight position={[5, 5, 5]} intensity={0.6} color="#c9a84c" />
+      <pointLight position={[-5, -3, -5]} intensity={0.3} color="#4a3000" />
+      <directionalLight position={[0, 8, 4]} intensity={0.2} color="#fff8e7" />
       <spotLight
-        position={[0, 8, 0]}
-        angle={0.4}
-        penumbra={0.8}
-        intensity={1.2}
+        position={[0, 6, 0]}
+        angle={0.3}
+        penumbra={0.6}
+        intensity={0.8}
         color="#c9a84c"
         castShadow={false}
       />
 
-      <Stars radius={60} depth={30} count={800} factor={2} saturation={0} fade speed={0.8} />
-      <GoldParticles count={900} />
+      <Stars radius={40} depth={20} count={400} factor={1.5} saturation={0} fade speed={0.6} />
+      <GoldParticles count={300} /> {/* Reduced count further */}
       <LuxuryOrb />
       <LightRays />
       <CameraRig />

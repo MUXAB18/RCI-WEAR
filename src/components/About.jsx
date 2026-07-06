@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import styles from './About.module.css'
+import OptimizedImage from './OptimizedImage'
 
 const values = [
   { icon: '01', title: 'Premium Quality', desc: 'Only the finest fabrics make it into our creations. Every piece is a testament to excellence.' },
@@ -61,7 +62,14 @@ export default function About() {
           <div className={`${styles.visual} reveal-left`}>
             <div className={styles.imageFrame} ref={imgRef} style={{ transition: 'transform 0.1s linear' }}>
               <div className={styles.imageMain}>
-                <img src="/about_img.jpg" alt="Rasheed Clothing International craftsmanship" />
+                <OptimizedImage 
+                  src="/about_img.jpg" 
+                  alt="Rasheed Clothing International craftsmanship"
+                  priority={true}
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  width={600}
+                  height={800}
+                />
                 <div className={styles.imageSheen} />
               </div>
               <div className={styles.imageAccent}>

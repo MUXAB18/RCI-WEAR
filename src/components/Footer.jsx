@@ -1,4 +1,5 @@
 import styles from './Footer.module.css'
+import OptimizedImage from './OptimizedImage'
 
 const links = [
   { label: 'Home', href: '#home' },
@@ -19,7 +20,14 @@ export default function Footer() {
           <div className={`${styles.brand} reveal`}>
             <div className={styles.logoRow}>
               <div className={styles.logoCircle}>
-                <img src="/logo.jpg" alt="Rasheed Clothing International" className={styles.logoImg} />
+                <OptimizedImage 
+                  src="/logo.jpg" 
+                  alt="Rasheed Clothing International" 
+                  className={styles.logoImg}
+                  priority={true}
+                  width={60}
+                  height={60}
+                />
               </div>
               <div className={styles.brandNameWrap}>
                 <span className={styles.brandName}>Rasheed Clothing</span>
