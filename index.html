@@ -37,12 +37,18 @@
         background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
         display: grid;
         grid-template-rows: 60px 1fr;
-        animation: fadeOut 0.3s ease forwards;
-        animation-delay: 1.5s;
+        animation: fadeOut 0.5s ease forwards;
+        animation-delay: 2.5s;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99999;
       }
       
       @keyframes fadeOut {
-        to { opacity: 0; pointer-events: none; }
+        to { opacity: 0; pointer-events: none; visibility: hidden; }
       }
       
       .skeleton-loader {
