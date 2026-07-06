@@ -168,24 +168,10 @@
   animation: fabWiggle 0.9s cubic-bezier(0.68, -0.55, 0.265, 1.55) 6s infinite;
 }
 
-/* FAB Pulse Animation - ATTRACTIVE GLOW - MUCH MORE VISIBLE */
+/* FAB Pulse Animation - REMOVED */
 .fabPulse,
 .fabPulse2 {
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid rgba(211, 211, 211, 0.8);
-  animation: fabPulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(211, 211, 211, 0.15) 0%, transparent 70%);
-}
-
-.fabPulse2 {
-  inset: -14px;
-  border-width: 1.5px;
-  border-color: rgba(211, 211, 211, 0.6);
-  animation: fabPulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite 0.5s;
-  background: radial-gradient(circle, rgba(211, 211, 211, 0.1) 0%, transparent 70%);
+  display: none;
 }
 
 .fabOpen .fabPulse,
@@ -193,26 +179,7 @@
   display: none;
 }
 
-/* Smooth attractive pulse - NOW HIGHLY VISIBLE */
-@keyframes fabPulseGlow {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(211, 211, 211, 1), inset 0 0 10px rgba(211, 211, 211, 0.3);
-  }
-
-  40% {
-    transform: scale(1.4);
-    opacity: 0.7;
-    box-shadow: 0 0 25px 10px rgba(211, 211, 211, 0.6), inset 0 0 15px rgba(211, 211, 211, 0.2);
-  }
-
-  100% {
-    transform: scale(2);
-    opacity: 0;
-    box-shadow: 0 0 40px 20px rgba(211, 211, 211, 0), inset 0 0 0 rgba(211, 211, 211, 0);
-  }
-}
+/* Pulse animation - REMOVED */
 
 /* FAB entrance bounce animation */
 @keyframes fabBounceIn {
@@ -286,7 +253,7 @@
   display: none;
 }
 
-/* Tooltip with red notification dot */
+/* Tooltip with red notification dot - ONLY ON HOVER */
 .fabTooltip {
   position: absolute;
   bottom: calc(100% + 16px);
@@ -324,6 +291,7 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
 .fabOpen .fabTooltip {
@@ -1327,41 +1295,19 @@
     border-radius: var(--wa-radius-full);
   }
 
-  /* Show tooltip on mobile with tap */
+  /* Show tooltip only on hover for mobile too */
   .fabTooltip {
-    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.9);
+    pointer-events: none;
+  }
+
+  .fab:hover .fabTooltip {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
-    animation: tooltipFloat 3s ease-in-out 1s;
-    bottom: calc(100% + 12px);
-    right: -20px;
-    min-width: 180px;
-  }
-
-  @keyframes tooltipFloat {
-
-    0%,
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-4px);
-    }
-  }
-
-  /* Hide tooltip after 5 seconds on mobile */
-  .fab:not(:hover) .fabTooltip {
-    animation: tooltipFadeOut 0.5s ease-out 5s forwards;
-  }
-
-  @keyframes tooltipFadeOut {
-    to {
-      opacity: 0;
-      visibility: hidden;
-    }
+    pointer-events: auto;
   }
 
   .fabNotificationDot {
