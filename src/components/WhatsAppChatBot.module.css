@@ -1278,15 +1278,15 @@
   }
   .notificationBubble {
     display: flex;
-    /* Show notification bubble on mobile — constrain to viewport and keep clear of FAB */
+    /* Show notification bubble on mobile — anchor left of FAB so it never overflows */
     left: auto;
-    right: 20px;
+    right: calc(20px + 60px + 12px); /* 20px page margin + 60px FAB width + 12px gap */
     width: auto;
-    max-width: calc(100% - 96px); /* leave room for FAB + safe margins */
+    max-width: calc(100% - 112px); /* leave room for FAB + safe margins */
     bottom: calc(90px + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
     overflow: hidden;
-    padding-right: 12px;
+    padding-right: 56px; /* space for close button */
   }
 
   /* Restore compact FAB tooltip and notification dot on mobile */
@@ -1308,16 +1308,17 @@
   /* Ensure close button is visible and tappable on mobile */
   .notifClose {
     top: 8px !important;
-    right: 8px !important;
-    width: 36px !important;
-    height: 36px !important;
-    z-index: 100000 !important;
+    right: 12px !important;
+    width: 40px !important;
+    height: 40px !important;
+    z-index: 100005 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: rgba(255,255,255,0.06) !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    border-radius: 8px !important;
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
   }
   .serviceCardsGrid {
     gap: 8px;
