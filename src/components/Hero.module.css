@@ -175,7 +175,7 @@
   display: inline-block;
   color: var(--deep-stone);
   font-size: clamp(2.5rem, 6vw, 6rem);
-  font-style: italic;
+  font-style: normal;
   overflow: visible;
   white-space: nowrap;
   width: auto;
@@ -735,22 +735,30 @@
 
   .stats {
     gap: 0;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .stat {
-    border-right: 1px solid rgba(11, 11, 11, 0.10);
-    padding: 0 20px;
+    flex: 0 0 50%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    border-right: none;
+    border-bottom: none;
     align-items: center;
     justify-content: center;
   }
 
-  .stat:first-child {
-    padding-left: 0;
+  /* Put the third stat on its own row centered */
+  .stat:nth-child(3) {
+    flex-basis: 100%;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 0;
   }
 
-  .stat:last-child {
-    border-right: none;
-    padding-right: 0;
+  /* Vertical divider between the two items on the first row */
+  .stat:nth-child(1) {
+    border-right: 1px solid rgba(11, 11, 11, 0.08);
   }
 }

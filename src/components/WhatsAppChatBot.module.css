@@ -1285,6 +1285,12 @@
     bottom: calc(90px + env(safe-area-inset-bottom, 0px));
     max-width: none;
   }
+
+  /* Hide compact FAB tooltip and notification dot on mobile (user requested) */
+  .fabTooltip,
+  .fabNotificationDot {
+    display: none !important;
+  }
   .serviceCardsGrid {
     gap: 8px;
   }
