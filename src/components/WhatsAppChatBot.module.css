@@ -1278,15 +1278,15 @@
   }
   .notificationBubble {
     display: flex;
-    /* Force the bubble to the left side on very small screens to avoid overflow */
-    left: 16px !important;
+    /* Force bubble left on very small screens and constrain content */
+    left: 12px !important;
     right: auto !important;
     width: auto !important;
-    max-width: calc(100% - 96px) !important;
+    max-width: calc(100% - 92px) !important;
     bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
     box-sizing: border-box;
-    overflow: visible !important;
-    padding-right: 20px !important;
+    overflow: hidden !important;
+    padding: 12px 16px !important;
     z-index: 100010 !important; /* above FAB */
   }
 
@@ -1306,6 +1306,19 @@
     visibility: visible !important;
     pointer-events: auto !important;
   }
+  /* Ensure notification text wraps inside the bubble */
+  .notificationBubble .notifTitle,
+  .notificationBubble .notifMessage,
+  .notificationBubble .notifContent,
+  .notificationBubble .notifMeta {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    max-width: 100% !important;
+  }
+  /* Slightly reduce text size on small screens to avoid overflow */
+  .notificationBubble .notifTitle { font-size: 14px !important; }
+  .notificationBubble .notifMessage { font-size: 12px !important; }
   /* Ensure close button is visible and tappable on mobile */
   .notifClose {
     top: 8px !important;
