@@ -1278,12 +1278,15 @@
   }
   .notificationBubble {
     display: flex;
-    /* Show notification bubble on mobile */
-    width: calc(100% - 40px);
+    /* Show notification bubble on mobile — constrain to viewport and keep clear of FAB */
+    left: auto;
     right: 20px;
-    left: 20px;
+    width: auto;
+    max-width: calc(100% - 96px); /* leave room for FAB + safe margins */
     bottom: calc(90px + env(safe-area-inset-bottom, 0px));
-    max-width: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding-right: 12px;
   }
 
   /* Restore compact FAB tooltip and notification dot on mobile */
@@ -1301,6 +1304,20 @@
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
+  }
+  /* Ensure close button is visible and tappable on mobile */
+  .notifClose {
+    top: 8px !important;
+    right: 8px !important;
+    width: 36px !important;
+    height: 36px !important;
+    z-index: 100000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 8px !important;
   }
   .serviceCardsGrid {
     gap: 8px;
