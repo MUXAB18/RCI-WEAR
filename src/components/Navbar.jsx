@@ -189,6 +189,7 @@ export default function Navbar({ onGetQuote, onContact }) {
               data-cursor
             >
               <span className={styles.mobileLinkNum}>0{i + 1}</span>
+              <span className={styles.mobileLinkIcon}>◆</span>
               <span className={styles.mobileLinkLabel}>{l.label}</span>
               <span className={styles.mobileLinkArrow}>→</span>
             </button>

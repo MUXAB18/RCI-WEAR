@@ -24,14 +24,6 @@ export default function App() {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
 
-  /* ── Hide skeleton loader when React mounts ── */
-  useEffect(() => {
-    const skeleton = document.getElementById('app-skeleton')
-    if (skeleton) {
-      skeleton.style.animation = 'fadeOut 0.4s ease forwards'
-    }
-  }, [])
-
   /* ── Register Service Worker for offline support & caching ── */
   useEffect(() => {
     if ('serviceWorker' in navigator) {
@@ -86,23 +78,6 @@ export default function App() {
 
   return (
     <>
-      {/* Luxury loader */}
-      <div id="luxury-loader">
-        <div className="lc lc-tl" />
-        <div className="lc lc-tr" />
-        <div className="lc lc-bl" />
-        <div className="lc lc-br" />
-        <span className="loader-eyebrow">Est. 2017 · Sialkot, Pakistan</span>
-        <span className="loader-brand">
-          Rasheed Clothing<br />
-          <span className="loader-brand-gold">International</span>
-        </span>
-        <div className="loader-line-wrap">
-          <div className="loader-line" />
-        </div>
-        <span className="loader-sub">Loading Collection</span>
-      </div>
-
       {/* Scroll progress */}
       <div id="scroll-progress" />
 

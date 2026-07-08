@@ -54,7 +54,7 @@ const OptimizedImage = forwardRef(function OptimizedImage({
   }, [])
 
   // Prevent layout shift with aspect ratio
-  const aspectRatioStyle = width && height 
+  const aspectRatioStyle = width && height
     ? { aspectRatio: `${width} / ${height}` }
     : {}
 
@@ -100,8 +100,8 @@ const OptimizedImage = forwardRef(function OptimizedImage({
   }
 
   return (
-    <picture 
-      className={`optimized-image ${className}`} 
+    <picture
+      className={`optimized-image ${className}`}
       style={aspectRatioStyle}
     >
       {/* AVIF source - best compression (80% smaller than JPG) */}
@@ -109,13 +109,13 @@ const OptimizedImage = forwardRef(function OptimizedImage({
         srcSet={generateSrcSet('avif')}
         type="image/avif"
       />
-      
+
       {/* WebP source - good compression + wide support (60-70% smaller) */}
       <source
         srcSet={generateSrcSet('webp')}
         type="image/webp"
       />
-      
+
       {/* Fallback to original format - 100% browser compatibility */}
       <img
         ref={imgRef}
@@ -144,9 +144,9 @@ export default OptimizedImage
  */
 export function preloadImage(src) {
   if (!src) return
-  
+
   const basePath = src.replace(/\.(jpg|jpeg|png)$/i, '')
-  
+
   // Try AVIF first (best), then WebP, then original
   const formats = [
     { src: `${basePath}.avif`, type: 'image/avif' },
@@ -173,10 +173,10 @@ export function preloadImage(src) {
  */
 export function getImageSrcSet(baseSrc) {
   if (!baseSrc) return null
-  
+
   const basePath = baseSrc.replace(/\.(jpg|jpeg|png)$/i, '')
   const sizes = [400, 800] // Only sizes we have
-  
+
   return {
     avif: sizes.map(size => `${basePath}_${size}w.avif ${size}w`).join(', '),
     webp: sizes.map(size => `${basePath}_${size}w.webp ${size}w`).join(', '),

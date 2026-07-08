@@ -1,19 +1,16 @@
 /* ═══════════════════════════════════════════════
    FOOTER — Architectural Luxury Footer
    ═══════════════════════════════════════════════ */
-
 /* ── Floating WhatsApp Button ── (DISABLED - Using WhatsAppChatBot component instead) */
 .whatsappFloating {
   display: none !important;
 }
-
 .footer {
-  background: #3B3B3B;
+  background: var(--near-black);
   position: relative;
   overflow: hidden;
 }
-
-/* Top gold rule */
+/* Top rule */
 .footer::before {
   content: '';
   position: absolute;
@@ -21,12 +18,10 @@
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    #000000  50%,
+    rgba(255,255,255,0.10) 50%,
     transparent 100%
   );
-  opacity: 0.3;
 }
-
 /* Large background brand watermark */
 .footer::after {
   content: 'RCI';
@@ -36,15 +31,13 @@
   font-family: var(--font-display);
   font-size: clamp(12rem, 25vw, 20rem);
   font-weight: 400;
-  color: rgba(0,0,0,0.018);
+  color: rgba(255,255,255,0.022);
   letter-spacing: -0.04em;
   line-height: 1;
   pointer-events: none;
   user-select: none;
 }
-
 .topDivider { display: none; }
-
 /* ── Grid ── */
 .grid {
   display: grid;
@@ -52,45 +45,38 @@
   gap: 88px;
   padding: 96px 0 72px;
 }
-
 /* ── Brand column ── */
 .brand { position: relative; }
-
 .logoRow {
   display: flex;
   align-items: center;
   gap: 18px;
   margin-bottom: 28px;
 }
-
 .logoCircle {
   width: 48px;
   height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: #5A5A5A;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
   flex-shrink: 0;
-  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
 .logoCircle:hover {
-  border-color: rgba(255,255,255,0.45);
-  box-shadow: 0 0 24px rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.35);
+  box-shadow: 0 0 20px rgba(255,255,255,0.10);
 }
-
 .logoImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .brandNameWrap {
   display: flex;
   flex-direction: column;
   gap: 1px;
 }
-
 .brandName {
   font-family: var(--font-sans);
   font-size: 12px;
@@ -101,7 +87,6 @@
   text-transform: uppercase;
   line-height: 1;
 }
-
 .brandSub {
   font-family: var(--font-sans);
   font-size: 10px;
@@ -112,18 +97,17 @@
   opacity: 0.8;
   line-height: 1;
 }
-
 .brandDesc {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 300;
-  color: #FFFFFF;
+  /* Explicit WCAG-safe opacity on dark footer — #FFF at 0.75 on #0B0B0B ≈10:1 */
+  color: rgba(255,255,255,0.75);
   line-height: 2;
   max-width: 300px;
   margin-bottom: 24px;
   letter-spacing: 0.1px;
 }
-
 .slogan {
   font-family: var(--font-italic);
   font-size: 0.95rem;
@@ -132,7 +116,6 @@
   letter-spacing: 0.5px;
   opacity: 1;
 }
-
 /* ── Column titles ── */
 .colTitle {
   font-family: var(--font-sans);
@@ -145,19 +128,17 @@
   margin-bottom: 32px;
   display: block;
 }
-
 /* ── Nav links ── */
 .navList {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
-
 .navLink {
   background: none;
   border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.6);
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 400;
@@ -166,72 +147,64 @@
   cursor: none;
   /* GPU-accelerated: transform only, no padding-left animation */
   transition:
-    color        0.35s ease,
-    transform    0.4s var(--ease-luxury);
+    color        0.25s ease,
+    transform    0.3s var(--ease-luxury);
   position: relative;
   letter-spacing: 0.2px;
 }
-
 .navLink::before {
   content: '—';
   position: absolute;
   left: 0;
-  color: #FFFFFF;
+  color: rgba(255,255,255,0.4);
   font-size: 10px;
   opacity: 0;
   transform: translateX(-8px);
   transition:
-    opacity   0.3s ease,
-    transform 0.4s var(--ease-luxury);
+    opacity   0.25s ease,
+    transform 0.3s var(--ease-luxury);
 }
-
 .navLink:hover {
   color: #FFFFFF;
   /* Use transform instead of padding-left */
   transform: translateX(18px);
 }
-
 .navLink:hover::before {
   opacity: 0.7;
   transform: translateX(0);
 }
-
 /* ── Contact list ── */
 .contactList {
   display: flex;
   flex-direction: column;
   gap: 0;
 }
-
 .contactLink {
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  color: #FFFFFF;
+  color: rgba(255,255,255,0.55);
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 300;
   padding: 13px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
   text-decoration: none;
-  transition: color 0.35s ease;
+  transition: color 0.25s ease;
   cursor: none;
   letter-spacing: 0.1px;
 }
-
 .contactLink:hover { color: #FFFFFF; }
-
 .contactIcon {
   font-size: 13px;
   margin-top: 1px;
   flex-shrink: 0;
-  opacity: 1;
+  opacity: 0.55;
   color: #FFFFFF;
 }
-
 /* ── Bottom bar ── */
 .bottom {
-  border-top: 1px solid rgba(255,255,255,0.15);
+  border-top: 1px solid rgba(255,255,255,0.06);
   padding: 32px 0;
   display: flex;
   align-items: center;
@@ -239,34 +212,30 @@
   flex-wrap: wrap;
   gap: 14px;
 }
-
 .copy {
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 300;
-  color: #FFFFFF;
+  color: rgba(255,255,255,0.45);
   letter-spacing: 0.3px;
 }
-
 .madeContainer {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
 }
-
 .made {
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: rgba(255,255,255,0.45);
   letter-spacing: 1px;
   text-transform: uppercase;
   margin: 0;
 }
-
 .developer {
-  color: #FFFFFF;
+  color: rgba(255,255,255,0.75);
   font-family: var(--font-display);
   font-size: 1.1rem;
   font-style: italic;
@@ -275,43 +244,63 @@
   text-transform: none;
   margin-left: 6px;
 }
-
 .madeEmail {
   font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 500;
-  color: #FFFFFF;
+  color: rgba(255,255,255,0.55);
   text-decoration: none;
   letter-spacing: 1.5px;
   padding: 6px 14px;
-  border: 1px solid rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.20);
   border-radius: var(--radius-full);
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   cursor: none;
 }
-
 .madeEmail:hover {
   background: #FFFFFF;
   color: #000000;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255,255,255,0.4);
+  box-shadow: 0 4px 12px rgba(255,255,255,0.15);
 }
-
+/* ── Legal Links ── */
+.legalLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.legalBtn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.25s ease;
+}
+.legalBtn:hover {
+  color: #FFFFFF;
+}
+.legalDot {
+  color: rgba(255,255,255,0.2);
+  font-size: 8px;
+}
 /* ── Responsive ── */
 @media (max-width: 1100px) {
   .grid { gap: 56px; }
 }
-
 @media (max-width: 1000px) {
   .grid { grid-template-columns: 1fr 1fr; gap: 48px; padding: 72px 0 56px; }
 }
-
 @media (max-width: 600px) {
   .grid { grid-template-columns: 1fr; gap: 44px; padding: 56px 0 44px; }
   .bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
   .footer::after { font-size: 30vw; bottom: -40px; right: -20px; }
 }
-
 /* ── Social Icons ── */
 .socialIcon {
   display: inline-flex;
@@ -320,21 +309,20 @@
   width: 40px;
   height: 40px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #FFFFFF;
-  transition: all 0.3s var(--ease-luxury);
+ 
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255,255,255,0.6);
+  transition: all 0.25s var(--ease-luxury);
   cursor: pointer;
 }
-
 .socialIcon:hover {
   background: #FFFFFF;
   color: #000000;
   border-color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
 }
-
 .socialIcon svg {
   width: 20px;
   height: 20px;

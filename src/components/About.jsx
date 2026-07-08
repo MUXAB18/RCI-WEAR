@@ -83,17 +83,19 @@ export default function About() {
           {/* Right text */}
           <div className={`${styles.text} reveal-right`}>
             <p className="section-label">Our Story</p>
-            <h2 className="section-title">
-              Crafting Dreams<br/>Into <em className="gold-text" style={{ fontStyle: 'italic' }}>Reality</em>
+            <h2 className="section-title" style={{ color: 'var(--white)' }}>
+              Crafting Dreams<br/>Into <em className="silver-text" style={{ fontStyle: 'italic' }}>Reality</em>
             </h2>
             <div className="divider" />
 
-            <p className={styles.body}>
-              Rasheed Clothing International was born from a passion for fashion and a relentless pursuit of quality. With roots in the rich textile heritage of Pakistan, we blend traditional craftsmanship with contemporary design sensibilities.
-            </p>
-            <p className={styles.body}>
-              Whether it's a bespoke bridal ensemble, corporate uniforms, or a full ready-to-wear collection — every garment is engineered to make you feel extraordinary.
-            </p>
+            <div className={styles.bodyContainer}>
+              <p className={styles.body}>
+                Rasheed Clothing International was born from a passion for fashion and a relentless pursuit of quality. With roots in the rich textile heritage of Pakistan, we blend traditional craftsmanship with contemporary design sensibilities.
+              </p>
+              <p className={styles.body}>
+                Whether it's a bespoke bridal ensemble, corporate uniforms, or a full ready-to-wear collection — every garment is engineered to make you feel extraordinary.
+              </p>
+            </div>
 
             {/* Chamber badge */}
             <div className={styles.memberBadge}>

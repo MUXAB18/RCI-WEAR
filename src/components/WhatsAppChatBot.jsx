@@ -10,7 +10,7 @@ const CONFIG = {
   email: 'rasheedclothingintl@gmail.com',
   linkedin: 'https://www.linkedin.com/company/rasheed-clothing-international', // Add your LinkedIn URL here
   businessName: 'Rasheed Clothing International',
-  businessShort: 'RCI Wear',
+  businessShort: 'Raheed Clothing Internnational',
   tagline: 'Premium Custom Clothing',
   responseTime: 'Typically replies within minutes',
   workingHours: 'Mon – Sat • 9:00 AM – 7:00 PM PKT',
@@ -267,9 +267,10 @@ export default function WhatsAppChatBot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([])
   const [isTyping, setIsTyping] = useState(false)
-  const [showNotification, setShowNotification] = useState(false)
+  const [showNotification, setShowNotification] = useState(true)
   const [notificationDismissed, setNotificationDismissed] = useState(false)
-  const [hasUnread, setHasUnread] = useState(false)
+  const [hasUnread, setHasUnread] = useState(true)
+  const [isTooltipDismissed, setIsTooltipDismissed] = useState(false)
   const [greetingComplete, setGreetingComplete] = useState(false)
   
   const messagesEndRef = useRef(null)
@@ -596,7 +597,9 @@ export default function WhatsAppChatBot() {
       {showNotification && !isOpen && (
         <div className={styles.notificationBubble}>
           <button className={styles.notifClose} onClick={dismissNotification} aria-label="Dismiss notification">
-            ×
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
           <div className={styles.notifAvatar}>{CONFIG.avatar}</div>
           <div className={styles.notifContent}>
@@ -630,16 +633,30 @@ export default function WhatsAppChatBot() {
               <WhatsAppIcon size={30} />
             )}
           </div>
-          {!isOpen && (
-            <div className={styles.fabTooltip}>
-              <div className={styles.tooltipHeader}>
-                <div className={styles.tooltipDot} />
-                <div className={styles.tooltipText}>Need Help?</div>
-              </div>
-              <div className={styles.tooltipSubtext}>Chat with us on WhatsApp</div>
-            </div>
-          )}
         </button>
+
+        {/* Tooltip always shows unless dismissed or open */}
+        {!isOpen && !isTooltipDismissed && (
+          <div className={styles.fabTooltip}>
+            <div className={styles.tooltipHeader}>
+              <div className={styles.tooltipDot} />
+              <div className={styles.tooltipText}>Need Help?</div>
+              <button 
+                className={styles.tooltipClose} 
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsTooltipDismissed(true)
+                }}
+                aria-label="Close tooltip"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+            <div className={styles.tooltipSubtext}>Chat with us on WhatsApp</div>
+          </div>
+        )}
       </div>
     </>
   )

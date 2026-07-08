@@ -34,7 +34,7 @@
 }
 
 .audioBtn.playing .label {
-  color: var(--gold);
+  color: var(--grey-400);
 }
 
 /* ── Equalizer Animation ── */
@@ -59,7 +59,7 @@
 .bar5 { height: 50%; }
 
 .audioBtn.playing .bar {
-  background: var(--gold);
+  background: var(--grey-400);
 }
 
 .audioBtn.playing .bar1 { animation-delay: 0.0s; }

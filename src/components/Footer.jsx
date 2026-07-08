@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import styles from './Footer.module.css'
 import OptimizedImage from './OptimizedImage'
+import LegalModal from './LegalModal'
 
 const links = [
   { label: 'Home', href: '#home' },
@@ -9,10 +11,13 @@ const links = [
 ]
 
 export default function Footer() {
+  const [modalType, setModalType] = useState(null) // null | 'privacy' | 'terms'
+
   const nav = (href) => document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
 
   return (
-    <footer className={styles.footer}>
+    <>
+      <footer className={styles.footer}>
       <div className={styles.topDivider} />
       <div className="container">
         <div className={styles.grid}>
@@ -129,9 +134,15 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p className={styles.copy}>
-            © {new Date().getFullYear()} Rasheed Clothing International. All Rights Reserved.
-          </p>
+          <div className={styles.legalLinks}>
+            <p className={styles.copy}>
+              © {new Date().getFullYear()} Rasheed Clothing International. All Rights Reserved.
+            </p>
+            <span className={styles.legalDot}>●</span>
+            <button className={styles.legalBtn} onClick={() => setModalType('privacy')}>Privacy Policy</button>
+            <span className={styles.legalDot}>●</span>
+            <button className={styles.legalBtn} onClick={() => setModalType('terms')}>Terms & Conditions</button>
+          </div>
           <div className={styles.madeContainer}>
             <p className={styles.made}>
               Developed by <span className={styles.developer}>Musab Iftikhar</span>
@@ -143,5 +154,12 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+
+    <LegalModal 
+      isOpen={modalType !== null} 
+      onClose={() => setModalType(null)} 
+      type={modalType} 
+    />
+    </>
   )
 }

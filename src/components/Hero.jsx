@@ -5,6 +5,7 @@ import OptimizedImage from './OptimizedImage'
 
 export default function Hero({ onGetQuote }) {
   const heroRef = useRef(null)
+  const bgRef = useRef(null)          /* FIX: was referenced in GSAP but never declared */
   const eyebrowRef = useRef(null)
   const line1Ref = useRef(null)
   const line2Ref = useRef(null)
@@ -24,11 +25,10 @@ export default function Hero({ onGetQuote }) {
         const g = await import('gsap')
         gsap = g.gsap || g.default
 
-        // Kill loader
-        const loader = document.getElementById('luxury-loader')
+        // Kill loader removed, using app-skeleton
 
         ctx = gsap.context(() => {
-          const tl = gsap.timeline({ delay: 0.2 })
+          const tl = gsap.timeline({ delay: 1.5 })
 
           // Overlay wipe out
           tl.to(overlayRef.current, {
@@ -101,13 +101,14 @@ export default function Hero({ onGetQuote }) {
 
           // Kill loader after animations start
           tl.call(() => {
-            if (loader) loader.classList.add('done')
-          }, [], 0.1)
+            const skeleton = document.getElementById('app-skeleton')
+            if (skeleton) skeleton.style.animation = 'fadeOut 0.8s ease forwards'
+          }, [], 0)
         })
       } catch (e) {
         // CSS fallback
-        const loader = document.getElementById('luxury-loader')
-        if (loader) loader.classList.add('done')
+        const skeleton = document.getElementById('app-skeleton')
+        if (skeleton) skeleton.style.animation = 'fadeOut 0.8s ease forwards'
         ;[eyebrowRef, line1Ref, line2Ref, taglineRef, descRef, actionsRef, statsRef, scrollRef].forEach((r, i) => {
           if (r.current) {
             r.current.style.animation = `fadeUp 0.8s var(--ease-luxury) ${0.3 + i * 0.15}s both`
@@ -129,8 +130,15 @@ export default function Hero({ onGetQuote }) {
       <div ref={overlayRef} className={styles.wipeOverlay} />
 
       {/* Background image */}
-      <div className={styles.bg}>
+      <div className={styles.bg} ref={bgRef}>
         <div className={styles.bgImage} />
+        {/* Monogram Watermark */}
+        <div className={styles.monogramWatermark}>
+          <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6">
+            <circle cx="50" cy="50" r="46" strokeWidth="4"/>
+            <text x="50" y="65" fontSize="32" fill="currentColor" stroke="none" textAnchor="middle" letterSpacing="4" fontFamily="sans-serif" fontWeight="bold">R</text>
+          </svg>
+        </div>
         <div className={styles.bgTint} />
       </div>
 
@@ -175,19 +183,16 @@ export default function Hero({ onGetQuote }) {
         {/* CTA Buttons */}
         <div ref={actionsRef} className={styles.actions}>
           <MagneticButton
-            className={`btn-primary ${styles.cta}`}
+            className={styles.ctaPill}
             onClick={() => scrollTo('#portfolio')}
           >
             Explore Collections
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
           </MagneticButton>
           <MagneticButton
-            className={`btn-outline ${styles.cta}`}
+            className={`${styles.ctaPill} ${styles.ctaOutline}`}
             onClick={() => scrollTo('#contact')}
           >
-            Get In Touch
+            Get in touch
           </MagneticButton>
         </div>
 
