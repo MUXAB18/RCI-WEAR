@@ -229,6 +229,13 @@
   line-height: 1.6;
 }
 
+.submitError {
+  color: #b02020;
+  font-weight: 600;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
 @media (max-width: 640px) {
   .content { padding: 32px 24px; }
   .row { grid-template-columns: 1fr; gap: 16px; }

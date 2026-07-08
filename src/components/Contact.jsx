@@ -40,12 +40,7 @@ const ENQUIRY_TYPES = [
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
   const [status, setStatus] = useState('idle') // idle, sending, success, error
-  const [captchaError, setCaptchaError] = useState(false)
-
-  /* reCAPTCHA v2 widget ID — rendered into #recaptcha-contact */
-  const captchaWidgetId = useRef(null)
-  const captchaReady = useRef(false)
-  const captchaErrorRef = useRef(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
   /* Generated once per mount */
   const orderId = useMemo(() => generateOrderId(), [])
@@ -53,41 +48,12 @@ export default function Contact() {
 
   const handle = e => setForm({ ...form, [e.target.name]: e.target.value })
 
-  /* Render reCAPTCHA widget explicitly so we control timing */
-  const onCaptchaContainerMount = (el) => {
-    if (!el || captchaReady.current || !window.grecaptcha) return
-    // Explicit render gives us the widget ID for programmatic reset
-    captchaWidgetId.current = window.grecaptcha.render(el, {
-      sitekey: '6LdgtUgtAAAAACGLZCLNrW9P_lgMJtaJijaR3KuM',
-      theme: 'light',
-      size: 'normal',
-      callback: () => setCaptchaError(false),        // token received
-      'expired-callback': () => setCaptchaError(true), // token expired
-    })
-    captchaReady.current = true
-  }
+  /* (reCAPTCHA removed) */
 
   const submit = async (e) => {
     e.preventDefault()
 
-    // ── reCAPTCHA validation ──────────────────────────────
-    // NOTE: The SECRET KEY (6LdgtUgtAAAAAOrBBOo5eiFh1rnrEXPDrbmenXI7) must
-    // NEVER appear in frontend code. It belongs on a server that calls:
-    // POST https://www.google.com/recaptcha/api/siteverify
-    // with secret + the token below. Without a backend, we do the
-    // client-side check (prevents accidental submission, not malicious bots).
-    const token = captchaWidgetId.current !== null
-      ? window.grecaptcha?.getResponse(captchaWidgetId.current)
-      : window.grecaptcha?.getResponse()
-
-    if (!token) {
-      setCaptchaError(true)
-      setTimeout(() => {
-        captchaErrorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }, 100)
-      return
-    }
-    setCaptchaError(false)
+    // reCAPTCHA removed: proceed directly to sending
     setStatus('sending')
 
     try {
@@ -123,16 +89,30 @@ export default function Contact() {
       await emailjs.send(serviceId, customerTemplateId, customerEmailData, publicKey)
 
       setStatus('success')
+      setErrorMessage('')
       setForm({ name: '', email: '', phone: '', subject: '', message: '' })
-      // Reset reCAPTCHA so form can be re-submitted
-      if (captchaWidgetId.current !== null) window.grecaptcha?.reset(captchaWidgetId.current)
-      else window.grecaptcha?.reset()
       setTimeout(() => setStatus('idle'), 5000)
     } catch (error) {
       console.error('Email send failed:', error)
+      // Build a helpful error message: include HTTP status and response body when available
+      let msg = ''
+      try {
+        if (error && typeof error === 'object' && 'status' in error) {
+          msg = `HTTP ${error.status} ${error.statusText || ''}`
+          if (typeof error.text === 'function') {
+            const body = await error.text()
+            msg += ` — ${body}`
+          } else if (error.body) {
+            msg += ` — ${JSON.stringify(error.body)}`
+          }
+        } else {
+          msg = error?.message || (typeof error === 'string' ? error : JSON.stringify(error))
+        }
+      } catch (ex) {
+        msg = `Submission failed — ${ex?.message || 'unknown error'}`
+      }
+      setErrorMessage(msg || 'Submission failed — check console for details.')
       setStatus('error')
-      if (captchaWidgetId.current !== null) window.grecaptcha?.reset(captchaWidgetId.current)
-      else window.grecaptcha?.reset()
       setTimeout(() => setStatus('idle'), 4000)
     }
   }
@@ -300,26 +280,7 @@ export default function Contact() {
               </span>
             </div>
 
-            {/* ── reCAPTCHA Widget ── */}
-            <div className={styles.captchaRow}>
-              {/*
-                The explicit render callback (onCaptchaContainerMount) handles
-                lazy-loading: if grecaptcha isn't ready yet, it waits for the
-                global onload. The site key is PUBLIC — safe here.
-                The SECRET KEY must stay server-side only.
-              */}
-              <div ref={onCaptchaContainerMount} className={styles.captchaWidget} />
-              {captchaError && (
-                <p ref={captchaErrorRef} className={styles.captchaError} role="alert">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="12" />
-                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                  </svg>
-                  Please complete the verification before submitting.
-                </p>
-              )}
-            </div>
+            {/* reCAPTCHA removed */}
 
             {/* ── Submit Button ── */}
             <div className={styles.submitRow}>
@@ -366,6 +327,11 @@ export default function Contact() {
               <p className={styles.submitNote}>
                 Encrypted & confidential · We respond within 24 business hours
               </p>
+              {status === 'error' && (
+                <p className={styles.submitError} role="alert">
+                  {errorMessage || 'Submission failed — see console for details.'}
+                </p>
+              )}
             </div>
           </form>
         </div>

@@ -15,7 +15,7 @@
 .wipeOverlay {
   position: absolute;
   inset: 0;
-  background: white;
+  background: #B0AFAB;
   z-index: 10;
   transform-origin: top;
   will-change: transform;

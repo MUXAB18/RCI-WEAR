@@ -82,7 +82,7 @@ export default function App() {
       <div id="scroll-progress" />
 
       <CustomCursor />
-      <Navbar 
+      <Navbar
         onGetQuote={() => setIsQuoteModalOpen(true)}
         onContact={() => setIsContactModalOpen(true)}
       />
@@ -106,7 +106,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
-      
+
       {/* Floating components */}
       <QuoteModal isOpen={isQuoteModalOpen} onClose={() => setIsQuoteModalOpen(false)} />
       <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />

@@ -11,6 +11,7 @@ export default function ContactModal({ isOpen, onClose }) {
     message: ''
   })
   const [status, setStatus] = useState('idle') // idle, sending, success, error
+  const [errorMessage, setErrorMessage] = useState('')
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -88,6 +89,26 @@ export default function ContactModal({ isOpen, onClose }) {
       }, 3000)
     } catch (error) {
       console.error('Email send failed:', error)
+      let msg = ''
+      try {
+        if (error && typeof error === 'object' && 'status' in error) {
+          msg = `HTTP ${error.status} ${error.statusText || ''}`
+          if (typeof error.text === 'function') {
+            const body = await error.text()
+            msg += ` — ${body}`
+          } else if (error.body) {
+            msg += ` — ${JSON.stringify(error.body)}`
+          }
+        } else {
+          msg = error?.message || (typeof error === 'string' ? error : JSON.stringify(error))
+        }
+      } catch (ex) {
+        msg = `Submission failed — ${ex?.message || 'unknown error'}`
+      }
+      if (msg.includes('403') || msg.includes('API access from non-browser')) {
+        msg = 'Email provider blocked non-browser API calls — enable API access in your EmailJS dashboard (Account → Security) or use a server-side relay.'
+      }
+      setErrorMessage(msg || 'Submission failed — check console for details.')
       setStatus('error')
       setTimeout(() => setStatus('idle'), 3000)
     }
@@ -205,7 +226,7 @@ export default function ContactModal({ isOpen, onClose }) {
                     Sending Message...
                   </>
                 ) : status === 'error' ? (
-                  'Error! Try Again'
+                    'Error! Try Again'
                 ) : (
                   <>
                     Send Message
@@ -215,6 +236,9 @@ export default function ContactModal({ isOpen, onClose }) {
                   </>
                 )}
               </button>
+              {status === 'error' && (
+                <p className={styles.submitError} role="alert">{errorMessage || 'Submission failed — see console for details.'}</p>
+              )}
             </form>
           )}
         </div>

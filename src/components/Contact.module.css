@@ -388,47 +388,7 @@
 }
 .field:focus-within .charCount { opacity: 1; }
 
-/* ══════════════════════════════════════════════
-   RECAPTCHA WIDGET
-   ══════════════════════════════════════════════ */
-.captchaRow {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  /* Thin left accent to mark this as a security step */
-  padding-left: 16px;
-  border-left: 1px solid rgba(184,147,90,0.22);
-}
-
-/* Reset Google's iframe margins so it aligns cleanly */
-.captchaWidget {
-  display: block;
-  transform-origin: left center;
-  /* Scale down slightly on mobile — Google widget is fixed 304px wide */
-}
-.captchaWidget > div { margin: 0 !important; }
-
-/* Validation error message */
-.captchaError {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 500;
-  color: #B02020;
-  letter-spacing: 0.15px;
-  animation: captchaShake 0.4s var(--ease-luxury);
-}
-
-@keyframes captchaShake {
-  0%   { transform: translateX(0); }
-  20%  { transform: translateX(-6px); }
-  40%  { transform: translateX(6px); }
-  60%  { transform: translateX(-4px); }
-  80%  { transform: translateX(4px); }
-  100% { transform: translateX(0); }
-}
+/* reCAPTCHA removed */
 
 /* ══════════════════════════════════════════════
    SUBMIT BUTTON — Luxury CTA
@@ -861,6 +821,12 @@
   .submitBtn   { width: 100%; justify-content: center; }
   .trustGrid   { grid-template-columns: repeat(2, 1fr); }
   .contactGrid { grid-template-columns: 1fr 1fr; }
+.submitError {
+  color: #b02020;
+  font-weight: 600;
+  margin-top: 8px;
+  font-size: 13px;
+}
 }
 
 @media (max-width: 600px) {
@@ -877,7 +843,5 @@
   .trustGrid { grid-template-columns: repeat(2, 1fr); }
   .trustCard { padding: 28px 16px; }
   .socialBtn { padding: 10px 16px; }
-  /* Scale reCAPTCHA widget to fit narrow viewports */
-  .captchaWidget { transform: scale(0.88); }
-  .captchaRow { padding-left: 0; border-left: none; }
+  /* reCAPTCHA removed */
 }
