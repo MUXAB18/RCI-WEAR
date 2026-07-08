@@ -6,7 +6,8 @@
 .portfolio {
   background-color: #B0AFAB !important;
   position: relative;
-  overflow: hidden;
+  /* Allow page-level scrolling only; prevent internal scroll areas */
+  overflow: visible;
 }
 
 .portfolio::before {
@@ -44,6 +45,7 @@
 .filtersWrapper {
   position: relative;
   margin-bottom: 64px;
+  overflow: visible;
 }
 
 /* Gradient fade indicators for mobile scroll */
@@ -178,6 +180,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 3px;
   margin-bottom: 72px;
+  overflow: visible;
 }
 
 /* Editorial alternating aspect ratios */

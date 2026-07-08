@@ -1286,10 +1286,21 @@
     max-width: none;
   }
 
-  /* Hide compact FAB tooltip and notification dot on mobile (user requested) */
-  .fabTooltip,
+  /* Restore compact FAB tooltip and notification dot on mobile */
+  .fabTooltip {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) scale(1) !important;
+    pointer-events: auto !important;
+    min-width: 140px;
+    right: 0;
+  }
   .fabNotificationDot {
-    display: none !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
   .serviceCardsGrid {
     gap: 8px;
