@@ -109,6 +109,10 @@ export default function Hero({ onGetQuote }) {
         // CSS fallback
         const skeleton = document.getElementById('app-skeleton')
         if (skeleton) skeleton.style.animation = 'fadeOut 0.8s ease forwards'
+        
+        if (overlayRef.current) overlayRef.current.style.display = 'none'
+        if (bgRef.current) bgRef.current.style.opacity = '1'
+
         ;[eyebrowRef, line1Ref, line2Ref, taglineRef, descRef, actionsRef, statsRef, scrollRef].forEach((r, i) => {
           if (r.current) {
             r.current.style.animation = `fadeUp 0.8s var(--ease-luxury) ${0.3 + i * 0.15}s both`
