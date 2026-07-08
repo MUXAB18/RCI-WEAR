@@ -127,14 +127,12 @@ export default function Contact() {
       // Reset reCAPTCHA so form can be re-submitted
       if (captchaWidgetId.current !== null) window.grecaptcha?.reset(captchaWidgetId.current)
       else window.grecaptcha?.reset()
-      captchaReady.current = false
       setTimeout(() => setStatus('idle'), 5000)
     } catch (error) {
       console.error('Email send failed:', error)
       setStatus('error')
       if (captchaWidgetId.current !== null) window.grecaptcha?.reset(captchaWidgetId.current)
       else window.grecaptcha?.reset()
-      captchaReady.current = false
       setTimeout(() => setStatus('idle'), 4000)
     }
   }
