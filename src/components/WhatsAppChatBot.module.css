@@ -479,6 +479,7 @@
   pointer-events: auto;
   box-sizing: border-box;
 }
+/* Ensure compact FAB tooltip/dot remain visible — large bubble removed */
 .notificationBubble::after {
   content: '';
   position: absolute;

@@ -14,7 +14,7 @@ const CONFIG = {
   tagline: 'Premium Custom Clothing',
   responseTime: 'Typically replies within minutes',
   workingHours: 'Mon – Sat • 9:00 AM – 7:00 PM PKT',
-  avatar: 'RW',
+  avatar: 'RCI',
   verified: true,
 }
 
@@ -591,24 +591,7 @@ export default function WhatsAppChatBot() {
         </div>
       </div>
 
-      {/* ═══════════════════════════════════════════
-          NOTIFICATION BUBBLE
-          ═══════════════════════════════════════════ */}
-      {showNotification && !isOpen && (
-        <div className={styles.notificationBubble}>
-          <button className={styles.notifClose} onClick={dismissNotification} aria-label="Dismiss notification">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <div className={styles.notifAvatar}>{CONFIG.avatar}</div>
-          <div className={styles.notifContent}>
-            <div className={styles.notifTitle}>👋 Hi there!</div>
-            <div className={styles.notifMessage}>Need help? We're here to assist you!</div>
-            <div className={styles.notifMeta}>{CONFIG.responseTime}</div>
-          </div>
-        </div>
-      )}
+      {/* Large notification bubble removed — keeping the compact FAB tooltip/dot */}
 
       {/* ═══════════════════════════════════════════
           FLOATING ACTION BUTTON
