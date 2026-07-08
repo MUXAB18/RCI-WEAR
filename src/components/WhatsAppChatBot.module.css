@@ -1297,14 +1297,48 @@
     visibility: visible !important;
     transform: translateY(0) scale(1) !important;
     pointer-events: auto !important;
-    min-width: 140px;
-    right: 0;
+    min-width: 120px;
+    max-width: calc(100% - 112px) !important;
+    left: 16px !important;
+    right: auto !important;
+    position: relative !important;
+    padding: 12px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    box-sizing: border-box !important;
   }
   .fabNotificationDot {
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
+  }
+  /* Force title and subtext onto separate lines and ensure wrapping */
+  .fabTooltip .tooltipText {
+    display: block !important;
+    white-space: normal !important;
+    font-size: 14px !important;
+    line-height: 1.05 !important;
+    margin-bottom: 6px !important;
+  }
+  .fabTooltip .tooltipSubtext {
+    display: block !important;
+    white-space: normal !important;
+    font-size: 12px !important;
+    opacity: 0.9 !important;
+  }
+  .fabTooltip .tooltipClose {
+    z-index: 100030 !important;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 6px !important;
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    background: #FFFFFF !important;
+    color: #0B0B0B !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(0,0,0,0.06) !important;
   }
   /* Ensure notification text wraps inside the bubble */
   .notificationBubble .notifTitle,
