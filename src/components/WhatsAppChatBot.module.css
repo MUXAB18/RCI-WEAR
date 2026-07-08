@@ -1278,15 +1278,16 @@
   }
   .notificationBubble {
     display: flex;
-    /* Show notification bubble on mobile — anchor left of FAB so it never overflows */
-    left: auto;
-    right: calc(20px + 60px + 12px); /* 20px page margin + 60px FAB width + 12px gap */
-    width: auto;
-    max-width: calc(100% - 112px); /* leave room for FAB + safe margins */
-    bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+    /* Force the bubble to the left side on very small screens to avoid overflow */
+    left: 16px !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: calc(100% - 96px) !important;
+    bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
     box-sizing: border-box;
-    overflow: hidden;
-    padding-right: 56px; /* space for close button */
+    overflow: visible !important;
+    padding-right: 20px !important;
+    z-index: 100010 !important; /* above FAB */
   }
 
   /* Restore compact FAB tooltip and notification dot on mobile */
@@ -1311,14 +1312,15 @@
     right: 12px !important;
     width: 40px !important;
     height: 40px !important;
-    z-index: 100005 !important;
+    z-index: 100020 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: rgba(255,255,255,0.08) !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
+    background: #FFFFFF !important;
+    color: #0B141A !important;
+    border: 1px solid rgba(0,0,0,0.06) !important;
     border-radius: 10px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.18) !important;
   }
   .serviceCardsGrid {
     gap: 8px;
