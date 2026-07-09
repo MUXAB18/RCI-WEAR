@@ -576,10 +576,10 @@
     display: none;
   }
 
-  /* Keep exactly two cards visible on the screen */
+  /* Keep exactly one card visible on the screen */
   .card {
-    flex: 0 0 calc(50% - 8px);
-    width: calc(50% - 8px);
+    flex: 0 0 100%;
+    width: 100%;
     scroll-snap-align: start;
     min-width: 0;
   }
