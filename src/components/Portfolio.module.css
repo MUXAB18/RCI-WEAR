@@ -488,25 +488,20 @@
 }
 
 @media (max-width: 640px) {
+
+  /* Use page-scrolling on small screens — stack grid into single column */
   .grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
     padding: 0 20px 28px 20px;
     margin: 0;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    max-width: 100vw;
-  }
-
-  .grid::-webkit-scrollbar {
-    display: none;
+    width: 100%;
+    max-width: 100%;
   }
 
   .card {
-    flex: 0 0 80%;
-    scroll-snap-align: start;
+    width: 100%;
   }
 
   .card .imageWrap {
