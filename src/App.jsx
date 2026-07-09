@@ -58,23 +58,40 @@ export default function App() {
     }
   }, [])
 
-  /* ── Global Scroll Reveal ── */
+  /* ── Global Scroll Reveal (Robust for lazy-loaded content) ── */
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('visible')
+        if (e.isIntersecting) {
+          e.target.classList.add('visible')
+          observer.unobserve(e.target) // Stop observing once revealed
+        }
       }),
       { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
     )
 
-    const observe = () => {
+    const observeNodes = () => {
       document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-        observer.observe(el)
+        if (!el.classList.contains('visible')) {
+          observer.observe(el)
+        }
       })
     }
 
-    const t = setTimeout(observe, 200)
-    return () => { clearTimeout(t); observer.disconnect() }
+    // Initial observe
+    const t = setTimeout(observeNodes, 200)
+
+    // Watch for new lazy-loaded elements being added to the DOM
+    const mutationObserver = new MutationObserver(() => {
+      observeNodes()
+    })
+    mutationObserver.observe(document.body, { childList: true, subtree: true })
+
+    return () => { 
+      clearTimeout(t)
+      observer.disconnect()
+      mutationObserver.disconnect()
+    }
   }, [])
 
   /* ── Scroll Progress Bar ── */
