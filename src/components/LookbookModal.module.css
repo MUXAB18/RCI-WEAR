@@ -7,8 +7,8 @@
   inset: 0;
   z-index: 9999;
   background: rgba(6, 6, 6, 0.4);
-  backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,8 +158,8 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: var(--text-primary);
-  color: var(--obsidian);
+  background: var(--near-black);
+  color: var(--white);
   border: none;
   padding: 16px 32px;
   font-family: var(--font-sans);
@@ -174,7 +174,8 @@
 }
 
 .inquireBtn:hover {
-  background: white;
+  background: #111111;
+  color: #FFFFFF;
   transform: translateY(-2px);
 }
 
@@ -217,7 +218,6 @@
     grid-template-rows: auto;
     max-height: 85vh;
     max-height: 85dvh;
-    min-height: auto;
     border-radius: 24px 24px 0 0;
     overflow: hidden;
     display: flex;
@@ -247,7 +247,6 @@
     background: var(--obsidian);
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
     flex: 1 1 auto;
     max-height: calc(85vh - 300px);
     max-height: calc(85dvh - 300px);
@@ -278,8 +277,8 @@
     top: 16px;
     right: 16px;
     background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border-color: rgba(255, 255, 255, 0.3);
     z-index: 10;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
