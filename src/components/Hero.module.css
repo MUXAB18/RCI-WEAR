@@ -104,10 +104,25 @@
   z-index: 5;
   padding: 0 clamp(20px, 5vw, 120px);
   margin-top: 100px;
-  max-width: 1000px;
   width: 100%;
   box-sizing: border-box;
   overflow: visible;
+  /* Two-column layout on desktop: text left, logo right */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  max-width: 1400px;
+}
+
+/* Text column — the left side of the two-column desktop layout */
+.contentText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* ── Eyebrow ── */
@@ -233,7 +248,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 16px;
-  margin-bottom: 80px;
+  margin-bottom: 48px; /* reduced from 80px to cut excess space */
   width: 100%;
   max-width: 520px;
   opacity: 0;
@@ -332,13 +347,16 @@
   white-space: nowrap;
 }
 
-/* ── Floating Logo ── */
+/* ── Floating Logo (desktop sidebar) ── */
 .logoFloat {
-  position: absolute;
-  right: clamp(80px, 9vw, 160px);
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(200px, 30vw, 380px);
+  max-width: 380px;
   z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: floatY 7s ease-in-out infinite;
 }
 
@@ -359,8 +377,8 @@
 }
 
 .logoInner {
-  width: clamp(120px, 13vw, 180px);
-  height: clamp(120px, 13vw, 180px);
+  width: clamp(200px, 30vw, 380px);
+  height: clamp(200px, 30vw, 380px);
   border-radius: 50%;
   border: 1px solid rgba(11, 11, 11, 0.12);
   background: rgba(245, 245, 245, 0.95);
@@ -368,7 +386,7 @@
   position: relative;
   box-shadow:
     0 0 0 1px rgba(11, 11, 11, 0.06),
-    0 24px 64px rgba(11, 11, 11, 0.12),
+    0 24px 64px rgba(11, 11, 11, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
@@ -508,6 +526,7 @@
 
 /* ── Responsive ── */
 @media (max-width: 1200px) {
+  /* Hide logo on tablet/mobile — stack content vertically again */
   .logoFloat {
     display: none;
   }
@@ -520,11 +539,17 @@
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 100px;
     text-align: center;
-    display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+  }
+
+  /* Reset text column to fill full width centered */
+  .contentText {
+    width: 100%;
+    align-items: center;
   }
 
   .title {
@@ -614,6 +639,11 @@
     width: 100%;
     box-sizing: border-box;
     max-width: 100vw;
+  }
+
+  .contentText {
+    width: 100%;
+    align-items: center;
   }
 
   .title {

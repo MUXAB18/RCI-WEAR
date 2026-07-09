@@ -153,65 +153,84 @@ export default function Hero({ onGetQuote }) {
         ))}
       </div>
 
-      {/* Content */}
+      {/* Content — flex row: text left | logo right */}
       <div className={styles.content}>
+        {/* Left text column */}
+        <div className={styles.contentText}>
 
-        {/* Main title */}
-        <h1 className={styles.title}>
-          <span ref={line1Ref} className={styles.titleLine}>
-            Rasheed Clothing
-          </span>
-          <span ref={line2Ref} className={`${styles.titleLine} ${styles.titleLineGold}`}>
-            International
-          </span>
-        </h1>
+          {/* Main title */}
+          <h1 className={styles.title}>
+            <span ref={line1Ref} className={styles.titleLine}>
+              Rasheed Clothing
+            </span>
+            <span ref={line2Ref} className={`${styles.titleLine} ${styles.titleLineGold}`}>
+              International
+            </span>
+          </h1>
 
-        {/* Eyebrow / Est line */}
-        <div ref={eyebrowRef} className={styles.eyebrow}>
-          <span className={styles.eyebrowLine} />
-          <span>Est. Premium Collections · Since 2017</span>
+          {/* Eyebrow / Est line */}
+          <div ref={eyebrowRef} className={styles.eyebrow}>
+            <span className={styles.eyebrowLine} />
+            <span>Est. Premium Collections · Since 2017</span>
+          </div>
+
+          {/* Tagline */}
+          <div ref={taglineRef} className={styles.tagline}>
+            <span className={styles.taglineBar} />
+            <p className={styles.taglineText}>Where Imagination Meets Fabrication</p>
+          </div>
+
+          {/* Description */}
+          <p ref={descRef} className={styles.description}>
+            Crafting excellence in every thread. From timeless traditional wear
+            to contemporary designs — engineered for those who demand the finest.
+          </p>
+
+          {/* CTA Buttons */}
+          <div ref={actionsRef} className={styles.actions}>
+            <MagneticButton
+              className={styles.ctaPill}
+              onClick={() => scrollTo('#portfolio')}
+            >
+              Explore Collections
+            </MagneticButton>
+            <MagneticButton
+              className={`${styles.ctaPill} ${styles.ctaOutline}`}
+              onClick={() => scrollTo('#contact')}
+            >
+              Get in touch
+            </MagneticButton>
+          </div>
+
+          {/* Stats */}
+          <div ref={statsRef} className={styles.stats}>
+            {[
+              { num: '10+', label: 'Years Experience' },
+              { num: '500+', label: 'Clients Worldwide' },
+              { num: '100%', label: 'Premium Quality' },
+            ].map((s, i) => (
+              <div key={i} className={styles.stat}>
+                <span className={styles.statNum}>{s.num}</span>
+                <span className={styles.statLabel}>{s.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Tagline */}
-        <div ref={taglineRef} className={styles.tagline}>
-          <span className={styles.taglineBar} />
-          <p className={styles.taglineText}>Where Imagination Meets Fabrication</p>
-        </div>
-
-        {/* Description */}
-        <p ref={descRef} className={styles.description}>
-          Crafting excellence in every thread. From timeless traditional wear
-          to contemporary designs — engineered for those who demand the finest.
-        </p>
-
-        {/* CTA Buttons */}
-        <div ref={actionsRef} className={styles.actions}>
-          <MagneticButton
-            className={styles.ctaPill}
-            onClick={() => scrollTo('#portfolio')}
-          >
-            Explore Collections
-          </MagneticButton>
-          <MagneticButton
-            className={`${styles.ctaPill} ${styles.ctaOutline}`}
-            onClick={() => scrollTo('#contact')}
-          >
-            Get in touch
-          </MagneticButton>
-        </div>
-
-        {/* Stats */}
-        <div ref={statsRef} className={styles.stats}>
-          {[
-            { num: '10+', label: 'Years Experience' },
-            { num: '500+', label: 'Clients Worldwide' },
-            { num: '100%', label: 'Premium Quality' },
-          ].map((s, i) => (
-            <div key={i} className={styles.stat}>
-              <span className={styles.statNum}>{s.num}</span>
-              <span className={styles.statLabel}>{s.label}</span>
-            </div>
-          ))}
+        {/* Right logo column — desktop only (>1200px) */}
+        <div className={styles.logoFloat} aria-hidden="true">
+          <div className={styles.logoRing} />
+          <div className={styles.logoRing2} />
+          <div className={styles.logoInner}>
+            <img
+              src="/logo.webp"
+              alt="Rasheed Clothing International"
+              className={styles.logoImg}
+              width={380}
+              height={380}
+              loading="eager"
+            />
+          </div>
         </div>
       </div>
 

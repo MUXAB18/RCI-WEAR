@@ -64,12 +64,12 @@
 
 .filtersWrapper::before {
   left: 0;
-  background: linear-gradient(90deg, var(--acid-grey) 0%, transparent 100%);
+  background: linear-gradient(90deg, #B0AFAB 0%, transparent 100%);
 }
 
 .filtersWrapper::after {
   right: 0;
-  background: linear-gradient(90deg, transparent 0%, var(--acid-grey) 100%);
+  background: linear-gradient(90deg, transparent 0%, #B0AFAB 100%);
 }
 
 .filters {
@@ -178,70 +178,87 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
+  gap: 28px;
   margin-bottom: 72px;
   overflow: visible;
-}
-
-/* Editorial alternating aspect ratios */
-.card:nth-child(3n+2) .imageWrap {
-  aspect-ratio: 3/4;
-}
-
-.card:nth-child(3n+3) .imageWrap {
-  aspect-ratio: 2/3;
 }
 
 /* ── Card wrapper ── */
 .card {
   position: relative;
+  z-index: 1; /* establish stacking context for each cell */
+}
+
+/* Elevate the hovered card above its siblings */
+.card:has(.cardInner:hover) {
+  z-index: 2;
 }
 
 /* ── Card inner ── */
 .cardInner {
   position: relative;
-  background: var(--grey-mist);
+  background: transparent;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(10, 10, 10, 0.18);
+  border: 1.5px solid rgba(11, 11, 11, 0.75); /* visible black border to separate cards */
   overflow: hidden;
-  cursor: none;
+  cursor: pointer;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   transition:
     box-shadow 0.4s cubic-bezier(0.33, 1, 0.68, 1),
-    border-color 0.4s ease,
-    transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+    transform 0.4s cubic-bezier(0.33, 1, 0.68, 1),
+    border-color 0.3s ease;
   will-change: transform;
 }
 
-.cardInner:hover {
-  transform: scale(1.04) translateY(-6px);
-  box-shadow:
-    0 28px 72px rgba(10, 10, 10, 0.22),
-    0 8px 24px rgba(10, 10, 10, 0.12);
-  border-color: rgba(10, 10, 10, 0.35);
-  z-index: 10;
+/* Desktop-only hover — prevents stuck state on touch devices */
+@media (hover: hover) {
+  .cardInner:hover {
+    transform: translateY(-4px);
+    border-color: rgba(11, 11, 11, 1);
+    box-shadow:
+      0 24px 56px rgba(10, 10, 10, 0.18),
+      0 6px 18px rgba(10, 10, 10, 0.10);
+  }
 }
 
 /* ── Image wrapper ── */
 .imageWrap {
-  position: relative;
-  aspect-ratio: 4/5;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  background: var(--grey-mist);
+  background: linear-gradient(180deg, #f2f0ed 0%, #e3e0db 100%);
+  display: block;
+  /* Ensure no padding so image fills edge-to-edge */
+  padding: 0;
+}
+
+/* OptimizedImage renders a <picture> wrapper — force it to fill the container */
+.imageWrap :global(.optimized-image) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
 }
 
 .cardImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: center top;
   display: block;
+  padding: 0;
+  margin: 0;
   transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1), filter 0.5s ease;
   filter: brightness(0.97) contrast(1.02);
 }
 
-.cardInner:hover .cardImage {
-  filter: brightness(1.03) contrast(1.03);
-  transform: scale(1.06);
+@media (hover: hover) {
+  .cardInner:hover .cardImage {
+    filter: brightness(1.03) contrast(1.03);
+    transform: scale(1.05);
+  }
 }
 
 /* ── Badge ── */
@@ -266,13 +283,9 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top,
-      rgba(11, 11, 11, 0.92) 0%,
-      rgba(11, 11, 11, 0.68) 32%,
-      rgba(11, 11, 11, 0.18) 65%,
-      transparent 100%);
-  backdrop-filter: blur(8px);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: flex-end;
   opacity: 0;
@@ -283,13 +296,15 @@
   z-index: 2;
 }
 
-.cardInner:hover .overlay {
-  opacity: 1;
-  transform: translateY(0);
+@media (hover: hover) {
+  .cardInner:hover .overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .overlayContent {
-  padding: 28px 22px;
+  padding: 28px 22px 30px;
   width: 100%;
 }
 
@@ -354,8 +369,13 @@
 
 /* ── Card footer ── */
 .cardFooter {
-  padding: 16px 20px;
-  background: transparent;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 12px 18px 14px;
+  background: linear-gradient(to top, rgba(176, 175, 171, 0.98) 0%, rgba(176, 175, 171, 0.98) 100%);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -363,8 +383,16 @@
   transition: background 0.22s ease;
 }
 
-.cardInner:hover .cardFooter {
-  background: rgba(255, 255, 255, 0.4);
+@media (hover: hover) {
+  .cardInner:hover .cardFooter {
+    background: rgba(160, 159, 155, 0.98);
+  }
+
+  .cardInner:hover .cardFooter {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+  }
 }
 
 .cardInfo {
@@ -379,22 +407,24 @@
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--deep-stone);
-  opacity: 0.75;
+  color: rgba(11, 11, 11, 0.72);
+  opacity: 1;
   margin-bottom: 4px;
   transition: opacity 0.22s ease;
 }
 
-.cardInner:hover .cardCat {
-  opacity: 1;
-  color: var(--ink-black);
+@media (hover: hover) {
+  .cardInner:hover .cardCat {
+    opacity: 1;
+    color: rgba(11, 11, 11, 0.82);
+  }
 }
 
 .cardTitle {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 500;
-  color: var(--ink-black);
+  color: #000000;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -402,8 +432,10 @@
   letter-spacing: 0.2px;
 }
 
-.cardInner:hover .cardTitle {
-  color: var(--ink-black);
+@media (hover: hover) {
+  .cardInner:hover .cardTitle {
+    color: #000000;
+  }
 }
 
 /* Arrow circle */
@@ -413,7 +445,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(10, 10, 10, 0.18);
+  border: 1px solid rgba(11, 11, 11, 0.18);
   border-radius: 50%;
   flex-shrink: 0;
   transition:
@@ -422,19 +454,21 @@
     transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.cardInner:hover .cardArrowWrap {
-  border-color: rgba(10, 10, 10, 0.35);
-  background: rgba(10, 10, 10, 0.06);
-  transform: rotate(45deg);
+@media (hover: hover) {
+  .cardInner:hover .cardArrowWrap {
+    border-color: rgba(11, 11, 11, 0.34);
+    background: rgba(11, 11, 11, 0.06);
+    transform: rotate(45deg);
+  }
 }
 
 .cardArrow {
-  color: var(--ink-black);
+  color: #000000;
   transition: color 0.22s ease;
 }
 
 .cardInner:hover .cardArrow {
-  color: var(--ink-black);
+  color: #000000;
 }
 
 /* ── Note / Disclaimer ── */
@@ -476,15 +510,7 @@
 @media (max-width: 1100px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .card:nth-child(3n+2) .imageWrap,
-  .card:nth-child(3n+3) .imageWrap {
-    aspect-ratio: 4/5;
-  }
-
-  .card:nth-child(odd) .imageWrap {
-    aspect-ratio: 3/4;
+    gap: 20px;
   }
 }
 
@@ -505,31 +531,28 @@
     width: 100%;
   }
 
-  .card .imageWrap {
-    aspect-ratio: 3/4 !important;
-  }
-
-  /* Ensure images fill without visible gaps on mobile by anchoring crop to bottom */
-  .cardImage {
-    object-position: center bottom !important;
-  }
-
-  /* No scale transform on mobile — prevents layout issues */
   .cardInner {
     transform: none !important;
+    box-shadow: none !important;
   }
 
-  .cardInner:hover {
-    transform: none !important;
-    box-shadow: 0 8px 24px rgba(11, 11, 11, 0.12);
+  .cardInner:active .overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .cardInner:active .cardImage {
+    transform: scale(1.02);
+  }
+
+  .cardFooter {
+    padding: 10px 14px 12px;
   }
 
   .filters {
     overflow-x: auto;
     flex-wrap: nowrap;
     padding-bottom: 10px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
     max-width: 100vw;
   }
 
@@ -548,11 +571,5 @@
   .filtersWrapper::before,
   .filtersWrapper::after {
     opacity: 0.8;
-  }
-}
-
-@media (max-width: 480px) {
-  .card {
-    flex: 0 0 88%;
   }
 }
