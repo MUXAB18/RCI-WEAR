@@ -1,18 +1,16 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
 import './App.css'
 
-// ── Above-fold: eager imports (always needed immediately) ──
+// ── Above-fold + critical navigation targets: eager imports ──
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
 import Collections from './components/Collections'
+import Contact from './components/Contact'   // must be eager: navbar links to #contact
 import CustomCursor from './components/CustomCursor'
 
-// ── Below-fold: lazy imports (loaded only when needed) ──
-// These are split into async chunks by Vite's manualChunks config.
-// On mobile (Slow 4G), this saves ~200-400ms of JS parse time.
+// ── Below-fold: lazy imports (loaded only when idle) ──
 const Portfolio     = lazy(() => import('./components/Portfolio'))
-const Contact       = lazy(() => import('./components/Contact'))
 const Footer        = lazy(() => import('./components/Footer'))
 const QuoteModal    = lazy(() => import('./components/QuoteModal'))
 const ContactModal  = lazy(() => import('./components/ContactModal'))
@@ -132,13 +130,19 @@ export default function App() {
         <About />
         <Collections />
 
-        {/* ── Below fold: lazy, loaded after LCP paints ── */}
+        {/* ── Below fold: lazy ── */}
         {loadBelow && (
           <Suspense fallback={<SilentFallback />}>
             <Portfolio />
-            <Contact />
           </Suspense>
         )}
+
+        {/*
+          Contact is ALWAYS rendered (not behind loadBelow gate).
+          Reason: the navbar has a link to #contact that must always work.
+          The component itself is eagerly imported above.
+        */}
+        <Contact />
       </main>
 
       {loadBelow && (

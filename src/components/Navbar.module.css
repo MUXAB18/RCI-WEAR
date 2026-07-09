@@ -8,19 +8,30 @@
   right: 0;
   z-index: 1000;
   padding: 20px 0;
-  background: transparent;
+  /*
+    Was: background: transparent — worked because the full-screen skeleton
+    was covering it. Skeleton removed for LCP fix, so we now need a
+    visible initial background so the navbar is always legible.
+  */
+  background: rgba(176, 175, 171, 0.82);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
   will-change: transform;
-  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    padding 0.3s ease;
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
   -webkit-backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
 }
 
-/* Scrolled: acid grey glassmorphism */
+/* Scrolled: stronger glassmorphism */
 .nav.scrolled {
   padding: 12px 0;
-  background: rgba(168, 168, 164, 0.88);
+  background: rgba(168, 168, 164, 0.95);
   backdrop-filter: blur(24px) saturate(140%);
   -webkit-backdrop-filter: blur(24px) saturate(140%);
   border-bottom: 1px solid rgba(10, 10, 10, 0.12);
