@@ -233,6 +233,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
   transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1), filter 0.5s ease;
   filter: brightness(0.97) contrast(1.02);
@@ -506,6 +507,11 @@
 
   .card .imageWrap {
     aspect-ratio: 3/4 !important;
+  }
+
+  /* Ensure images fill without visible gaps on mobile by anchoring crop to bottom */
+  .cardImage {
+    object-position: center bottom !important;
   }
 
   /* No scale transform on mobile — prevents layout issues */
