@@ -226,12 +226,32 @@
     </style>
   </head>
   <body>
-    <!-- Thin progress bar at top (non-blocking — Lighthouse can still measure LCP) -->
+    <!-- Thin progress bar at top (non-blocking) -->
     <div id="page-loader" aria-hidden="true">
       <div id="page-loader-bar"></div>
     </div>
 
-    <div id="root"></div>
+    <div id="root">
+      <!-- 
+        STATIC HERO SKELETON:
+        This paints instantly (~0.5s) while React JS is downloading (which takes ~3.9s on Slow 4G).
+        This fixes the massive 3.9s FCP delay. When React mounts, it replaces this div.
+      -->
+      <section id="home" style="position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; background: #B0AFAB; padding: 24px;">
+        <div style="max-width: 1360px; margin: 0 auto; width: 100%; position: relative; z-index: 10;">
+          <h1 class="hero-title-lcp" style="margin-bottom: 24px;">
+            <span style="display: block;">Rasheed Clothing</span>
+            <span style="display: block;">International</span>
+          </h1>
+          <p style="font-family: var(--font-sans); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; margin-bottom: 24px;">
+            Est. Premium Collections · Since 2017
+          </p>
+          <p style="font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; margin-bottom: 16px;">
+            Where Imagination Meets Fabrication
+          </p>
+        </div>
+      </section>
+    </div>
 
     <script type="module" src="/src/main.jsx"></script>
 
