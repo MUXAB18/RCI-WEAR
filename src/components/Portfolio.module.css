@@ -506,6 +506,11 @@
   flex-shrink: 0;
 }
 
+/* ── Mobile Navigation Controls ── */
+.mobileNav {
+  display: none;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1100px) {
   .grid {
@@ -515,20 +520,77 @@
 }
 
 @media (max-width: 640px) {
+  /* Show navigation arrows on mobile */
+  .mobileNav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 0 20px;
+  }
 
-  /* Use page-scrolling on small screens — stack grid into single column */
+  .navBtn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(11, 11, 11, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--near-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.22s var(--ease-luxury);
+  }
+
+  .navBtn:active {
+    background: var(--near-black);
+    color: var(--white);
+    border-color: var(--near-black);
+  }
+
+  .navBtnDisabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Make grid horizontal scrolling from left to right */
   .grid {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     gap: 16px;
     padding: 0 20px 28px 20px;
     margin: 0;
     width: 100%;
     max-width: 100%;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Keep exactly two cards visible on the screen */
   .card {
-    width: 100%;
+    flex: 0 0 calc(50% - 8px);
+    width: calc(50% - 8px);
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  /* Aspect ratio and rendering fixes for images on mobile */
+  .card .imageWrap {
+    aspect-ratio: 3/4 !important;
+  }
+
+  .cardImage {
+    object-position: center center !important;
   }
 
   .cardInner {
@@ -536,17 +598,13 @@
     box-shadow: none !important;
   }
 
-  .cardInner:active .overlay {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .cardInner:active .cardImage {
-    transform: scale(1.02);
+  /* Disable overlay completely on mobile to prevent blocking taps */
+  .overlay {
+    display: none !important;
   }
 
   .cardFooter {
-    padding: 10px 14px 12px;
+    padding: 12px 14px;
   }
 
   .filters {

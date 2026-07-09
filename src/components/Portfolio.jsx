@@ -150,18 +150,10 @@ export default function Portfolio() {
   const [active, setActive] = useState('All')
   const [selectedItem, setSelectedItem] = useState(null)
   const sectionRef = useRef(null)
+  const gridRef = useRef(null)
 
-  // Scroll reveal observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
-      { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
-    )
-    const delay = setTimeout(() => {
-      sectionRef.current?.querySelectorAll('.reveal')?.forEach(el => observer.observe(el))
-    }, 100)
-    return () => { clearTimeout(delay); observer.disconnect() }
-  }, [active])
+  const [showLeftArrow, setShowLeftArrow] = useState(false)
+  const [showRightArrow, setShowRightArrow] = useState(true)
 
   let filtered = []
   if (active === 'All') {
@@ -171,6 +163,48 @@ export default function Portfolio() {
     })
   } else {
     filtered = items.filter(i => i.cat === active)
+  }
+
+  const handleScroll = () => {
+    if (gridRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = gridRef.current
+      setShowLeftArrow(scrollLeft > 10)
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10)
+    }
+  }
+
+  // Scroll reveal observer & initial scroll checks
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }),
+      { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
+    )
+    const delay = setTimeout(() => {
+      sectionRef.current?.querySelectorAll('.reveal')?.forEach(el => observer.observe(el))
+    }, 100)
+
+    const grid = gridRef.current
+    if (grid) {
+      grid.addEventListener('scroll', handleScroll)
+      // Check initial scroll bounds
+      setTimeout(handleScroll, 200)
+    }
+
+    return () => {
+      clearTimeout(delay)
+      observer.disconnect()
+      if (grid) {
+        grid.removeEventListener('scroll', handleScroll)
+      }
+    }
+  }, [active, filtered])
+
+  const handleArrowScroll = (direction) => {
+    if (gridRef.current) {
+      const cardWidth = gridRef.current.querySelector(`.${styles.card}`)?.offsetWidth || 200
+      const scrollAmount = direction === 'left' ? -cardWidth : cardWidth
+      gridRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+    }
   }
 
   return (
@@ -216,8 +250,32 @@ export default function Portfolio() {
           </div>
         </div>
 
+        {/* Mobile Navigation Arrows (Visible only on mobile/touch screens) */}
+        <div className={styles.mobileNav}>
+          <button 
+            className={[styles.navBtn, !showLeftArrow ? styles.navBtnDisabled : ''].join(' ')}
+            onClick={() => handleArrowScroll('left')}
+            disabled={!showLeftArrow}
+            aria-label="Scroll left"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <button 
+            className={[styles.navBtn, !showRightArrow ? styles.navBtnDisabled : ''].join(' ')}
+            onClick={() => handleArrowScroll('right')}
+            disabled={!showRightArrow}
+            aria-label="Scroll right"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
         {/* Grid */}
-        <div className={styles.grid}>
+        <div className={styles.grid} ref={gridRef}>
           {filtered.map((item, i) => (
             <ProductCard key={item.id} item={item} index={i} onOpen={setSelectedItem} />
           ))}
