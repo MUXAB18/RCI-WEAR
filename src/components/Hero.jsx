@@ -2,16 +2,7 @@ import { useEffect, useRef, lazy, Suspense } from 'react'
 import styles from './Hero.module.css'
 import MagneticButton from './MagneticButton'
 
-/*
- * HeroCanvas (Three.js) is ONLY loaded on desktop (pointer:fine devices).
- * On mobile this import never executes, keeping Three.js out of the bundle.
- */
-const isDesktop = typeof window !== 'undefined' &&
-  window.matchMedia('(pointer: fine) and (min-width: 1024px)').matches
 
-const HeroCanvas = isDesktop
-  ? lazy(() => import('./HeroCanvas'))
-  : null
 
 export default function Hero({ onGetQuote }) {
   const heroRef     = useRef(null)
@@ -134,12 +125,7 @@ export default function Hero({ onGetQuote }) {
           </svg>
         </div>
         <div className={styles.bgTint} />
-        {/* 3D canvas — desktop only, loaded lazily */}
-        {HeroCanvas && (
-          <Suspense fallback={null}>
-            <HeroCanvas />
-          </Suspense>
-        )}
+
       </div>
 
       {/* Cinematic grid lines */}
@@ -217,6 +203,24 @@ export default function Hero({ onGetQuote }) {
           </div>
         </div>
 
+        {/*
+          Logo column — desktop only.
+        */}
+        <div className={styles.logoFloat} aria-hidden="true">
+          <div className={styles.logoRing} />
+          <div className={styles.logoRing2} />
+          <div className={styles.logoInner}>
+            <img
+              src="/logo.webp"
+              alt="Rasheed Clothing International"
+              className={styles.logoImg}
+              width={380}
+              height={380}
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
