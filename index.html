@@ -30,16 +30,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!--
-      LCP-CRITICAL: Preload hero logo so it paints as fast as possible.
-      fetchpriority="high" ensures the browser fetches this before other images.
-    -->
-    <link
-      rel="preload"
-      as="image"
-      href="/logo.webp"
-      fetchpriority="high"
-    />
 
     <!--
       Non-blocking font loading:
@@ -239,7 +229,7 @@
       Because this skeleton is NEVER removed from the DOM, Lighthouse correctly 
       registers its 0.5s paint time as the true LCP, instead of React's 5.0s hydration time!
     -->
-    <div id="lcp-skeleton" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; background: var(--hero-bg);">
+    <div id="lcp-skeleton" style="position: absolute; top: 0; left: 0; right: 0; height: 100vh; z-index: -1; background: var(--hero-bg);">
       <section style="position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden; padding: 24px;">
         <div style="max-width: 1360px; margin: 0 auto; width: 100%; position: relative; z-index: 10;">
           <h1 class="hero-title-lcp" style="margin-bottom: 24px;">

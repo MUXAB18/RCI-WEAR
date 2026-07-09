@@ -217,27 +217,6 @@ export default function Hero({ onGetQuote }) {
           </div>
         </div>
 
-        {/*
-          Logo column — desktop only.
-          fetchpriority="high" so this is the LCP image candidate
-          that loads before anything else.
-        */}
-        <div className={styles.logoFloat} aria-hidden="true">
-          <div className={styles.logoRing} />
-          <div className={styles.logoRing2} />
-          <div className={styles.logoInner}>
-            <img
-              src="/logo.webp"
-              alt="Rasheed Clothing International"
-              className={styles.logoImg}
-              width={380}
-              height={380}
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-            />
-          </div>
-        </div>
       </div>
 
       {/* Scroll indicator */}
