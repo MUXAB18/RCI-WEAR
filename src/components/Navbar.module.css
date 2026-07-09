@@ -149,10 +149,10 @@
   position: relative;
   background: none;
   border: none;
-  color: var(--grey-500);
+  color: #000000; /* Rich black text for maximum visibility */
   font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 500;
+  font-size: 12px; /* Increased font size */
+  font-weight: 600; /* Bolder look */
   letter-spacing: 2px;
   text-transform: uppercase;
   padding: 10px 20px;
@@ -168,14 +168,14 @@
   color: var(--near-black);
 }
 
-/* Active & hover underline — bronze accent */
+/* Active & hover underline — black accent */
 .navIndicator {
   position: absolute;
-  bottom: 4px;
+  bottom: 0px;
   left: 20px;
   right: 20px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--bronze), transparent);
+  height: 2px;
+  background: #000000; /* Solid black color */
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.35s var(--ease-luxury);
@@ -402,7 +402,12 @@
 
   .navLink {
     padding: 10px 14px;
-    font-size: 9px;
+    font-size: 10px;
+  }
+
+  .navIndicator {
+    left: 14px;
+    right: 14px;
   }
 }
 

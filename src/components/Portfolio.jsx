@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import styles from './Portfolio.module.css'
 import LookbookModal from './LookbookModal'
 import OptimizedImage from './OptimizedImage'
@@ -155,15 +155,18 @@ export default function Portfolio() {
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(true)
 
-  let filtered = []
-  if (active === 'All') {
-    filters.filter(f => f !== 'All').forEach(cat => {
-      const catItems = items.filter(i => i.cat === cat)
-      filtered = [...filtered, ...catItems.slice(0, cat === 'Gymwear' ? 1 : 3)]
-    })
-  } else {
-    filtered = items.filter(i => i.cat === active)
-  }
+  const filtered = useMemo(() => {
+    let list = []
+    if (active === 'All') {
+      filters.filter(f => f !== 'All').forEach(cat => {
+        const catItems = items.filter(i => i.cat === cat)
+        list = [...list, ...catItems.slice(0, cat === 'Gymwear' ? 1 : 3)]
+      })
+    } else {
+      list = items.filter(i => i.cat === active)
+    }
+    return list
+  }, [active])
 
   const handleScroll = () => {
     if (gridRef.current) {

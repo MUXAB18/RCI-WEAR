@@ -31,23 +31,23 @@ export default function Navbar({ onGetQuote, onContact }) {
       .filter((section) => section.el)
 
     let lastScrollY = window.scrollY
-    
+
     const updateNav = () => {
       const currentScrollY = window.scrollY
-      
+
       // Update scrolled state
       if ((currentScrollY > 40) !== scrolled) {
         setScrolled(currentScrollY > 40)
       }
-      
+
       // Update hidden state
       const shouldHide = currentScrollY > lastY.current && currentScrollY > 300
       if (shouldHide !== hidden) {
         setHidden(shouldHide)
       }
-      
+
       lastY.current = currentScrollY
-      
+
       // Update active section (less frequently)
       if (Math.abs(currentScrollY - lastScrollY) > 50) {
         let cur = sectionsRef.current[0]?.label || 'Home'
@@ -57,7 +57,7 @@ export default function Navbar({ onGetQuote, onContact }) {
         if (cur !== active) setActive(cur)
         lastScrollY = currentScrollY
       }
-      
+
       tickingRef.current = false
     }
 
@@ -66,7 +66,7 @@ export default function Navbar({ onGetQuote, onContact }) {
       const now = Date.now()
       if (now - scrollThrottle.current < 16) return // ~60fps
       scrollThrottle.current = now
-      
+
       if (!tickingRef.current) {
         window.requestAnimationFrame(updateNav)
         tickingRef.current = true
@@ -74,7 +74,7 @@ export default function Navbar({ onGetQuote, onContact }) {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
       tickingRef.current = false
@@ -97,7 +97,7 @@ export default function Navbar({ onGetQuote, onContact }) {
   const handleNav = (href, label) => {
     setMenuOpen(false)
     setActive(label)
-    
+
     // For Contact, scroll directly to the form
     if (label === 'Contact') {
       const form = document.querySelector('#quote-form')
