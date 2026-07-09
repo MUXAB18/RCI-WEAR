@@ -5,19 +5,12 @@
     <link rel="icon" type="image/jpeg" href="/logo.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <meta name="description" content="Rasheed Clothing International – Where Imagination Meets Fabrication. Premium custom clothing, bulk orders & bridal collections." />
-    <meta name="theme-color" content="#060606" />
+    <meta name="theme-color" content="#B0AFAB" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    
-    <!-- Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-    <link rel="dns-prefetch" href="https://www.google.com" />
-    <link rel="dns-prefetch" href="https://www.gstatic.com" />
-    
+
     <title>Rasheed Clothing International | Premium Custom Clothing</title>
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://rasheedclothingintl.me/" />
@@ -32,19 +25,71 @@
     <meta name="twitter:title" content="Rasheed Clothing International | Premium Custom Clothing" />
     <meta name="twitter:description" content="Where Imagination Meets Fabrication. Premium custom clothing, bulk orders & bridal collections." />
     <meta name="twitter:image" content="https://rasheedclothingintl.me/logo.jpg" />
-    
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
-    
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JZHHWJ6J4G"></script>
+
+    <!-- Preconnect only for fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!--
+      LCP-CRITICAL: Preload hero logo so it paints as fast as possible.
+      fetchpriority="high" ensures the browser fetches this before other images.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      href="/logo.webp"
+      fetchpriority="high"
+    />
+
+    <!--
+      Non-blocking font loading:
+      media="print" + onload trick loads fonts after page paint.
+      The <noscript> fallback handles JS-disabled browsers.
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
+      />
+    </noscript>
+
+    <!-- Google Analytics — defer so it never blocks render -->
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-JZHHWJ6J4G"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-JZHHWJ6J4G');
     </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4371702225315385"
-     crossorigin="anonymous"></script>
+
+    <!-- Google AdSense — load after page is interactive to avoid blocking -->
+    <script>
+      // Defer AdSense until after first user interaction or 3s, whichever comes first
+      (function() {
+        var loaded = false;
+        function loadAds() {
+          if (loaded) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4371702225315385';
+          s.crossOrigin = 'anonymous';
+          document.head.appendChild(s);
+        }
+        // Load on first interaction
+        ['touchstart', 'click', 'scroll', 'keydown'].forEach(function(e) {
+          document.addEventListener(e, loadAds, { once: true, passive: true });
+        });
+        // Or load after 3 seconds regardless
+        setTimeout(loadAds, 3000);
+      })();
+    </script>
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -95,136 +140,112 @@
       ]
     }
     </script>
-  </head>
-  <body>
-    <!-- Loading skeleton - shown until React renders -->
+
+    <!--
+      CRITICAL CSS — inlined so the page has styles before any JS runs.
+      This covers the above-the-fold hero so LCP paints immediately.
+    -->
     <style>
-      #app-skeleton {
+      /* ── Reset ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      /* ── Design tokens (subset needed above-fold) ── */
+      :root {
+        --near-black: #0B0B0B;
+        --hero-bg: #B0AFAB;
+        --font-serif: 'Playfair Display', Georgia, serif;
+        --font-sans: 'Inter', -apple-system, sans-serif;
+        --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      html, body { height: 100%; }
+
+      body {
+        background: var(--hero-bg);
+        color: var(--near-black);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      #root { min-height: 100vh; }
+
+      /*
+        THIN loading bar at top — replaces the full-screen skeleton.
+        This is visible but non-blocking. Lighthouse CAN see content behind it.
+      */
+      #page-loader {
         position: fixed;
-        inset: 0;
-        background: #B0AFAB;
-        z-index: 99999;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0;
-        overflow: hidden;
-      }
-      
-      #app-skeleton::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.06) 100%);
-        pointer-events: none;
-      }
-
-      .skeleton-logo {
-        width: 88px;
-        height: 88px;
-        border-radius: 50%;
-        object-fit: cover;
-        opacity: 0;
-        transform: scale(0.9) translateY(10px);
-        animation: skel-logo-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-        box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-        margin-bottom: 24px;
-        position: relative;
-        z-index: 1;
-      }
-      
-      .skeleton-brand-wrap {
-        overflow: hidden;
-        margin-bottom: 32px;
-        padding: 4px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .skeleton-brand {
-        font-family: 'Playfair Display', 'Georgia', serif;
-        font-size: 1.1rem;
-        font-weight: 400;
-        letter-spacing: 0.1em;
-        color: #000000;
-        text-transform: uppercase;
-        transform: translateY(100%);
-        opacity: 0;
-        animation: skel-text-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
-        text-align: center;
-      }
-      
-      /* Make skeleton brand non-italic on fresh load */
-      .skeleton-brand em {
-        font-style: normal;
-        color: rgba(0,0,0,0.6);
-      }
-
-      .skeleton-progress {
-        width: 160px;
-        height: 1px;
-        background: rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
-        opacity: 0;
-        animation: skel-fade 0.5s ease 0.6s forwards;
-        z-index: 1;
-      }
-      
-      .skeleton-progress-bar {
-        position: absolute;
         top: 0;
         left: 0;
+        right: 0;
+        height: 2px;
+        background: rgba(11,11,11,0.08);
+        z-index: 99999;
+        pointer-events: none;
+      }
+      #page-loader-bar {
         height: 100%;
-        width: 100%;
-        background: #000000;
-        transform: scaleX(0);
-        transform-origin: left;
-        animation: skel-fill 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+        background: var(--near-black);
+        width: 0%;
+        transition: width 0.4s ease;
+        animation: loader-progress 1.8s var(--ease-luxury) forwards;
+      }
+      @keyframes loader-progress {
+        0%   { width: 0%; }
+        40%  { width: 60%; }
+        70%  { width: 80%; }
+        100% { width: 100%; }
       }
 
-      @keyframes skel-logo-reveal {
-        0% { opacity: 0; transform: scale(0.9) translateY(15px); filter: blur(4px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+      /* Hero section immediate visibility — LCP element must be visible ASAP */
+      #home {
+        position: relative;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        background: #B0AFAB;
       }
 
-      @keyframes skel-text-reveal {
-        0% { transform: translateY(100%); opacity: 0; }
-        100% { transform: translateY(0); opacity: 1; }
+      /* Hero title — immediately visible, no opacity:0 on initial paint */
+      .hero-title-lcp {
+        font-family: var(--font-serif);
+        font-size: clamp(2.4rem, 8vw, 7rem);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        color: var(--near-black);
       }
 
-      @keyframes skel-fade {
-        to { opacity: 1; }
-      }
-
-      @keyframes skel-fill {
-        0% { transform: scaleX(0); }
-        100% { transform: scaleX(1); }
-      }
-
+      /* Fade-in animation for skeleton removal */
       @keyframes fadeOut {
-        to { opacity: 0; pointer-events: none; filter: blur(8px); transform: scale(1.03); }
+        to { opacity: 0; pointer-events: none; }
       }
     </style>
-    
-    <!-- Skeleton shown while React loads -->
-    <div id="app-skeleton">
-      <img
-        src="/logo.jpg"
-        alt="Rasheed Clothing International"
-        class="skeleton-logo"
-      />
-      <div class="skeleton-brand-wrap">
-        <div class="skeleton-brand">Rasheed Clothing <em>International</em></div>
-      </div>
-      <div class="skeleton-progress">
-        <div class="skeleton-progress-bar"></div>
-      </div>
+  </head>
+  <body>
+    <!-- Thin progress bar at top (non-blocking — Lighthouse can still measure LCP) -->
+    <div id="page-loader" aria-hidden="true">
+      <div id="page-loader-bar"></div>
     </div>
-    
+
     <div id="root"></div>
-    
+
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Hide loader bar once React mounts -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var loader = document.getElementById('page-loader');
+        if (loader) {
+          setTimeout(function() {
+            loader.style.animation = 'fadeOut 0.5s ease forwards';
+            setTimeout(function() { loader.remove(); }, 600);
+          }, 1800);
+        }
+      });
+    </script>
   </body>
 </html>
