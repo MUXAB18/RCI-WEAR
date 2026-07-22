@@ -135,6 +135,7 @@
   gap: 0;
 }
 .navLink {
+  display: block;
   background: none;
   border: none;
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -144,6 +145,7 @@
   font-weight: 400;
   padding: 13px 0;
   text-align: left;
+  text-decoration: none;
   cursor: none;
   /* GPU-accelerated: transform only, no padding-left animation */
   transition:

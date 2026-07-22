@@ -35,6 +35,7 @@ const OptimizedImage = forwardRef(function OptimizedImage({
   priority = false,
   blur = true,
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+  fetchPriority,
   onLoad,
   style = {},
   ...props
@@ -107,12 +108,14 @@ const OptimizedImage = forwardRef(function OptimizedImage({
       {/* AVIF source - best compression (80% smaller than JPG) */}
       <source
         srcSet={generateSrcSet('avif')}
+        sizes={sizes}
         type="image/avif"
       />
 
       {/* WebP source - good compression + wide support (60-70% smaller) */}
       <source
         srcSet={generateSrcSet('webp')}
+        sizes={sizes}
         type="image/webp"
       />
 
@@ -124,10 +127,11 @@ const OptimizedImage = forwardRef(function OptimizedImage({
         width={width}
         height={height}
         loading={priority ? 'eager' : loading}
+        fetchPriority={fetchPriority || (priority ? 'high' : undefined)}
         onLoad={handleLoad}
         onError={handleError}
         style={imgStyle}
-        decoding="async"
+        decoding={priority ? 'sync' : 'async'}
         {...props}
       />
     </picture>

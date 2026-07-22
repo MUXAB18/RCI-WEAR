@@ -6,6 +6,7 @@ import LegalModal from './LegalModal'
 const links = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
+  { label: 'Collections', href: '#collections' },
   { label: 'Portfolio', href: '#portfolio' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -50,7 +51,13 @@ export default function Footer() {
             <ul className={styles.navList}>
               {links.map(l => (
                 <li key={l.label}>
-                  <button className={styles.navLink} onClick={() => nav(l.href)}>{l.label}</button>
+                  <a
+                    href={l.href}
+                    className={styles.navLink}
+                    onClick={(e) => { e.preventDefault(); nav(l.href) }}
+                  >
+                    {l.label}
+                  </a>
                 </li>
               ))}
             </ul>

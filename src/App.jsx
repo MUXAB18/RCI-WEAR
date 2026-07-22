@@ -11,6 +11,7 @@ import CustomCursor from './components/CustomCursor'
 
 // ── Below-fold: lazy imports (loaded only when idle) ──
 const Portfolio     = lazy(() => import('./components/Portfolio'))
+const Process       = lazy(() => import('./components/Process'))
 const Footer        = lazy(() => import('./components/Footer'))
 const QuoteModal    = lazy(() => import('./components/QuoteModal'))
 const ContactModal  = lazy(() => import('./components/ContactModal'))
@@ -20,7 +21,7 @@ const WhatsAppChatBot = lazy(() => import('./components/WhatsAppChatBot'))
 const MARQUEE = [
   'Premium Quality', '✦', 'Since 2017', '✦', 'Rasheed Clothing International',
   '✦', 'Custom Craftsmanship', '✦', 'Global Delivery', '✦', 'Luxury Fashion',
-  '✦', 'Premium Quality', '✦', 'Since 2017', '✦', 'Rasheed Clothing International',
+  '✦', 'How It\'s Made', '✦', 'Premium Quality', '✦', 'Since 2017', '✦', 'Rasheed Clothing International',
   '✦', 'Custom Craftsmanship', '✦', 'Global Delivery', '✦', 'Luxury Fashion', '✦',
 ]
 
@@ -150,6 +151,7 @@ export default function App() {
         {/* ── Below fold: lazy ── */}
         {loadBelow && (
           <Suspense fallback={<SilentFallback />}>
+            <Process />
             <Portfolio />
           </Suspense>
         )}

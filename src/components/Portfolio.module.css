@@ -186,7 +186,8 @@
 /* ── Card wrapper ── */
 .card {
   position: relative;
-  z-index: 1; /* establish stacking context for each cell */
+  z-index: 1;
+  /* establish stacking context for each cell */
 }
 
 /* Elevate the hovered card above its siblings */
@@ -199,7 +200,8 @@
   position: relative;
   background: transparent;
   border-radius: var(--radius-sm);
-  border: 1.5px solid rgba(11, 11, 11, 0.75); /* visible black border to separate cards */
+  border: 1.5px solid rgba(11, 11, 11, 0.75);
+  /* visible black border to separate cards */
   overflow: hidden;
   cursor: pointer;
   aspect-ratio: 1 / 1;
@@ -520,6 +522,7 @@
 }
 
 @media (max-width: 640px) {
+
   /* Show navigation arrows on mobile */
   .mobileNav {
     display: flex;

@@ -7,46 +7,37 @@
  * - Background sync
  */
 
-const CACHE_NAME = 'rci-wear-v1'
+const CACHE_NAME = 'rci-wear-v2'
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
+  '/logo.webp',
   '/logo.jpg',
-  '/about_img.jpg',
+  '/favicon.svg',
+  '/about_img.webp',
 ]
 
 // Install event - cache critical assets
 self.addEventListener('install', (event) => {
-  console.log('🔧 Service Worker installing...')
-  
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('📦 Caching assets...')
       return cache.addAll(ASSETS_TO_CACHE)
     })
   )
-  
-  // Force immediate activation
   self.skipWaiting()
 })
 
 // Activate event - clean old caches
 self.addEventListener('activate', (event) => {
-  console.log('🚀 Service Worker activating...')
-  
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
           .filter((name) => name !== CACHE_NAME)
-          .map((name) => {
-            console.log(`🗑️  Removing old cache: ${name}`)
-            return caches.delete(name)
-          })
+          .map((name) => caches.delete(name))
       )
     })
   )
-  
   self.clients.claim()
 })
 

@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════════════
    RCI WEAR — LUXURY DESIGN SYSTEM v2.0
    Inspired by: Fear of God · Prada · Saint Laurent · Apple
+   Fonts loaded asynchronously in index.html via media="print" trick.
    ═══════════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Serif+Display:ital@0;1&display=swap');
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 /* ══════════════════════════════════
@@ -162,6 +162,18 @@ a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
 ul { list-style: none; }
 button { font-family: inherit; }
+
+/* ── Focus visible (keyboard navigation accessibility) ── */
+:focus-visible {
+  outline: 2px solid rgba(176, 175, 171, 0.8);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Remove default outline on mouse/touch — only show for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
 
 /* Input fields - prevent zoom on iOS and horizontal scroll */
 input, textarea, select {

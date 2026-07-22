@@ -6,6 +6,7 @@ const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
   { label: 'Collections', href: '#collections' },
+  { label: 'Process', href: '#process' },
   { label: 'Portfolio', href: '#portfolio' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -94,7 +95,8 @@ export default function Navbar({ onGetQuote, onContact }) {
     e.currentTarget.style.transform = ''
   }, [])
 
-  const handleNav = (href, label) => {
+  const handleNav = (e, href, label) => {
+    e.preventDefault()
     setMenuOpen(false)
     setActive(label)
 
@@ -122,10 +124,12 @@ export default function Navbar({ onGetQuote, onContact }) {
       <div className={styles.inner}>
 
         {/* Brand */}
-        <button
+        <a
+          href="#home"
           className={styles.brand}
-          onClick={() => handleNav('#home', 'Home')}
+          onClick={(e) => handleNav(e, '#home', 'Home')}
           data-cursor
+          aria-label="Rasheed Clothing International – Home"
         >
           <div className={styles.logoMark}>
             <img src="/logo.jpg" alt="RCI" className={styles.logoImg} width={40} height={40} />
@@ -134,22 +138,24 @@ export default function Navbar({ onGetQuote, onContact }) {
             <span className={styles.brandName}>Rasheed Clothing</span>
             <span className={styles.brandSub}>International · Est. 2017</span>
           </div>
-        </button>
+        </a>
 
         {/* Desktop Nav */}
         <nav className={styles.desktopNav} aria-label="Main navigation">
           {navLinks.map(l => (
-            <button
+            <a
               key={l.label}
+              href={l.href}
               className={[styles.navLink, active === l.label ? styles.navActive : ''].join(' ')}
-              onClick={() => handleNav(l.href, l.label)}
+              onClick={(e) => handleNav(e, l.href, l.label)}
               onMouseMove={handleMagnet}
               onMouseLeave={resetMagnet}
               data-cursor
+              aria-current={active === l.label ? 'page' : undefined}
             >
               {l.label}
               <span className={styles.navIndicator} />
-            </button>
+            </a>
           ))}
         </nav>
 
@@ -181,18 +187,20 @@ export default function Navbar({ onGetQuote, onContact }) {
       >
         <div className={styles.mobileMenuInner}>
           {navLinks.map((l, i) => (
-            <button
+            <a
               key={l.label}
+              href={l.href}
               className={[styles.mobileLink, active === l.label ? styles.mobileLinkActive : ''].join(' ')}
-              onClick={() => handleNav(l.href, l.label)}
+              onClick={(e) => handleNav(e, l.href, l.label)}
               style={{ transitionDelay: menuOpen ? `${i * 0.06}s` : '0s' }}
               data-cursor
+              aria-current={active === l.label ? 'page' : undefined}
             >
               <span className={styles.mobileLinkNum}>0{i + 1}</span>
               <span className={styles.mobileLinkIcon}>◆</span>
               <span className={styles.mobileLinkLabel}>{l.label}</span>
               <span className={styles.mobileLinkArrow}>→</span>
-            </button>
+            </a>
           ))}
           <div className={styles.mobileCtaWrap}>
             <button

@@ -75,7 +75,7 @@ function ProductCard({ item, index, onOpen }) {
                 className={styles.overlayBtn}
                 onClick={(e) => {
                   e.stopPropagation()
-                  
+
                   // Auto-fill contact form
                   const form = document.querySelector('#quote-form')
                   if (form) {
@@ -92,14 +92,14 @@ I'm interested in this product. Please provide:
 - Lead time
 
 Thank you!`
-                    
+
                     const subjectField = form.querySelector('select[name="subject"]')
                     if (subjectField) {
                       const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set
                       nativeInputValueSetter.call(subjectField, 'Custom Order')
                       subjectField.dispatchEvent(new Event('change', { bubbles: true }))
                     }
-                    
+
                     const messageField = form.querySelector('textarea[name="message"]')
                     if (messageField) {
                       const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set
@@ -107,9 +107,9 @@ Thank you!`
                       messageField.dispatchEvent(new Event('input', { bubbles: true }))
                       messageField.dispatchEvent(new Event('change', { bubbles: true }))
                     }
-                    
+
                     if (window.innerWidth <= 640) onOpen(null)
-                    
+
                     setTimeout(() => {
                       form.scrollIntoView({ behavior: 'smooth', block: 'center' })
                       setTimeout(() => {
@@ -122,7 +122,7 @@ Thank you!`
               >
                 Enquire
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                  <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
             </div>
@@ -137,7 +137,7 @@ Thank you!`
           </div>
           <div className={styles.cardArrowWrap}>
             <svg className={styles.cardArrow} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
+              <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </div>
         </div>
@@ -247,7 +247,7 @@ export default function Portfolio() {
           {/* Scroll hint for mobile */}
           <div className={styles.scrollHint}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
+              <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
             <span>Scroll to see more categories</span>
           </div>
@@ -255,24 +255,24 @@ export default function Portfolio() {
 
         {/* Mobile Navigation Arrows (Visible only on mobile/touch screens) */}
         <div className={styles.mobileNav}>
-          <button 
+          <button
             className={[styles.navBtn, !showLeftArrow ? styles.navBtnDisabled : ''].join(' ')}
             onClick={() => handleArrowScroll('left')}
             disabled={!showLeftArrow}
             aria-label="Scroll left"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
+              <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
           </button>
-          <button 
+          <button
             className={[styles.navBtn, !showRightArrow ? styles.navBtnDisabled : ''].join(' ')}
             onClick={() => handleArrowScroll('right')}
             disabled={!showRightArrow}
             aria-label="Scroll right"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
+              <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </button>
         </div>
@@ -290,11 +290,11 @@ export default function Portfolio() {
           <p>Authentic Rasheed Clothing International products. Reach out to start your order.</p>
         </div>
       </div>
-      
-      <LookbookModal 
-        item={selectedItem} 
-        isOpen={!!selectedItem} 
-        onClose={() => setSelectedItem(null)} 
+
+      <LookbookModal
+        item={selectedItem}
+        isOpen={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
       />
     </section>
   )
