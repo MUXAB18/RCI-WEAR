@@ -160,16 +160,16 @@
 
 @media (max-width: 600px) {
   .canvasWrapper {
-    width: 500px !important;
-    height: 500px !important;
-    transform: scale(calc((100vw - 40px) / 500));
-    transform-origin: top center;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    transform: none;
+    margin: 0 auto;
   }
   
   .canvasArea {
-    /* Set height based on scaled wrapper + room for hint text */
-    height: calc((100vw - 40px) + 30px);
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
   }
 }
 
@@ -292,9 +292,12 @@
   background: transparent;
   border: none;
   color: var(--color-text-muted);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
-  padding: 0 5px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .deleteBtn:hover {
@@ -308,6 +311,8 @@
   color: var(--color-bg);
 }
 
-.sizeControls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-.sizeBtn { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.sizeControls { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+.sizeBtn { width: 40px; height: 40px; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; }
 .sizeBtn:active { background: var(--color-text); color: var(--color-bg); }
+
+@media (max-width: 600px) { .patchLibraryWrapper { display: none; } }

@@ -65,6 +65,9 @@ const URLImage = ({ imageInfo, isSelected, onSelect, onChange }) => {
       {isSelected && (
         <Transformer
           ref={trRef}
+          anchorSize={25}
+          anchorCornerRadius={12}
+          padding={5}
           boundBoxFunc={(oldBox, newBox) => {
             if (newBox.width < 5 || newBox.height < 5) return oldBox;
             return newBox;
@@ -120,6 +123,9 @@ const EditableText = ({ textInfo, isSelected, onSelect, onChange }) => {
         <Transformer
           ref={trRef}
           enabledAnchors={['top-left', 'top-right', 'bottom-left', 'bottom-right']}
+          anchorSize={25}
+          anchorCornerRadius={12}
+          padding={5}
           boundBoxFunc={(oldBox, newBox) => {
             if (newBox.width < 5 || newBox.height < 5) return oldBox;
             return newBox;
@@ -137,6 +143,23 @@ export default function DesignStudio() {
   
   const [layers, setLayers] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
+  
+  const [stageWidth, setStageWidth] = useState(500);
+  const [stageScale, setStageScale] = useState(1);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (wrapperRef.current) {
+        const width = wrapperRef.current.offsetWidth;
+        setStageWidth(width);
+        setStageScale(width / 500);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   const stageRef = useRef();
   const baseImgRef = useRef();
@@ -360,7 +383,7 @@ export default function DesignStudio() {
 
           {/* CENTER: Canvas */}
           <div className={styles.canvasArea}>
-            <div className={styles.canvasWrapper} style={{ backgroundColor: 'transparent' }}>
+            <div className={styles.canvasWrapper} ref={wrapperRef} style={{ backgroundColor: 'transparent' }}>
               {/* Layer 1: Solid Color Masked to Silhouette */}
               <div 
                 style={{ 
@@ -387,8 +410,10 @@ export default function DesignStudio() {
               />
               <div className={styles.konvaContainer} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10 }}>
                 <Stage 
-                  width={500} 
-                  height={500} 
+                  width={stageWidth} 
+                  height={stageWidth} 
+                  scaleX={stageScale}
+                  scaleY={stageScale}
                   onMouseDown={checkDeselect}
                   onTouchStart={checkDeselect}
                   ref={stageRef}
@@ -449,13 +474,15 @@ export default function DesignStudio() {
               Add Text
             </button>
 
-            <h3>Patch Library</h3>
-            <div className={styles.patchGrid}>
-              {PATCHES.map(patch => (
-                <div key={patch.id} className={styles.patchItem} onClick={() => addPatch(patch.src)}>
-                  <img src={patch.src} alt="patch" />
-                </div>
-              ))}
+            <div className={styles.patchLibraryWrapper}>
+              <h3>Patch Library</h3>
+              <div className={styles.patchGrid}>
+                {PATCHES.map(patch => (
+                  <div key={patch.id} className={styles.patchItem} onClick={() => addPatch(patch.src)}>
+                    <img src={patch.src} alt="patch" />
+                  </div>
+                ))}
+              </div>
             </div>
 
             {layers.length > 0 && (
