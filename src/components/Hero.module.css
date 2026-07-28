@@ -707,12 +707,6 @@
   }
 
   .scrollIndicator {
-    left: 50%;
-    transform: translateX(-50%);
-    align-items: center;
-  }
-
-  .scrollText {
     display: none;
   }
 
