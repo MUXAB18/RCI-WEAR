@@ -458,33 +458,7 @@ export default function DesignStudio() {
 
           {/* RIGHT SIDEBAR: Layers & Additions */}
           <div className={styles.sidebar}>
-            <h3>Add Design</h3>
             
-            <input 
-              type="file" 
-              accept="image/png, image/jpeg, image/svg+xml" 
-              ref={fileInputRef}
-              style={{ display: 'none' }}
-              onChange={handleFileUpload}
-            />
-            <button className={`btn-primary ${styles.actionBtn}`} onClick={() => fileInputRef.current.click()}>
-              Upload Artwork
-            </button>
-            <button className={`btn-outline ${styles.actionBtn}`} onClick={addText}>
-              Add Text
-            </button>
-
-            <div className={styles.patchLibraryWrapper}>
-              <h3>Patch Library</h3>
-              <div className={styles.patchGrid}>
-                {PATCHES.map(patch => (
-                  <div key={patch.id} className={styles.patchItem} onClick={() => addPatch(patch.src)}>
-                    <img src={patch.src} alt="patch" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {layers.length > 0 && (
               <>
                 <h3>Layers</h3>
@@ -533,12 +507,51 @@ export default function DesignStudio() {
                           </select>
                         )}
                       </div>
-                      <button className={styles.deleteBtn} onClick={(e) => { e.stopPropagation(); removeLayer(layer.id); }}>×</button>
+                      
+                      <button 
+                        className={styles.deleteBtn}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeLayer(layer.id);
+                        }}
+                        title="Delete Layer"
+                      >
+                        ×
+                      </button>
                     </div>
                   ))}
                 </div>
               </>
             )}
+
+            <h3>Add Design</h3>
+            
+            <input 
+              type="file" 
+              accept="image/png, image/jpeg, image/svg+xml" 
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileUpload}
+            />
+            <button className={`btn-primary ${styles.actionBtn}`} onClick={() => fileInputRef.current.click()}>
+              Upload Artwork
+            </button>
+            <button className={`btn-outline ${styles.actionBtn}`} onClick={addText}>
+              Add Text
+            </button>
+
+            <div className={styles.patchLibraryWrapper}>
+              <h3>Patch Library</h3>
+              <div className={styles.patchGrid}>
+                {PATCHES.map(patch => (
+                  <div key={patch.id} className={styles.patchItem} onClick={() => addPatch(patch.src)}>
+                    <img src={patch.src} alt="patch" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
 
             <button className={`btn-primary ${styles.submitBtn}`} onClick={handleRequestDesign}>
               Request This Custom Design
