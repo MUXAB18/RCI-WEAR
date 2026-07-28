@@ -154,11 +154,20 @@ export default function Portfolio() {
 
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(true)
-  const [visibleCount, setVisibleCount] = useState(9)
+  const [visibleCount, setVisibleCount] = useState(8)
 
   const filtered = useMemo(() => {
     if (active === 'All') {
-      return items
+      const topItems = [];
+      const remainingItems = [];
+      const categories = ['Hoodies', 'Tees and Essential Shorts', 'Tracksuits', 'Gymwear'];
+      
+      categories.forEach(cat => {
+        const catItems = items.filter(i => i.cat === cat);
+        topItems.push(...catItems.slice(0, 2));
+        remainingItems.push(...catItems.slice(2));
+      });
+      return [...topItems, ...remainingItems];
     }
     return items.filter(i => i.cat === active)
   }, [active])
@@ -166,11 +175,11 @@ export default function Portfolio() {
   const visibleItems = filtered.slice(0, visibleCount)
 
   useEffect(() => {
-    setVisibleCount(9)
+    setVisibleCount(8)
   }, [active])
 
   const handleShowMore = () => {
-    setVisibleCount(prev => prev + 9)
+    setVisibleCount(prev => prev + 8)
   }
 
   const handleScroll = () => {
