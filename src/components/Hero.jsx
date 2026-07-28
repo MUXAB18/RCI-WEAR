@@ -5,16 +5,16 @@ import MagneticButton from './MagneticButton'
 
 
 export default function Hero({ onGetQuote }) {
-  const heroRef     = useRef(null)
-  const bgRef       = useRef(null)
-  const eyebrowRef  = useRef(null)
-  const line1Ref    = useRef(null)
-  const line2Ref    = useRef(null)
-  const taglineRef  = useRef(null)
-  const descRef     = useRef(null)
-  const actionsRef  = useRef(null)
-  const statsRef    = useRef(null)
-  const scrollRef   = useRef(null)
+  const heroRef = useRef(null)
+  const bgRef = useRef(null)
+  const eyebrowRef = useRef(null)
+  const line1Ref = useRef(null)
+  const line2Ref = useRef(null)
+  const taglineRef = useRef(null)
+  const descRef = useRef(null)
+  const actionsRef = useRef(null)
+  const statsRef = useRef(null)
+  const scrollRef = useRef(null)
 
   /*
    * ── PERFORMANCE NOTE ──
@@ -120,7 +120,7 @@ export default function Hero({ onGetQuote }) {
         {/* Monogram Watermark */}
         <div className={styles.monogramWatermark}>
           <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6" aria-hidden="true">
-            <circle cx="50" cy="50" r="46" strokeWidth="4"/>
+            <circle cx="50" cy="50" r="46" strokeWidth="4" />
             <text x="50" y="65" fontSize="32" fill="currentColor" stroke="none" textAnchor="middle" letterSpacing="4" fontFamily="sans-serif" fontWeight="bold">R</text>
           </svg>
         </div>

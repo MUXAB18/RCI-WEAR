@@ -16,6 +16,7 @@ const Footer        = lazy(() => import('./components/Footer'))
 const QuoteModal    = lazy(() => import('./components/QuoteModal'))
 const ContactModal  = lazy(() => import('./components/ContactModal'))
 const WhatsAppChatBot = lazy(() => import('./components/WhatsAppChatBot'))
+const DesignStudio  = lazy(() => import('./components/DesignStudio'))
 
 /* ── Marquee items ── */
 const MARQUEE = [
@@ -151,6 +152,7 @@ export default function App() {
         {/* ── Below fold: lazy ── */}
         {loadBelow && (
           <Suspense fallback={<SilentFallback />}>
+            <DesignStudio />
             <Process />
             <Portfolio />
           </Suspense>

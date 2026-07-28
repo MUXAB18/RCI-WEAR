@@ -32,13 +32,20 @@ const TRUST = [
 const ENQUIRY_TYPES = [
   { value: 'Custom Order', label: 'Custom Manufacturing' },
   { value: 'Bulk / Wholesale', label: 'Bulk / Wholesale' },
-  { value: 'Bridal Collection', label: 'Bridal Collection' },
+  { value: 'Free Mock Up', label: 'Free Mock Up' },
   { value: 'Corporate Uniforms', label: 'Corporate Uniforms' },
   { value: 'Other', label: 'General Inquiry' },
 ]
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+  const [form, setForm] = useState({ 
+    name: '', 
+    email: '', 
+    phone: '', 
+    subject: '', 
+    category: '', 
+    message: '' 
+  })
   const [status, setStatus] = useState('idle') // idle, sending, success, error
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -71,6 +78,7 @@ export default function Contact() {
         reply_to: form.email,
         phone: form.phone || 'Not provided',
         enquiry_type: form.subject || 'General Enquiry',
+        category: form.category || 'N/A',
         message: form.message,
       }
 
@@ -79,6 +87,7 @@ export default function Contact() {
         to_email: form.email,
         from_name: form.name,
         enquiry_type: form.subject || 'General Enquiry',
+        category: form.category || 'N/A',
         message: form.message,
       }
 
@@ -90,7 +99,7 @@ export default function Contact() {
 
       setStatus('success')
       setErrorMessage('')
-      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+      setForm({ name: '', email: '', phone: '', subject: '', category: '', message: '' })
       setTimeout(() => setStatus('idle'), 5000)
     } catch (error) {
       console.error('Email send failed:', error)
@@ -260,6 +269,30 @@ export default function Contact() {
               </div>
             </div>
 
+            {/* Row 2.5: Category */}
+            <div className={styles.row}>
+              <div className={`${styles.field} ${form.category ? styles['has-value'] : ''}`} style={{ width: '100%' }}>
+                <label htmlFor="cf-category" className={styles.label}>Product Category (Optional)</label>
+                <select
+                  id="cf-category"
+                  name="category"
+                  value={form.category}
+                  onChange={handle}
+                  className={`${styles.input} ${styles.select} ${!form.category ? styles['select-placeholder'] : ''}`}
+                >
+                  <option value="">Select a product category</option>
+                  <option value="Hoodies">Hoodies</option>
+                  <option value="Tees and Essential Shorts">Tees and Essential Shorts</option>
+                  <option value="Tracksuits">Tracksuits</option>
+                  <option value="Gymwear">Gymwear</option>
+                </select>
+                <span className={styles.fieldLine} aria-hidden="true" />
+                <svg className={styles.selectArrow} viewBox="0 0 12 8" fill="none">
+                  <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </div>
+            </div>
+
             {/* Message */}
             <div className={`${styles.field} ${styles.fieldFull} ${form.message ? styles['has-value'] : ''}`}>
               <label htmlFor="cf-message" className={styles.label}>Requirements & Details</label>
@@ -381,11 +414,7 @@ export default function Contact() {
             </a>
 
             {/* Phone */}
-            <a
-              href="tel:+923496014611"
-              className={styles.contactCard}
-              aria-label="Call us"
-            >
+            <div className={styles.contactCard}>
               <div className={styles.contactCardIcon}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="22" height="22" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.12 1.21 2 2 0 012.11 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92v2z" />
@@ -393,12 +422,12 @@ export default function Contact() {
               </div>
               <div className={styles.contactCardBody}>
                 <span className={styles.contactCardLabel}>Call Us</span>
-                <span className={styles.contactCardValue}>+92 349 601 4611</span>
+                <span className={styles.contactCardValue} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <a href="tel:+447459700121" style={{ color: 'inherit', textDecoration: 'none' }}>🇬🇧 +44 7459 700121</a>
+                  <a href="tel:+923496014611" style={{ color: 'inherit', textDecoration: 'none' }}>🇵🇰 +92 349 601 4611</a>
+                </span>
               </div>
-              <svg className={styles.contactCardArrow} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
+            </div>
 
             {/* Hours */}
             <div className={styles.contactCard}>

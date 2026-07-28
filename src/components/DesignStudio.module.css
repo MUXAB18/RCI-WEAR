@@ -1,0 +1,313 @@
+.studioSection {
+  padding: 100px 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.studioHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.studioHeader h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.studioHeader p {
+  color: var(--color-text-muted);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.studioContainer {
+  display: grid;
+  grid-template-columns: 250px 1fr 250px;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .studioContainer {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+.sidebar {
+  background: rgba(0, 0, 0, 0.02);
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .sidebar {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  margin-top: 30px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sidebar h3:first-child {
+  margin-top: 0;
+}
+
+.pillGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill {
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  border-radius: 30px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pill:hover {
+  border-color: var(--color-text);
+}
+
+.activePill {
+  composes: pill;
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-color: var(--color-text);
+}
+
+.colorSwatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.swatch:hover {
+  transform: scale(1.1);
+}
+
+.activeSwatch {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-primary);
+}
+
+.colorPicker {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+}
+
+.colorPicker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.colorPicker::-webkit-color-swatch {
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.colorHex {
+  font-family: var(--font-monospace);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  align-self: center;
+  margin-left: 10px;
+}
+
+.canvasArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.canvasWrapper {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  background-color: #ffffff; /* Base defaults to white, overridden inline by JS */
+}
+
+@media (max-width: 600px) {
+  .canvasWrapper {
+    width: 500px !important;
+    height: 500px !important;
+    transform: scale(calc((100vw - 40px) / 500));
+    transform-origin: top center;
+  }
+  
+  .canvasArea {
+    /* Set height based on scaled wrapper + room for hint text */
+    height: calc((100vw - 40px) + 30px);
+    overflow: hidden;
+  }
+}
+
+.baseGarment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none; /* Let clicks pass through to Konva */
+}
+
+.konvaContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hintText {
+  margin-top: 15px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.actionBtn {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.patchGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.patchItem {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patchItem:hover {
+  border-color: var(--color-primary);
+  background: white;
+}
+
+[data-theme='dark'] .patchItem {
+  background: rgba(0,0,0,0.5);
+}
+
+[data-theme='dark'] .patchItem:hover {
+  background: black;
+}
+
+.patchItem img {
+  max-width: 100%;
+  height: auto;
+}
+
+.layersList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.layerItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.layerItem:hover {
+  border-color: var(--color-text-muted);
+}
+
+.layerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.fontSelect {
+  padding: 4px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  margin-top: 4px;
+  width: fit-content;
+}
+
+.activeLayer {
+  border-color: var(--color-text);
+  background: rgba(0,0,0,0.02);
+}
+
+[data-theme='dark'] .activeLayer {
+  background: rgba(255,255,255,0.05);
+}
+
+.deleteBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.deleteBtn:hover {
+  color: red;
+}
+
+.submitBtn {
+  width: 100%;
+  margin-top: 20px;
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.sizeControls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.sizeBtn { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.sizeBtn:active { background: var(--color-text); color: var(--color-bg); }

@@ -208,7 +208,7 @@ export default function QuoteModal({ isOpen, onClose }) {
                       <option value="" disabled>Select a category</option>
                       <option value="Custom Order">Custom Order</option>
                       <option value="Bulk / Wholesale">Bulk / Wholesale</option>
-                      <option value="Bridal Collection">Bridal Collection</option>
+                      <option value="Free Mock Up">Free Mock Up</option>
                       <option value="Corporate Uniforms">Corporate Uniforms</option>
                       <option value="Other">Other</option>
                     </select>

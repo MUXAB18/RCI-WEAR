@@ -634,3 +634,16 @@
     opacity: 0.8;
   }
 }
+.loadMore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+  width: 100%;
+}
+.loadMoreBtn {
+  min-width: 200px;
+}
+
+.ctaBtn { background-color: #E5E5E5 !important; color: #000000 !important; }
+.ctaBtn:hover { background-color: #cccccc !important; }

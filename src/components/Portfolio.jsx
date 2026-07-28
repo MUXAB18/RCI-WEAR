@@ -154,19 +154,24 @@ export default function Portfolio() {
 
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(true)
+  const [visibleCount, setVisibleCount] = useState(9)
 
   const filtered = useMemo(() => {
-    let list = []
     if (active === 'All') {
-      filters.filter(f => f !== 'All').forEach(cat => {
-        const catItems = items.filter(i => i.cat === cat)
-        list = [...list, ...catItems.slice(0, cat === 'Gymwear' ? 1 : 3)]
-      })
-    } else {
-      list = items.filter(i => i.cat === active)
+      return items
     }
-    return list
+    return items.filter(i => i.cat === active)
   }, [active])
+
+  const visibleItems = filtered.slice(0, visibleCount)
+
+  useEffect(() => {
+    setVisibleCount(9)
+  }, [active])
+
+  const handleShowMore = () => {
+    setVisibleCount(prev => prev + 9)
+  }
 
   const handleScroll = () => {
     if (gridRef.current) {
@@ -243,6 +248,31 @@ export default function Portfolio() {
                 </button>
               )
             })}
+            
+            <button
+              className="btn-primary"
+              style={{ marginLeft: 'auto', padding: '10px 24px', fontSize: '10px', height: 'fit-content' }}
+              onClick={() => {
+                const formEl = document.querySelector('#quote-form')
+                if (formEl) {
+                  const catField = formEl.querySelector('select[name="category"]')
+                  if (catField) {
+                    const setter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set
+                    setter.call(catField, active === 'All' ? '' : active)
+                    catField.dispatchEvent(new Event('change', { bubbles: true }))
+                  }
+                  const subjField = formEl.querySelector('select[name="subject"]')
+                  if (subjField) {
+                    const setter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set
+                    setter.call(subjField, 'Free Mock Up')
+                    subjField.dispatchEvent(new Event('change', { bubbles: true }))
+                  }
+                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              }}
+            >
+              Get Free Mock Up
+            </button>
           </div>
           {/* Scroll hint for mobile */}
           <div className={styles.scrollHint}>
@@ -279,16 +309,19 @@ export default function Portfolio() {
 
         {/* Grid */}
         <div className={styles.grid} ref={gridRef}>
-          {filtered.map((item, i) => (
+          {visibleItems.map((item, i) => (
             <ProductCard key={item.id} item={item} index={i} onOpen={setSelectedItem} />
           ))}
         </div>
 
-        {/* Footer note */}
-        <div className={`${styles.note} reveal`}>
-          <div className={styles.noteDot} />
-          <p>Authentic Rasheed Clothing International products. Reach out to start your order.</p>
-        </div>
+        {/* Load More Button */}
+        {visibleCount < filtered.length && (
+          <div className={styles.loadMore}>
+            <button className={`btn-primary ${styles.loadMoreBtn}`} onClick={handleShowMore}>
+              Show More
+            </button>
+          </div>
+        )}
       </div>
 
       <LookbookModal

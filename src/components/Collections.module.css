@@ -13,9 +13,11 @@
 .collections::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(11,11,11,0.12) 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(11, 11, 11, 0.12) 50%, transparent 100%);
 }
 
 /* Grain texture layer — CSS-only, 2.5% opacity */
@@ -38,7 +40,7 @@
   bottom: -100px;
   width: 700px;
   height: 500px;
-  background: radial-gradient(ellipse, rgba(0,0,0,0.015) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.015) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -58,7 +60,7 @@
 .list {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(10,10,10,0.18);
+  border-top: 1px solid rgba(10, 10, 10, 0.18);
   position: relative;
   z-index: 1;
 }
@@ -71,7 +73,7 @@
   align-items: center;
   gap: 40px;
   padding: 42px 0;
-  border-bottom: 1px solid rgba(10,10,10,0.12);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.12);
   cursor: none;
   overflow: hidden;
   transition:
@@ -84,18 +86,22 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(11,11,11,0.03) 0%,
-    rgba(11,11,11,0.06) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(11, 11, 11, 0.03) 0%,
+      rgba(11, 11, 11, 0.06) 100%);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s var(--ease-luxury);
   z-index: 0;
 }
-.item:hover::before { transform: scaleX(1); }
-.item:hover { padding-left: 20px; }
+
+.item:hover::before {
+  transform: scaleX(1);
+}
+
+.item:hover {
+  padding-left: 20px;
+}
 
 /* Left edge accent bar — colour set via inline style */
 .itemAccent {
@@ -108,7 +114,10 @@
   border-radius: 0 2px 2px 0;
   opacity: 0.8;
 }
-.item:hover .itemAccent { width: 3px; }
+
+.item:hover .itemAccent {
+  width: 3px;
+}
 
 /* All children need z-index above the ::before sweep */
 .itemLeft,
@@ -137,6 +146,7 @@
   line-height: 1;
   letter-spacing: -0.02em;
 }
+
 .item:hover .itemNum {
   opacity: 1;
   transform: translateX(6px);
@@ -159,6 +169,7 @@
   opacity: 0.65;
   transition: opacity 0.25s ease, color 0.25s ease;
 }
+
 .item:hover .itemTag {
   opacity: 1;
   color: var(--ink-black);
@@ -173,6 +184,7 @@
   letter-spacing: -0.02em;
   transition: color 0.25s ease, transform 0.35s cubic-bezier(0.33, 1, 0.68, 1);
 }
+
 .item:hover .itemTitle {
   color: var(--near-black);
   transform: translateX(4px);
@@ -186,7 +198,10 @@
   letter-spacing: 0.2px;
   transition: color 0.25s ease;
 }
-.item:hover .itemSubtitle { color: var(--ink-black); }
+
+.item:hover .itemSubtitle {
+  color: var(--ink-black);
+}
 
 /* ── Right: description + CTA ── */
 .itemRight {
@@ -206,7 +221,10 @@
   letter-spacing: 0.1px;
   transition: color 0.3s ease;
 }
-.item:hover .itemDesc { color: var(--near-black); }
+
+.item:hover .itemDesc {
+  color: var(--near-black);
+}
 
 .itemBtn {
   display: inline-flex;
@@ -229,21 +247,28 @@
     transform 0.4s var(--ease-luxury);
   position: relative;
 }
+
 .itemBtn::after {
   content: '';
   position: absolute;
-  bottom: -2px; left: 0;
-  width: 100%; height: 1px;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
   background: var(--near-black);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.35s var(--ease-luxury);
 }
+
 .item:hover .itemBtn {
   opacity: 1;
   transform: translateX(0);
 }
-.item:hover .itemBtn:hover::after { transform: scaleX(1); }
+
+.item:hover .itemBtn:hover::after {
+  transform: scaleX(1);
+}
 
 /* ── Arrow ── */
 .itemArrow {
@@ -257,6 +282,7 @@
   justify-self: end;
   transition-delay: 0.06s;
 }
+
 .item:hover .itemArrow {
   opacity: 0.45;
   transform: translateX(8px);
@@ -264,23 +290,45 @@
 
 /* ── Responsive ── */
 @media (max-width: 1100px) {
-  .item { grid-template-columns: 72px 1fr 1fr 40px; gap: 28px; }
+  .item {
+    grid-template-columns: 72px 1fr 1fr 40px;
+    gap: 28px;
+  }
 }
+
 @media (max-width: 900px) {
   .item {
     grid-template-columns: 64px 1fr 36px;
     gap: 20px;
   }
-  .itemRight { display: none; }
-  .header { flex-direction: column; align-items: flex-start; gap: 24px; }
+
+  .itemRight {
+    display: none;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
 }
+
 @media (max-width: 600px) {
   .item {
     grid-template-columns: 52px 1fr 28px;
     gap: 16px;
     padding: 28px 0;
   }
-  .itemNum { font-size: 1.5rem; }
-  .itemTitle { font-size: 1.15rem; }
-  .header { margin-bottom: 48px; }
+
+  .itemNum {
+    font-size: 1.5rem;
+  }
+
+  .itemTitle {
+    font-size: 1.15rem;
+  }
+
+  .header {
+    margin-bottom: 48px;
+  }
 }

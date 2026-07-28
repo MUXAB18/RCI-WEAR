@@ -139,7 +139,7 @@ function PrivacyContent() {
         <p><strong>Rasheed Clothing International</strong></p>
         <ul>
           <li>Email: <a href="mailto:rasheedclothingintl@gmail.com">rasheedclothingintl@gmail.com</a></li>
-          <li>Phone: <a href="tel:+923496014611">+92 349 6014611</a></li>
+          <li>Phone: <a href="tel:+447459700121">🇬🇧 +44 7459 700121</a> / <a href="tel:+923496014611">🇵🇰 +92 349 601 4611</a></li>
           <li>Location: Sialkot, Pakistan</li>
         </ul>
       </Section>
@@ -235,7 +235,7 @@ function TermsContent() {
         <p><strong>Rasheed Clothing International</strong></p>
         <ul>
           <li>Email: <a href="mailto:rasheedclothingintl@gmail.com">rasheedclothingintl@gmail.com</a></li>
-          <li>Phone: <a href="tel:+923496014611">+92 349 6014611</a></li>
+          <li>Phone: <a href="tel:+447459700121">🇬🇧 +44 7459 700121</a> / <a href="tel:+923496014611">🇵🇰 +92 349 601 4611</a></li>
           <li>Location: Sialkot, Pakistan</li>
         </ul>
       </Section>

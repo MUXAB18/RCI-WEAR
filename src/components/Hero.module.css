@@ -514,6 +514,7 @@
 
 /* ── Responsive ── */
 @media (max-width: 1200px) {
+
   /* Hide logo on tablet/mobile — stack content vertically again */
   .logoFloat {
     display: none;
