@@ -33,21 +33,32 @@ export default function Navbar({ onGetQuote, onContact }) {
         return isScrolled !== prev ? isScrolled : prev
       })
 
-      // Update hidden state
+      // Update hidden state with accumulated hysteresis (ignore finger jitter)
       setHidden(prev => {
-        if (currentScrollY <= 300) return false
-        if (currentScrollY > lastY.current) return true
-        if (currentScrollY < lastY.current) return false
+        if (currentScrollY <= 300) {
+          lastY.current = currentScrollY
+          return false
+        }
+        
+        if (currentScrollY > lastY.current + 10) {
+          lastY.current = currentScrollY
+          return true
+        }
+        
+        if (currentScrollY < lastY.current - 10) {
+          lastY.current = currentScrollY
+          return false
+        }
+        
         return prev
       })
 
-      lastY.current = currentScrollY
-
       // Update active section
       let cur = navLinks[0].label
+      const threshold = window.innerHeight * 0.6 // 60% of screen height
       for (const { label, href } of navLinks) {
         const el = document.querySelector(href)
-        if (el && el.getBoundingClientRect().top <= 200) cur = label
+        if (el && el.getBoundingClientRect().top <= threshold) cur = label
       }
       setActive(prev => (prev !== cur ? cur : prev))
 
@@ -55,11 +66,6 @@ export default function Navbar({ onGetQuote, onContact }) {
     }
 
     const handleScroll = () => {
-      // Throttle scroll events
-      const now = Date.now()
-      if (now - scrollThrottle.current < 16) return // ~60fps
-      scrollThrottle.current = now
-
       if (!tickingRef.current) {
         window.requestAnimationFrame(updateNav)
         tickingRef.current = true
