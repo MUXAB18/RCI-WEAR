@@ -10,7 +10,7 @@
  *  - Fonts       → Cache-first with long TTL (rarely change)
  */
 
-const CACHE_NAME = 'rci-wear-v3'
+const CACHE_NAME = 'rci-wear-v4'
 
 // ── Install: only pre-cache the shell; nothing that changes per-deploy ──
 self.addEventListener('install', (event) => {
