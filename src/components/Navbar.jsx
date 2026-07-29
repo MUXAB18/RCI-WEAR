@@ -37,10 +37,10 @@ export default function Navbar({ onGetQuote, onContact }) {
 
       // Update hidden state
       setHidden(prev => {
-        if (currentScrollY <= 300) return false // Always show at top
-        if (currentScrollY > lastY.current + 3) return true  // Scrolling down
-        if (currentScrollY < lastY.current - 3) return false // Scrolling up
-        return prev // Preserve state if stopped or very slow
+        if (currentScrollY <= 300) return false
+        if (currentScrollY > lastY.current) return true
+        if (currentScrollY < lastY.current) return false
+        return prev
       })
 
       lastY.current = currentScrollY
