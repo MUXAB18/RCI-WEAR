@@ -24,38 +24,33 @@ export default function Navbar({ onGetQuote, onContact }) {
 
   /* ── Scroll behavior ── */
   useEffect(() => {
-    sectionsRef.current = navLinks
-      .map((link) => ({
-        label: link.label,
-        el: document.querySelector(link.href),
-      }))
-      .filter((section) => section.el)
-
     let lastScrollY = window.scrollY
 
     const updateNav = () => {
       const currentScrollY = window.scrollY
 
       // Update scrolled state
-      if ((currentScrollY > 40) !== scrolled) {
-        setScrolled(currentScrollY > 40)
-      }
+      setScrolled(prev => {
+        const isScrolled = currentScrollY > 40
+        return isScrolled !== prev ? isScrolled : prev
+      })
 
       // Update hidden state
-      const shouldHide = currentScrollY > lastY.current && currentScrollY > 300
-      if (shouldHide !== hidden) {
-        setHidden(shouldHide)
-      }
+      setHidden(prev => {
+        const shouldHide = currentScrollY > lastY.current && currentScrollY > 300
+        return shouldHide !== prev ? shouldHide : prev
+      })
 
       lastY.current = currentScrollY
 
       // Update active section (less frequently)
       if (Math.abs(currentScrollY - lastScrollY) > 50) {
-        let cur = sectionsRef.current[0]?.label || 'Home'
-        for (const { label, el } of sectionsRef.current) {
-          if (el.getBoundingClientRect().top <= 100) cur = label
+        let cur = navLinks[0].label
+        for (const { label, href } of navLinks) {
+          const el = document.querySelector(href)
+          if (el && el.getBoundingClientRect().top <= 200) cur = label
         }
-        if (cur !== active) setActive(cur)
+        setActive(prev => (prev !== cur ? cur : prev))
         lastScrollY = currentScrollY
       }
 
@@ -75,12 +70,15 @@ export default function Navbar({ onGetQuote, onContact }) {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    // Initial check
+    updateNav()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       tickingRef.current = false
     }
-  }, [scrolled, hidden, active])
+  }, [])
 
   /* ── Magnetic nav links ── */
   const handleMagnet = useCallback((e) => {
