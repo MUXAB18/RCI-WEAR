@@ -24,8 +24,6 @@ export default function Navbar({ onGetQuote, onContact }) {
 
   /* ── Scroll behavior ── */
   useEffect(() => {
-    let lastScrollY = window.scrollY
-
     const updateNav = () => {
       const currentScrollY = window.scrollY
 
@@ -45,16 +43,13 @@ export default function Navbar({ onGetQuote, onContact }) {
 
       lastY.current = currentScrollY
 
-      // Update active section (less frequently)
-      if (Math.abs(currentScrollY - lastScrollY) > 50) {
-        let cur = navLinks[0].label
-        for (const { label, href } of navLinks) {
-          const el = document.querySelector(href)
-          if (el && el.getBoundingClientRect().top <= 200) cur = label
-        }
-        setActive(prev => (prev !== cur ? cur : prev))
-        lastScrollY = currentScrollY
+      // Update active section
+      let cur = navLinks[0].label
+      for (const { label, href } of navLinks) {
+        const el = document.querySelector(href)
+        if (el && el.getBoundingClientRect().top <= 200) cur = label
       }
+      setActive(prev => (prev !== cur ? cur : prev))
 
       tickingRef.current = false
     }
