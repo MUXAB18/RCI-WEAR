@@ -379,6 +379,9 @@
 
 .mobileLinkActive .mobileLinkLabel {
   color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 2px;
 }
 
 .mobileLinkArrow {
