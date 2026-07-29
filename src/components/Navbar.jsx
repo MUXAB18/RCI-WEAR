@@ -27,38 +27,45 @@ export default function Navbar({ onGetQuote, onContact }) {
     const updateNav = () => {
       const currentScrollY = window.scrollY
 
-      // Update scrolled state
+      // Update scrolled state (glass effect kicks in after 40px)
       setScrolled(prev => {
         const isScrolled = currentScrollY > 40
         return isScrolled !== prev ? isScrolled : prev
       })
 
-      // Update hidden state with accumulated hysteresis (ignore finger jitter)
+      // Hide on scroll-down, show on scroll-up
+      // Only hide after 80px so navbar stays visible near the top
       setHidden(prev => {
-        if (currentScrollY <= 300) {
+        if (currentScrollY <= 80) {
+          // Always visible near top of page
           lastY.current = currentScrollY
           return false
         }
-        
-        if (currentScrollY > lastY.current + 10) {
+
+        if (currentScrollY > lastY.current + 15) {
+          // Scrolling DOWN — hide navbar
           lastY.current = currentScrollY
           return true
         }
-        
-        if (currentScrollY < lastY.current - 10) {
+
+        if (currentScrollY < lastY.current - 15) {
+          // Scrolling UP — show navbar
           lastY.current = currentScrollY
           return false
         }
-        
+
         return prev
       })
 
-      // Update active section
+      // Update active section — use 45% of viewport as trigger line
       let cur = navLinks[0].label
-      const threshold = window.innerHeight * 0.6 // 60% of screen height
+      const threshold = window.innerHeight * 0.45
       for (const { label, href } of navLinks) {
         const el = document.querySelector(href)
-        if (el && el.getBoundingClientRect().top <= threshold) cur = label
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          if (rect.top <= threshold) cur = label
+        }
       }
       setActive(prev => (prev !== cur ? cur : prev))
 
@@ -73,8 +80,8 @@ export default function Navbar({ onGetQuote, onContact }) {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    
-    // Initial check
+
+    // Initial check on mount
     updateNav()
 
     return () => {

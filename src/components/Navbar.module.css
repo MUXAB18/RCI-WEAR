@@ -182,22 +182,31 @@
   color: var(--near-black);
 }
 
-/* Active & hover underline — black accent */
+/* Active & hover underline — bold black accent */
 .navIndicator {
   position: absolute;
-  bottom: 0px;
+  bottom: 2px;
   left: 20px;
   right: 20px;
-  height: 2px;
-  background: #000000; /* Solid black color */
+  height: 2.5px;
+  background: #000000;
+  border-radius: 2px;
   transform: scaleX(0);
   transform-origin: center;
-  transition: transform 0.35s var(--ease-luxury);
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
 
-.navLink:hover .navIndicator,
+.navLink:hover .navIndicator {
+  transform: scaleX(1);
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: none;
+}
+
 .navActive .navIndicator {
   transform: scaleX(1);
+  background: #000000;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
 }
 
 .navActive {
