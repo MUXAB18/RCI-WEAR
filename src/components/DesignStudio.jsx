@@ -115,7 +115,7 @@ const EditableText = ({ textInfo, isSelected, onSelect, onChange }) => {
             x: node.x(),
             y: node.y(),
             rotation: node.rotation(),
-            fontSize: Math.max(5, node.fontSize() * Math.max(scaleX, scaleY)), 
+            fontSize: Math.max(5, node.fontSize() * Math.max(scaleX, scaleY)),
           });
         }}
       />
@@ -140,10 +140,10 @@ export default function DesignStudio() {
   const [garment, setGarment] = useState('hoodie');
   const [view, setView] = useState('front');
   const [color, setColor] = useState('#ffffff');
-  
+
   const [layers, setLayers] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-  
+
   const [stageWidth, setStageWidth] = useState(500);
   const [stageScale, setStageScale] = useState(1);
   const wrapperRef = useRef(null);
@@ -160,7 +160,7 @@ export default function DesignStudio() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   const stageRef = useRef();
   const baseImgRef = useRef();
   const fileInputRef = useRef();
@@ -194,7 +194,7 @@ export default function DesignStudio() {
           h = (200 / w) * h;
           w = 200;
         }
-        
+
         const newLayer = {
           id: `upload-${Date.now()}`,
           type: 'image',
@@ -252,16 +252,16 @@ export default function DesignStudio() {
   const handleRequestDesign = () => {
     // Deselect first to remove transformer
     setSelectedId(null);
-    
+
     setTimeout(() => {
       // 1. Get Base Image & Color
       const baseCanvas = document.createElement('canvas');
       const ctx = baseCanvas.getContext('2d');
       const baseImg = baseImgRef.current;
-      
+
       baseCanvas.width = 500;
       baseCanvas.height = 500;
-      
+
       // Emulate object-fit: contain
       const imgRatio = baseImg.naturalWidth / baseImg.naturalHeight;
       const canvasRatio = 500 / 500;
@@ -270,30 +270,30 @@ export default function DesignStudio() {
       let offsetX = 0;
       let offsetY = 0;
       if (imgRatio > canvasRatio) {
-         renderHeight = 500 / imgRatio;
-         offsetY = (500 - renderHeight) / 2;
+        renderHeight = 500 / imgRatio;
+        offsetY = (500 - renderHeight) / 2;
       } else {
-         renderWidth = 500 * imgRatio;
-         offsetX = (500 - renderWidth) / 2;
+        renderWidth = 500 * imgRatio;
+        offsetX = (500 - renderWidth) / 2;
       }
 
       // Draw background color ONLY where the mask exists
       if (color !== '#ffffff') {
-         // 1. Draw the transparent garment to create an alpha mask
-         ctx.drawImage(baseImg, offsetX, offsetY, renderWidth, renderHeight);
-         
-         // 2. Fill with color only where the garment exists (source-in uses alpha of destination)
-         ctx.globalCompositeOperation = 'source-in';
-         ctx.fillStyle = color;
-         ctx.fillRect(0, 0, 500, 500);
-         
-         // 3. Draw the transparent garment again to apply shadows (multiply)
-         ctx.globalCompositeOperation = 'multiply';
-         ctx.drawImage(baseImg, offsetX, offsetY, renderWidth, renderHeight);
+        // 1. Draw the transparent garment to create an alpha mask
+        ctx.drawImage(baseImg, offsetX, offsetY, renderWidth, renderHeight);
+
+        // 2. Fill with color only where the garment exists (source-in uses alpha of destination)
+        ctx.globalCompositeOperation = 'source-in';
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 500, 500);
+
+        // 3. Draw the transparent garment again to apply shadows (multiply)
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.drawImage(baseImg, offsetX, offsetY, renderWidth, renderHeight);
       } else {
-         ctx.drawImage(baseImg, offsetX, offsetY, renderWidth, renderHeight);
+        ctx.drawImage(baseImg, offsetX, offsetY, renderWidth, renderHeight);
       }
-      
+
       // Draw overlays (Konva Stage)
       ctx.globalCompositeOperation = 'source-over';
       const stageDataURL = stageRef.current.toDataURL({ pixelRatio: 1 });
@@ -302,7 +302,7 @@ export default function DesignStudio() {
       overlayImg.onload = () => {
         ctx.drawImage(overlayImg, 0, 0, 500, 500);
         const finalImage = baseCanvas.toDataURL('image/jpeg', 0.8);
-        
+
         // Populate the form and scroll to it
         const formEl = document.querySelector('#quote-form');
         if (formEl) {
@@ -319,13 +319,13 @@ export default function DesignStudio() {
             msgField.dispatchEvent(new Event('change', { bubbles: true }));
           }
         }
-        
+
         console.log("Exported Image Data URL (can attach to form/email):", finalImage);
         alert("Design prepared! We've pre-filled the contact form. Please attach the design when we reply.");
-        
+
         document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
       };
-    }, 100); 
+    }, 100);
   };
 
   return (
@@ -342,8 +342,8 @@ export default function DesignStudio() {
             <h3>Garment</h3>
             <div className={styles.pillGroup}>
               {Object.keys(GARMENTS).map(g => (
-                <button 
-                  key={g} 
+                <button
+                  key={g}
                   className={garment === g ? styles.activePill : styles.pill}
                   onClick={() => setGarment(g)}
                 >
@@ -354,13 +354,13 @@ export default function DesignStudio() {
 
             <h3>View</h3>
             <div className={styles.pillGroup}>
-              <button 
+              <button
                 className={view === 'front' ? styles.activePill : styles.pill}
                 onClick={() => setView('front')}
               >
                 Front
               </button>
-              <button 
+              <button
                 className={view === 'back' ? styles.activePill : styles.pill}
                 onClick={() => setView('back')}
               >
@@ -370,9 +370,9 @@ export default function DesignStudio() {
 
             <h3>Base Color</h3>
             <div className={styles.colorSwatches}>
-              <input 
-                type="color" 
-                value={color} 
+              <input
+                type="color"
+                value={color}
                 onChange={(e) => setColor(e.target.value)}
                 className={styles.colorPicker}
                 title="Choose custom color"
@@ -385,8 +385,8 @@ export default function DesignStudio() {
           <div className={styles.canvasArea}>
             <div className={styles.canvasWrapper} ref={wrapperRef} style={{ backgroundColor: 'transparent' }}>
               {/* Layer 1: Solid Color Masked to Silhouette */}
-              <div 
-                style={{ 
+              <div
+                style={{
                   position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                   backgroundColor: color,
                   WebkitMaskImage: `url(${GARMENTS[garment][view]})`,
@@ -397,21 +397,21 @@ export default function DesignStudio() {
                   maskSize: 'contain',
                   maskPosition: 'center',
                   maskRepeat: 'no-repeat'
-                }} 
+                }}
               />
               {/* Layer 2: Original grayscale image (transparent bg) multiplied over the color */}
-              <img 
+              <img
                 ref={baseImgRef}
-                src={GARMENTS[garment][view]} 
+                src={GARMENTS[garment][view]}
                 alt={`${garment} ${view}`}
                 className={styles.baseGarment}
                 style={{ mixBlendMode: 'multiply', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'contain' }}
                 crossOrigin="anonymous"
               />
               <div className={styles.konvaContainer} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10 }}>
-                <Stage 
-                  width={stageWidth} 
-                  height={stageWidth} 
+                <Stage
+                  width={stageWidth}
+                  height={stageWidth}
                   scaleX={stageScale}
                   scaleY={stageScale}
                   onMouseDown={checkDeselect}
@@ -420,10 +420,10 @@ export default function DesignStudio() {
                 >
                   <Layer>
                     {/* Bounding box guide for print area */}
-                    <KonvaImage 
+                    <KonvaImage
                       visible={false}
                     />
-                    
+
                     {layers.map((layer) => {
                       if (layer.type === 'image') {
                         return (
@@ -458,7 +458,7 @@ export default function DesignStudio() {
 
           {/* RIGHT SIDEBAR: Layers & Additions */}
           <div className={styles.sidebar}>
-            
+
             {layers.length > 0 && (
               <>
                 <h3>Layers</h3>
@@ -467,26 +467,26 @@ export default function DesignStudio() {
                     <div key={layer.id} className={`${styles.layerItem} ${selectedId === layer.id ? styles.activeLayer : ''}`}>
                       <div className={styles.layerInfo} onClick={() => setSelectedId(layer.id)}>
                         <span>{layer.type === 'image' ? 'Image' : `Text: "${layer.text}"`}</span>
-                        
+
                         {selectedId === layer.id && (
                           <div className={styles.sizeControls}>
                             <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Size:</span>
-                            <button 
+                            <button
                               className={styles.sizeBtn}
-                              onClick={(e) => { 
-                                e.stopPropagation(); 
-                                if(layer.type === 'image') {
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (layer.type === 'image') {
                                   updateLayer(layer.id, { ...layer, width: Math.max(20, layer.width * 0.9), height: Math.max(20, layer.height * 0.9) });
                                 } else {
                                   updateLayer(layer.id, { ...layer, fontSize: Math.max(10, layer.fontSize * 0.9) });
                                 }
                               }}
                             >-</button>
-                            <button 
+                            <button
                               className={styles.sizeBtn}
-                              onClick={(e) => { 
-                                e.stopPropagation(); 
-                                if(layer.type === 'image') {
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (layer.type === 'image') {
                                   updateLayer(layer.id, { ...layer, width: layer.width * 1.1, height: layer.height * 1.1 });
                                 } else {
                                   updateLayer(layer.id, { ...layer, fontSize: layer.fontSize * 1.1 });
@@ -497,7 +497,7 @@ export default function DesignStudio() {
                         )}
 
                         {layer.type === 'text' && selectedId === layer.id && (
-                          <select 
+                          <select
                             value={layer.fontFamily}
                             onChange={(e) => updateLayer(layer.id, { ...layer, fontFamily: e.target.value })}
                             className={styles.fontSelect}
@@ -507,8 +507,8 @@ export default function DesignStudio() {
                           </select>
                         )}
                       </div>
-                      
-                      <button 
+
+                      <button
                         className={styles.deleteBtn}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -525,18 +525,18 @@ export default function DesignStudio() {
             )}
 
             <h3>Add Design</h3>
-            
-            <input 
-              type="file" 
-              accept="image/png, image/jpeg, image/svg+xml" 
+
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/svg+xml"
               ref={fileInputRef}
               style={{ display: 'none' }}
               onChange={handleFileUpload}
             />
-            <button className={`btn-primary ${styles.actionBtn}`} onClick={() => fileInputRef.current.click()}>
+            <button className={styles.actionBtn} onClick={() => fileInputRef.current.click()}>
               Upload Artwork
             </button>
-            <button className={`btn-outline ${styles.actionBtn}`} onClick={addText}>
+            <button className={styles.actionBtn} onClick={addText}>
               Add Text
             </button>
 
@@ -553,7 +553,7 @@ export default function DesignStudio() {
 
 
 
-            <button className={`btn-primary ${styles.submitBtn}`} onClick={handleRequestDesign}>
+            <button className={styles.submitBtn} onClick={handleRequestDesign}>
               Request This Custom Design
             </button>
           </div>

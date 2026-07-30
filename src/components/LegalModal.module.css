@@ -133,7 +133,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: none;
+  /* cursor: none; */
   flex-shrink: 0;
   transition:
     background 0.25s ease,
@@ -335,7 +335,7 @@
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: var(--radius-full);
   padding: 12px 28px;
-  cursor: none;
+  /* cursor: none; */
   transition:
     color 0.25s ease,
     border-color 0.25s ease,

@@ -3,7 +3,7 @@ import styles from './Portfolio.module.css'
 import LookbookModal from './LookbookModal'
 import OptimizedImage from './OptimizedImage'
 
-const filters = ['All', 'Hoodies', 'Tees and Essential Shorts', 'Tracksuits', 'Gymwear']
+const filters = ['All', 'Hoodies', 'Tees & Essentials', 'Tracksuits', 'Gymwear', 'Corporate Uniforms']
 
 const items = [
   { id: 101, cat: 'Hoodies', title: 'Celestial Blue Zip-Up', desc: 'Blue heavyweight zip-up with white star graphics', img: '/portfolio/custom_hoodie_1.jpg', badge: 'New Arrival' },
@@ -18,14 +18,14 @@ const items = [
   { id: 6, cat: 'Hoodies', title: 'Premium Edition', desc: 'Custom crafted detailing', img: '/portfolio/IMG_5445.PNG' },
   { id: 7, cat: 'Hoodies', title: 'Classic Heavyweight', desc: 'High-quality cotton construction', img: '/portfolio/IMG_5446.PNG' },
   { id: 8, cat: 'Hoodies', title: 'Signature Drop', desc: 'Exclusive release garment', img: '/portfolio/IMG_5447.PNG', badge: 'Exclusive' },
-  { id: 9, cat: 'Tees and Essential Shorts', title: 'First 48 Crimson Set', desc: 'Red motion matching short set', img: '/portfolio/IMG_5454.PNG', badge: 'New' },
-  { id: 10, cat: 'Tees and Essential Shorts', title: 'Plain White Heavyweight', desc: 'Premium cotton construction tee', img: '/portfolio/IMG_5449.PNG' },
-  { id: 11, cat: 'Tees and Essential Shorts', title: 'Broken Tears Graphic', desc: 'Raven puff print back design', img: '/portfolio/IMG_5450.PNG', badge: 'Limited' },
-  { id: 12, cat: 'Tees and Essential Shorts', title: 'First 48 Midnight Set', desc: 'Black motion matching short set', img: '/portfolio/IMG_5453.PNG' },
-  { id: 13, cat: 'Tees and Essential Shorts', title: 'First 48 Snow Set', desc: 'White motion matching short set', img: '/portfolio/IMG_5455.PNG', badge: 'New' },
-  { id: 14, cat: 'Tees and Essential Shorts', title: 'Essential Core Tee', desc: 'Minimalist street styling', img: '/portfolio/IMG_5448.PNG' },
-  { id: 15, cat: 'Tees and Essential Shorts', title: 'Lounge Comfort Set', desc: 'Premium relaxation fit', img: '/portfolio/IMG_5451.PNG' },
-  { id: 16, cat: 'Tees and Essential Shorts', title: 'Signature Athletic Gear', desc: 'High motion mobility set', img: '/portfolio/IMG_5452.PNG' },
+  { id: 9, cat: 'Tees & Essentials', title: 'First 48 Crimson Set', desc: 'Red motion matching short set', img: '/portfolio/IMG_5454.PNG', badge: 'New' },
+  { id: 10, cat: 'Tees & Essentials', title: 'Plain White Heavyweight', desc: 'Premium cotton construction tee', img: '/portfolio/IMG_5449.PNG' },
+  { id: 11, cat: 'Tees & Essentials', title: 'Broken Tears Graphic', desc: 'Raven puff print back design', img: '/portfolio/IMG_5450.PNG', badge: 'Limited' },
+  { id: 12, cat: 'Tees & Essentials', title: 'First 48 Midnight Set', desc: 'Black motion matching short set', img: '/portfolio/IMG_5453.PNG' },
+  { id: 13, cat: 'Tees & Essentials', title: 'First 48 Snow Set', desc: 'White motion matching short set', img: '/portfolio/IMG_5455.PNG', badge: 'New' },
+  { id: 14, cat: 'Tees & Essentials', title: 'Essential Core Tee', desc: 'Minimalist street styling', img: '/portfolio/IMG_5448.PNG' },
+  { id: 15, cat: 'Tees & Essentials', title: 'Lounge Comfort Set', desc: 'Premium relaxation fit', img: '/portfolio/IMG_5451.PNG' },
+  { id: 16, cat: 'Tees & Essentials', title: 'Signature Athletic Gear', desc: 'High motion mobility set', img: '/portfolio/IMG_5452.PNG' },
   { id: 17, cat: 'Tracksuits', title: 'Pain 2 Champain Noir', desc: 'Black heavyweight tracksuit matching set', img: '/portfolio/IMG_5456.PNG', badge: 'Signature' },
   { id: 18, cat: 'Tracksuits', title: 'Money Crazy Noir', desc: 'Full zip black tracksuit with patches', img: '/portfolio/IMG_5457.PNG', badge: 'Limited' },
   { id: 19, cat: 'Tracksuits', title: 'Noir Tracksuit Profile', desc: 'Form-fitting custom black activewear', img: '/portfolio/IMG_5458.PNG' },
@@ -160,7 +160,7 @@ export default function Portfolio() {
     if (active === 'All') {
       const topItems = [];
       const remainingItems = [];
-      const categories = ['Hoodies', 'Tees and Essential Shorts', 'Tracksuits', 'Gymwear'];
+      const categories = ['Hoodies', 'Tees & Essentials', 'Tracksuits', 'Gymwear', 'Corporate Uniforms'];
       
       categories.forEach(cat => {
         const catItems = items.filter(i => i.cat === cat);

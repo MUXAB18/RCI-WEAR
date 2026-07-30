@@ -8,6 +8,7 @@ import About from './components/About'
 import Collections from './components/Collections'
 import Contact from './components/Contact'   // must be eager: navbar links to #contact
 import CustomCursor from './components/CustomCursor'
+import Preloader from './components/Preloader'
 
 // ── Below-fold: lazy imports (loaded only when idle) ──
 const Portfolio     = lazy(() => import('./components/Portfolio'))
@@ -120,6 +121,8 @@ export default function App() {
 
   return (
     <>
+      <Preloader />
+      
       {/* Scroll progress */}
       <div id="scroll-progress" />
 

@@ -117,28 +117,27 @@ export default function Hero({ onGetQuote }) {
       {/* Background */}
       <div className={styles.bg} ref={bgRef}>
         <div className={styles.bgImage} />
-        {/* Monogram Watermark */}
-        <div className={styles.monogramWatermark}>
-          <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="6" aria-hidden="true">
-            <circle cx="50" cy="50" r="46" strokeWidth="4" />
-            <text x="50" y="65" fontSize="32" fill="currentColor" stroke="none" textAnchor="middle" letterSpacing="4" fontFamily="sans-serif" fontWeight="bold">R</text>
-          </svg>
-        </div>
         <div className={styles.bgTint} />
-
       </div>
 
-      {/* Cinematic grid lines */}
+      {/* Cinematic grid lines (now just one dashed center line) */}
       <div className={styles.gridLines}>
-        {[...Array(5)].map((_, i) => (
-          <div key={i} className={styles.gridLine} style={{ left: `${(i + 1) * 16.66}%` }} />
-        ))}
+        <div className={styles.gridLineCenter} />
       </div>
 
       {/* Content */}
       <div className={styles.content}>
         {/* Left text column */}
         <div className={styles.contentText}>
+
+          {/* Eyebrow / Est line (now above title) */}
+          <div ref={eyebrowRef} className={styles.eyebrow}>
+            <span className={styles.eyebrowLine} />
+            <div className={styles.eyebrowSticker}>
+              <span className={styles.eyebrowBold}>EST. 2017</span>
+              <span className={styles.eyebrowLight}>SIALKOT, PAKISTAN</span>
+            </div>
+          </div>
 
           {/*
             LCP ELEMENT: The h1 is the Largest Contentful Paint element.
@@ -154,16 +153,9 @@ export default function Hero({ onGetQuote }) {
             </span>
           </h1>
 
-          {/* Eyebrow / Est line */}
-          <div ref={eyebrowRef} className={styles.eyebrow}>
-            <span className={styles.eyebrowLine} />
-            <span>Est. Premium Collections · Since 2017</span>
-          </div>
-
           {/* Tagline */}
           <div ref={taglineRef} className={styles.tagline}>
-            <span className={styles.taglineBar} />
-            <p className={styles.taglineText}>Where Imagination Meets Fabrication</p>
+            <p className={styles.taglineText}>Where imagination meets fabrication</p>
           </div>
 
           {/* Description */}
@@ -178,26 +170,30 @@ export default function Hero({ onGetQuote }) {
               className={styles.ctaPill}
               onClick={() => scrollTo('#portfolio')}
             >
-              Explore Collections
+              EXPLORE COLLECTIONS
             </MagneticButton>
             <MagneticButton
               className={`${styles.ctaPill} ${styles.ctaOutline}`}
               onClick={() => scrollTo('#contact')}
             >
-              Get in touch
+              GET IN TOUCH
             </MagneticButton>
           </div>
 
           {/* Stats */}
           <div ref={statsRef} className={styles.stats}>
             {[
-              { num: '10+', label: 'Years Experience' },
-              { num: '500+', label: 'Clients Worldwide' },
-              { num: '100%', label: 'Premium Quality' },
+              { num: '10K+', label: 'MONTHLY CAPACITY' },
+              { num: 'OEM', label: 'PRIVATE LABEL READY' },
+              { num: '100%', label: 'QUALITY INSPECTED' },
+              { num: '24h', label: 'RESPONSE GUARANTEE' },
+              { num: 'A+', label: 'FABRIC GRADE SOURCING' },
             ].map((s, i) => (
               <div key={i} className={styles.stat}>
                 <span className={styles.statNum}>{s.num}</span>
-                <span className={styles.statLabel}>{s.label}</span>
+                <div className={styles.statLabelWrap}>
+                  <span className={styles.statLabel}>{s.label}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -207,15 +203,16 @@ export default function Hero({ onGetQuote }) {
           Logo column — desktop only.
         */}
         <div className={styles.logoFloat} aria-hidden="true">
-          <div className={styles.logoRing} />
-          <div className={styles.logoRing2} />
+          <div className={styles.logoRingOuter} />
+          <div className={styles.logoRingMiddle} />
+          <div className={styles.logoRingInner} />
           <div className={styles.logoInner}>
             <img
               src="/logo.webp"
               alt="Rasheed Clothing International"
               className={styles.logoImg}
-              width={380}
-              height={380}
+              width={220}
+              height={220}
               loading="eager"
               decoding="async"
             />

@@ -20,7 +20,7 @@ export default function About() {
       { threshold: 0.06 }
     )
     const delay = setTimeout(() => {
-      sectionRef.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right')?.forEach(el => observer.observe(el))
+      sectionRef.current?.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-up')?.forEach(el => observer.observe(el))
     }, 100)
 
     // Parallax with throttling
@@ -43,12 +43,12 @@ export default function About() {
         ticking = true
       }
     }
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true })
-    
-    return () => { 
+
+    return () => {
       clearTimeout(delay)
-      observer.disconnect() 
+      observer.disconnect()
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
@@ -56,14 +56,22 @@ export default function About() {
   return (
     <section id="about" className={`section ${styles.about}`} ref={sectionRef}>
       <div className="container">
-        <div className={styles.grid}>
 
+        {/* Centered Header */}
+        <div className={`${styles.sectionHeader} reveal-up`}>
+          <p className="section-label">Our Story</p>
+          <h2 className="section-title" style={{ color: 'var(--white)' }}>
+            Crafting Dreams<br />Into <em className="silver-text" style={{ fontStyle: 'italic' }}>Reality</em>
+          </h2>
+        </div>
+
+        <div className={styles.grid}>
           {/* Left visual */}
           <div className={`${styles.visual} reveal-left`}>
             <div className={styles.imageFrame} ref={imgRef} style={{ transition: 'transform 0.1s linear' }}>
               <div className={styles.imageMain}>
-                <OptimizedImage 
-                  src="/about_img.jpg" 
+                <OptimizedImage
+                  src="/about_img.jpg"
                   alt="Rasheed Clothing International craftsmanship"
                   width={600}
                   height={800}
@@ -82,18 +90,15 @@ export default function About() {
 
           {/* Right text */}
           <div className={`${styles.text} reveal-right`}>
-            <p className="section-label">Our Story</p>
-            <h2 className="section-title" style={{ color: 'var(--white)' }}>
-              Crafting Dreams<br/>Into <em className="silver-text" style={{ fontStyle: 'italic' }}>Reality</em>
-            </h2>
-            <div className="divider" />
-
             <div className={styles.bodyContainer}>
+              <h4 className={styles.bodyHeading}>
+                Crafted to Perform, Styled to Last
+              </h4>
               <p className={styles.body}>
-                Rasheed Clothing International was born from a passion for fashion and a relentless pursuit of quality. With roots in the rich textile heritage of Pakistan, we blend traditional craftsmanship with contemporary design sensibilities.
+                Rasheed Clothing International was born from a passion for fashion and a relentless pursuit of quality. Rooted in Pakistan's rich textile heritage, we blend traditional craftsmanship with contemporary design sensibilities — engineering every piece for comfort, durability, and standout style.
               </p>
               <p className={styles.body}>
-                Whether it's a bespoke bridal ensemble, corporate uniforms, or a full ready-to-wear collection — every garment is engineered to make you feel extraordinary.
+                From premium hoodies and everyday essentials to performance gymwear, tracksuits, and custom team jerseys, we manufacture apparel that carries your brand with precision. Corporate uniforms, athletic kits, or full ready-to-wear collections — every garment is built to make your brand feel extraordinary.
               </p>
             </div>
 
@@ -107,25 +112,28 @@ export default function About() {
                 <span className={styles.badgeName}>Sialkot Chamber of Commerce</span>
               </div>
             </div>
-
-            {/* Values grid */}
-            <div className={styles.values}>
-              {values.map((v, i) => (
-                <div
-                  key={i}
-                  className={`${styles.valueItem} reveal`}
-                  style={{ transitionDelay: `${0.1 + i * 0.08}s` }}
-                >
-                  <span className={styles.valueNum}>{v.icon}</span>
-                  <div>
-                    <h4 className={styles.valueName}>{v.title}</h4>
-                    <p className={styles.valueDesc}>{v.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
+
+        {/* Values grid moved below to save vertical space and look more elegant */}
+        <div className={`${styles.valuesContainer} reveal-up`}>
+          <div className={styles.values}>
+            {values.map((v, i) => (
+              <div
+                key={i}
+                className={styles.valueItem}
+                style={{ transitionDelay: `${0.1 + i * 0.08}s` }}
+              >
+                <span className={styles.valueNum}>{v.icon}</span>
+                <div>
+                  <h3 className={styles.valueName}>{v.title}</h3>
+                  <p className={styles.valueDesc}>{v.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   )

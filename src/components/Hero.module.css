@@ -3,12 +3,11 @@
    ═══════════════════════════════════════════════ */
 .hero {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: #B0AFAB;
+  background: #C4C4C4;
 }
 
 /* Wipe overlay removed — it was blocking Lighthouse LCP measurement */
@@ -22,43 +21,27 @@
 .bgImage {
   position: absolute;
   inset: 0;
-  background: #B0AFAB;
+  background: #C4C4C4;
+  background-image: radial-gradient(rgba(11, 11, 11, 0.12) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
 }
 
-/* Acid grey noise texture on hero */
+/* Subtle noise texture */
 .bgImage::after {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.06;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   background-size: 128px 128px;
   pointer-events: none;
   mix-blend-mode: multiply;
 }
 
-/* Monogram oversized watermark */
-.monogramWatermark {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.monogramWatermark svg {
-  width: min(70vw, 700px);
-  height: min(70vw, 700px);
-  color: var(--ink-black);
-  opacity: 0.02;
-}
-
 .bgTint {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 110% 110% at 50% 50%, transparent 45%, rgba(10, 10, 10, 0.10) 100%);
+  background: radial-gradient(ellipse 120% 120% at 50% 50%, transparent 40%, rgba(10, 10, 10, 0.05) 100%);
 }
 
 /* ── Flashlight ── */
@@ -77,16 +60,14 @@
   z-index: 1;
 }
 
-.gridLine {
+.gridLineCenter {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: 50%;
   width: 1px;
-  background: linear-gradient(180deg,
-      transparent 0%,
-      rgba(11, 11, 11, 0.04) 20%,
-      rgba(11, 11, 11, 0.04) 80%,
-      transparent 100%);
+  background-image: linear-gradient(180deg, rgba(11, 11, 11, 0.15) 50%, transparent 50%);
+  background-size: 1px 12px;
   transform: translateX(-50%);
 }
 
@@ -95,7 +76,8 @@
   position: relative;
   z-index: 5;
   padding: 0 clamp(20px, 5vw, 120px);
-  margin-top: 100px;
+  margin-top: 60px;
+  /* Reduced from 100px to give more vertical space */
   width: 100%;
   box-sizing: border-box;
   overflow: visible;
@@ -121,24 +103,55 @@
 .eyebrow {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
   margin-bottom: 40px;
-  font-family: var(--font-sans);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--deep-stone);
-  /* opacity starts at 0.4 via GSAP — removed CSS opacity:0 to allow LCP measurement */
 }
 
 .eyebrowLine {
   display: inline-block;
   width: 48px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(11, 11, 11, 0.3), transparent);
-  opacity: 0.85;
-  flex-shrink: 0;
+  background: rgba(11, 11, 11, 0.3);
+  position: relative;
+}
+
+.eyebrowLine::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid rgba(11, 11, 11, 0.4);
+  background: transparent;
+}
+
+.eyebrowSticker {
+  background: rgba(245, 245, 240, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 6px 12px;
+  transform: rotate(-3deg);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.eyebrowBold {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--near-black);
+}
+
+.eyebrowLight {
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: rgba(11, 11, 11, 0.6);
 }
 
 /* ── Title ── */
@@ -159,7 +172,7 @@
 
 .titleLine {
   display: inline-block;
-  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
   color: var(--near-black);
   font-style: normal;
   font-family: var(--font-display);
@@ -177,11 +190,11 @@
   font-family: var(--font-display);
 }
 
-/* Second title line — italic grey */
+/* Second title line */
 .titleLineGold {
   display: inline-block;
-  color: var(--deep-stone);
-  font-size: clamp(2.5rem, 6vw, 6rem);
+  color: var(--near-black);
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
   font-style: normal;
   overflow: visible;
   white-space: nowrap;
@@ -195,26 +208,18 @@
 .tagline {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   max-width: 100%;
   overflow: visible;
 }
 
-.taglineBar {
-  width: 56px;
-  height: 1px;
-  background: var(--near-black);
-  opacity: 0.2;
-  flex-shrink: 0;
-}
-
 .taglineText {
   font-family: var(--font-italic);
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-style: italic;
   font-weight: 400;
-  color: var(--deep-stone);
+  color: var(--near-black);
+  opacity: 0.8;
   letter-spacing: 0.2px;
   white-space: nowrap;
   overflow: visible;
@@ -223,24 +228,24 @@
 /* ── Description ── */
 .description {
   font-family: var(--font-sans);
-  font-size: 0.9rem;
-  font-weight: 300;
-  color: var(--deep-stone);
-  line-height: 2;
-  max-width: 460px;
-  margin-bottom: 56px;
-  letter-spacing: 0.15px;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--near-black);
+  opacity: 0.7;
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 48px;
+  letter-spacing: 0.2px;
 }
 
 /* ── Actions ── */
 .actions {
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  flex-direction: row;
+  align-items: center;
   gap: 16px;
   margin-bottom: 48px;
-  width: 100%;
-  max-width: 520px;
+  width: auto;
 }
 
 /* Black pill CTA — primary */
@@ -249,7 +254,7 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
-  padding: 20px 48px;
+  padding: 16px 32px;
   background: #1A1A1A;
   color: #FFFFFF;
   font-family: var(--font-sans);
@@ -257,14 +262,14 @@
   font-weight: 600;
   letter-spacing: 3.5px;
   text-transform: uppercase;
-  border: 2px solid #1A1A1A;
+  border: 1px solid #1A1A1A;
   border-radius: 9999px;
-  cursor: none;
+  /* cursor: none; */
   transition:
     background 0.35s cubic-bezier(0.33, 1, 0.68, 1),
     color 0.35s cubic-bezier(0.33, 1, 0.68, 1),
     transform 0.35s cubic-bezier(0.33, 1, 0.68, 1);
-  width: 100%;
+  width: auto;
 }
 
 .ctaPill:hover {
@@ -288,50 +293,53 @@
 /* ── Stats ── */
 .stats {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0;
+  flex-wrap: wrap;
+  align-items: stretch;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  width: 100%;
 }
 
 .stat {
+  flex: 1 1 18%; /* Base 1/5th */
+  min-width: 90px; /* Don't squash too small */
+  background: transparent;
+  padding: 10px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-wrap: nowrap;
-  gap: 12px;
-  padding: 0 48px;
-  border-right: 1px solid rgba(11, 11, 11, 0.10);
-  text-align: center;
-}
-
-.stat:first-child {
-  padding-left: 0;
-}
-
-.stat:last-child {
-  border-right: none;
-  padding-right: 0;
+  gap: 4px;
 }
 
 .statNum {
   font-family: var(--font-display);
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   font-weight: 400;
-  color: var(--ink-black);
-  line-height: 1;
+  color: var(--near-black);
   letter-spacing: -0.03em;
-  text-align: center;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--near-black) 0%, #4A3820 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.statLabelWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 
 .statLabel {
   font-family: var(--font-sans);
-  font-size: 8px;
-  font-weight: 500;
-  letter-spacing: 3px;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--deep-stone);
-  text-align: center;
+  color: rgba(11, 11, 11, 0.6);
   white-space: nowrap;
 }
 
@@ -339,59 +347,51 @@
 .logoFloat {
   position: relative;
   flex-shrink: 0;
-  width: clamp(200px, 30vw, 380px);
-  max-width: 380px;
+  width: clamp(260px, 34vw, 420px);
+  height: clamp(260px, 34vw, 420px);
+  max-width: 420px;
   z-index: 4;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: floatY 7s ease-in-out infinite;
 }
 
-.logoRing {
+.logoRingOuter {
   position: absolute;
-  inset: -28px;
+  inset: -60px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  animation: pulsate 3.5s ease-out infinite;
+  border: 1px dashed rgba(11, 11, 11, 0.2);
+  animation: rotateSlow 30s linear infinite;
 }
 
-.logoRing2 {
+.logoRingMiddle {
   position: absolute;
-  inset: -52px;
+  inset: -20px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  animation: pulsate 3.5s ease-out 1s infinite;
+  border: 1px dotted rgba(11, 11, 11, 0.3);
+  animation: rotateSlow 20s linear reverse infinite;
+}
+
+.logoRingInner {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(11, 11, 11, 0.1);
 }
 
 .logoInner {
-  width: clamp(200px, 30vw, 380px);
-  height: clamp(200px, 30vw, 380px);
+  width: clamp(220px, 26vw, 300px);
+  height: clamp(220px, 26vw, 300px);
   border-radius: 50%;
   border: 1px solid rgba(11, 11, 11, 0.12);
   background: rgba(245, 245, 245, 0.95);
   overflow: hidden;
   position: relative;
+  z-index: 2;
   box-shadow:
     0 0 0 1px rgba(11, 11, 11, 0.06),
     0 24px 64px rgba(11, 11, 11, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.logoInner::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg,
-      transparent 0deg,
-      rgba(0, 0, 0, 0.55) 55deg,
-      transparent 110deg,
-      transparent 195deg,
-      rgba(0, 0, 0, 0.28) 255deg,
-      transparent 315deg);
-  animation: rotateSlow 7s linear infinite;
-  z-index: -1;
 }
 
 .logoImg {
@@ -586,37 +586,30 @@
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .actions {
-    justify-content: center;
-    width: 100%;
+    .taglineText {
+      font-size: 9px;
+    }
   }
 
   .stats {
-    justify-content: center;
-    gap: 0;
-    flex-wrap: nowrap;
+    margin-top: 16px;
   }
 
   .stat {
-    border-right: 1px solid rgba(11, 11, 11, 0.10);
-    padding: 0 32px;
-    align-items: center;
-    justify-content: center;
+    padding: 12px 4px;
   }
 
-  .stat:first-child {
-    padding-left: 0;
-  }
-
-  .stat:last-child {
-    border-right: none;
-    padding-right: 0;
+  .scrollIndicator {
+    display: none;
   }
 }
 
 @media (max-width: 768px) {
+  .hero {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
   .content {
     padding: 128px 20px 88px;
     margin-top: 0;
@@ -647,11 +640,7 @@
   }
 
   .eyebrow {
-    justify-content: center;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 6px;
+    display: none !important;
   }
 
   .eyebrowLine {
@@ -682,28 +671,6 @@
 
   .actions {
     justify-content: center;
-  }
-
-  .stats {
-    justify-content: center;
-    gap: 0;
-    flex-wrap: nowrap;
-  }
-
-  .stat {
-    border-right: 1px solid rgba(11, 11, 11, 0.10);
-    padding: 0 28px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .stat:first-child {
-    padding-left: 0;
-  }
-
-  .stat:last-child {
-    border-right: none;
-    padding-right: 0;
   }
 
   .scrollIndicator {
@@ -747,31 +714,15 @@
   }
 
   .stats {
-    gap: 0;
-    flex-wrap: wrap;
-    justify-content: center;
+    /* Flex wrapping will handle it */
   }
 
   .stat {
-    flex: 0 0 50%;
-    box-sizing: border-box;
-    padding: 12px 16px;
-    border-right: none;
-    border-bottom: none;
-    align-items: center;
-    justify-content: center;
+    flex: 1 1 30%;
+    padding: 12px 4px;
   }
 
-  /* Put the third stat on its own row centered */
-  .stat:nth-child(3) {
-    flex-basis: 100%;
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 0;
-  }
-
-  /* Vertical divider between the two items on the first row */
-  .stat:nth-child(1) {
-    border-right: 1px solid rgba(11, 11, 11, 0.08);
+  .scrollIndicator {
+    display: none;
   }
 }

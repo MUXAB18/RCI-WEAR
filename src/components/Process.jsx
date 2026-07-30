@@ -46,7 +46,7 @@ export default function Process() {
   return (
     <section id="process" className={`section ${styles.process}`} ref={sectionRef} aria-label="Our Couture Manufacturing Process">
       <div className={`container ${styles.container}`}>
-        
+
         {/* Header */}
         <div className={`${styles.header} reveal-up`}>
           <p className="section-label">Behind the Craft</p>
@@ -54,7 +54,7 @@ export default function Process() {
             The Process
           </h2>
           <p className={styles.subtitle}>
-            A meticulous five-step journey from conceptual vision to tangible reality. 
+            A meticulous five-step journey from conceptual vision to tangible reality.
             Engineered for brands that demand perfection.
           </p>
         </div>
@@ -64,12 +64,12 @@ export default function Process() {
           <div className={styles.grid}>
             {/* The horizontal axis line */}
             <div className={styles.line}></div>
-            
+
             {steps.map((step, i) => {
               const isBottom = i % 2 === 0;
               return (
                 <div key={i} className={styles.step}>
-                  
+
                   {/* Top Content Area */}
                   <div className={styles.contentTopWrapper}>
                     {!isBottom && (
@@ -109,34 +109,6 @@ export default function Process() {
           </div>
         </div>
 
-        {/* Bottom CTA */}
-        <div className={`${styles.cta} reveal-up`}>
-          <div className={styles.ctaInner}>
-            <p className={styles.ctaLabel}>Ready to realize your vision?</p>
-            <h3 className={styles.ctaTitle}>
-              Your design. Our craft. <em>Extraordinary results.</em>
-            </h3>
-            <a
-              href="#contact"
-              className={`btn-primary ${styles.ctaBtn}`}
-              onClick={(e) => {
-                e.preventDefault()
-                const formEl = document.querySelector('#quote-form')
-                if (formEl) {
-                  const subjField = formEl.querySelector('select[name="subject"]')
-                  if (subjField) {
-                    const setter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set
-                    setter.call(subjField, 'Free Mock Up')
-                    subjField.dispatchEvent(new Event('change', { bubbles: true }))
-                  }
-                }
-                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
-              }}
-            >
-              Get Free Mock Up
-            </a>
-          </div>
-        </div>
 
       </div>
     </section>

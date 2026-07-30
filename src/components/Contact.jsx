@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 import styles from './Contact.module.css'
 import MagneticButton from './MagneticButton'
@@ -18,15 +18,6 @@ function formatDate() {
   })
 }
 
-/* ── Trust badge data ── */
-const TRUST = [
-  { stat: '10+', label: 'Years of Excellence', icon: '◈' },
-  { stat: '500+', label: 'Products Manufactured', icon: '◈' },
-  { stat: '50+', label: 'Countries Served', icon: '◈' },
-  { stat: '100%', label: 'Quality Inspected', icon: '◈' },
-  { stat: 'OEM', label: 'Private Label Ready', icon: '◈' },
-  { stat: '24h', label: 'Response Guarantee', icon: '◈' },
-]
 
 /* ── Enquiry options ── */
 const ENQUIRY_TYPES = [
@@ -38,13 +29,13 @@ const ENQUIRY_TYPES = [
 ]
 
 export default function Contact() {
-  const [form, setForm] = useState({ 
-    name: '', 
-    email: '', 
-    phone: '', 
-    subject: '', 
-    category: '', 
-    message: '' 
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    category: '',
+    message: ''
   })
   const [status, setStatus] = useState('idle') // idle, sending, success, error
   const [errorMessage, setErrorMessage] = useState('')
@@ -54,6 +45,17 @@ export default function Contact() {
   const todayStr = useMemo(() => formatDate(), [])
 
   const handle = e => setForm({ ...form, [e.target.name]: e.target.value })
+
+  // Listen for prefill events from other components (like Collections)
+  useEffect(() => {
+    const handlePrefill = (e) => {
+      if (e.detail?.category) {
+        setForm(prev => ({ ...prev, category: e.detail.category }))
+      }
+    }
+    window.addEventListener('prefillContact', handlePrefill)
+    return () => window.removeEventListener('prefillContact', handlePrefill)
+  }, [])
 
   /* (reCAPTCHA removed) */
 
@@ -282,9 +284,11 @@ export default function Contact() {
                 >
                   <option value="">Select a product category</option>
                   <option value="Hoodies">Hoodies</option>
-                  <option value="Tees and Essential Shorts">Tees and Essential Shorts</option>
+                  <option value="Tees & Essentials">Tees & Essentials</option>
                   <option value="Tracksuits">Tracksuits</option>
                   <option value="Gymwear">Gymwear</option>
+                  <option value="Corporate Uniforms">Corporate Uniforms</option>
+                  <option value="Outerwear & Jackets">Outerwear & Jackets</option>
                 </select>
                 <span className={styles.fieldLine} aria-hidden="true" />
                 <svg className={styles.selectArrow} viewBox="0 0 12 8" fill="none">
@@ -369,20 +373,6 @@ export default function Contact() {
           </form>
         </div>
 
-        {/* ══════════════════════════════════
-            TRUST BADGES
-            ══════════════════════════════════ */}
-        <div className={`${styles.trustSection} reveal`} style={{ transitionDelay: '0.18s' }}>
-          <p className={styles.trustEyebrow}>Our Manufacturing Promise</p>
-          <div className={styles.trustGrid}>
-            {TRUST.map((t, i) => (
-              <div key={i} className={styles.trustCard}>
-                <span className={styles.trustStat}>{t.stat}</span>
-                <span className={styles.trustLabel}>{t.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* ══════════════════════════════════
             WORLDWIDE CONTACT CARDS

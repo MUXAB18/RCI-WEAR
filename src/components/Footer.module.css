@@ -169,7 +169,7 @@
   padding: 13px 0;
   text-align: left;
   text-decoration: none;
-  cursor: none;
+  /* cursor: none; */
   /* GPU-accelerated: transform only, no padding-left animation */
   transition:
     color 0.25s ease,
@@ -221,7 +221,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   text-decoration: none;
   transition: color 0.25s ease;
-  cursor: none;
+  /* cursor: none; */
   letter-spacing: 0.1px;
 }
 
@@ -295,7 +295,7 @@
   border: 1px solid rgba(255, 255, 255, 0.20);
   border-radius: var(--radius-full);
   transition: all 0.25s ease;
-  cursor: none;
+  /* cursor: none; */
 }
 
 .madeEmail:hover {

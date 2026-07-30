@@ -8,6 +8,7 @@ export default function QuoteModal({ isOpen, onClose }) {
     email: '',
     phone: '',
     enquiryType: '',
+    category: '',
     message: ''
   })
   const [status, setStatus] = useState('idle') // idle, sending, success, error
@@ -59,7 +60,8 @@ export default function QuoteModal({ isOpen, onClose }) {
         from_name: form.name,
         reply_to: form.email,
         phone: form.phone || 'Not provided',
-        enquiry_type: form.enquiryType,
+        enquiry_type: form.enquiryType || 'General Enquiry',
+        category: form.category || 'N/A',
         message: form.message,
       }
 
@@ -67,7 +69,8 @@ export default function QuoteModal({ isOpen, onClose }) {
       const customerEmailData = {
         to_email: form.email, // Customer's email
         from_name: form.name,
-        enquiry_type: form.enquiryType,
+        enquiry_type: form.enquiryType || 'General Enquiry',
+        category: form.category || 'N/A',
         message: form.message,
       }
 
@@ -91,7 +94,7 @@ export default function QuoteModal({ isOpen, onClose }) {
       setTimeout(() => {
         onClose()
         setStatus('idle')
-        setForm({ name: '', email: '', phone: '', enquiryType: '', message: '' })
+        setForm({ name: '', email: '', phone: '', enquiryType: '', category: '', message: '' })
       }, 3000)
     } catch (error) {
       console.error('Email send failed:', error)
@@ -211,6 +214,32 @@ export default function QuoteModal({ isOpen, onClose }) {
                       <option value="Free Mock Up">Free Mock Up</option>
                       <option value="Corporate Uniforms">Corporate Uniforms</option>
                       <option value="Other">Other</option>
+                    </select>
+                    <div className={styles.selectArrow}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.row}>
+                <div className={styles.field} style={{ width: '100%' }}>
+                  <label htmlFor="category">Product Category (Optional)</label>
+                  <div className={styles.selectWrapper}>
+                    <select
+                      id="category"
+                      name="category"
+                      value={form.category}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select a product category</option>
+                      <option value="Hoodies">Hoodies</option>
+                      <option value="Tees & Essentials">Tees & Essentials</option>
+                      <option value="Tracksuits">Tracksuits</option>
+                      <option value="Gymwear">Gymwear</option>
+                      <option value="Corporate Uniforms">Corporate Uniforms</option>
                     </select>
                     <div className={styles.selectArrow}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

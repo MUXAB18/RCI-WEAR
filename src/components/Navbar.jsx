@@ -8,6 +8,7 @@ const navLinks = [
   { label: 'Collections', href: '#collections' },
   { label: 'Process', href: '#process' },
   { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Design', href: '#design-studio' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -16,79 +17,110 @@ export default function Navbar({ onGetQuote, onContact }) {
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [active, setActive] = useState('Home')
-  const lastY = useRef(0)
   const navRef = useRef(null)
-  const sectionsRef = useRef([])
-  const tickingRef = useRef(false)
-  const scrollThrottle = useRef(0)
+  const linksRef = useRef({})
+  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0, opacity: 0 })
 
   /* ── Scroll behavior ── */
   useEffect(() => {
+    let lastScrollY = window.scrollY
+    let ticking = false
+
     const updateNav = () => {
       const currentScrollY = window.scrollY
 
       // Update scrolled state (glass effect kicks in after 40px)
-      setScrolled(prev => {
-        const isScrolled = currentScrollY > 40
-        return isScrolled !== prev ? isScrolled : prev
-      })
+      setScrolled(currentScrollY > 40)
 
-      // Hide on scroll-down, show on scroll-up
-      // Only hide after 80px so navbar stays visible near the top
-      setHidden(prev => {
-        if (currentScrollY <= 80) {
-          // Always visible near top of page
-          lastY.current = currentScrollY
-          return false
-        }
-
-        if (currentScrollY > lastY.current + 15) {
-          // Scrolling DOWN — hide navbar
-          lastY.current = currentScrollY
-          return true
-        }
-
-        if (currentScrollY < lastY.current - 15) {
-          // Scrolling UP — show navbar
-          lastY.current = currentScrollY
-          return false
-        }
-
-        return prev
-      })
-
-      // Update active section — use 45% of viewport as trigger line
-      let cur = navLinks[0].label
-      const threshold = window.innerHeight * 0.45
-      for (const { label, href } of navLinks) {
-        const el = document.querySelector(href)
-        if (el) {
-          const rect = el.getBoundingClientRect()
-          if (rect.top <= threshold) cur = label
+      // Only hide on mobile, never on desktop
+      const isMobile = window.innerWidth <= 768
+      
+      if (!isMobile) {
+        // Desktop: always show navbar
+        setHidden(false)
+      } else {
+        // Mobile: hide/show based on scroll direction
+        if (currentScrollY <= 50) {
+          setHidden(false)
+        } else if (currentScrollY > lastScrollY && currentScrollY > 150) {
+          setHidden(true)
+        } else if (currentScrollY < lastScrollY) {
+          setHidden(false)
         }
       }
-      setActive(prev => (prev !== cur ? cur : prev))
 
-      tickingRef.current = false
+      lastScrollY = currentScrollY
+
+      // Update active section
+      let currentSection = 'Home'
+      const viewportMiddle = currentScrollY + (window.innerHeight / 2)
+      
+      // Check each section to find which one occupies the middle of viewport
+      for (const { label, href } of navLinks) {
+        const element = document.querySelector(href)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const elementTop = currentScrollY + rect.top
+          const elementBottom = elementTop + element.offsetHeight
+          
+          // Section is active if viewport middle is within it
+          if (viewportMiddle >= elementTop && viewportMiddle < elementBottom) {
+            currentSection = label
+            break
+          }
+        }
+      }
+      
+      if (active !== currentSection) {
+        setActive(currentSection)
+      }
+      
+      ticking = false
     }
 
     const handleScroll = () => {
-      if (!tickingRef.current) {
+      if (!ticking) {
         window.requestAnimationFrame(updateNav)
-        tickingRef.current = true
+        ticking = true
       }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', updateNav, { passive: true })
 
-    // Initial check on mount
-    updateNav()
+    // Initial check on mount (delayed to ensure DOM is ready)
+    const initTimer = setTimeout(updateNav, 300)
 
     return () => {
+      clearTimeout(initTimer)
       window.removeEventListener('scroll', handleScroll)
-      tickingRef.current = false
+      window.removeEventListener('resize', updateNav)
     }
-  }, [])
+  }, [active])
+
+  /* ── Sliding Indicator ── */
+  useEffect(() => {
+    const updateIndicator = () => {
+      const activeEl = linksRef.current[active]
+      if (activeEl) {
+        // Adjust left/width slightly for padding so it matches the text width
+        setIndicatorStyle({
+          width: activeEl.offsetWidth - 24,
+          left: activeEl.offsetLeft + 12,
+          opacity: 1
+        })
+      }
+    }
+    
+    // Slight delay to ensure layout is done
+    const timer = setTimeout(updateIndicator, 50)
+    window.addEventListener('resize', updateIndicator)
+    
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', updateIndicator)
+    }
+  }, [active])
 
   /* ── Magnetic nav links ── */
   const handleMagnet = useCallback((e) => {
@@ -153,6 +185,7 @@ export default function Navbar({ onGetQuote, onContact }) {
           {navLinks.map(l => (
             <a
               key={l.label}
+              ref={el => linksRef.current[l.label] = el}
               href={l.href}
               className={[styles.navLink, active === l.label ? styles.navActive : ''].join(' ')}
               onClick={(e) => handleNav(e, l.href, l.label)}
@@ -162,9 +195,10 @@ export default function Navbar({ onGetQuote, onContact }) {
               aria-current={active === l.label ? 'page' : undefined}
             >
               {l.label}
-              <span className={styles.navIndicator} />
+              <span className={styles.navHoverIndicator} />
             </a>
           ))}
+          <div className={styles.slidingIndicator} style={indicatorStyle} />
         </nav>
 
         {/* CTA */}
@@ -183,6 +217,7 @@ export default function Navbar({ onGetQuote, onContact }) {
           aria-label="Toggle navigation"
           aria-expanded={menuOpen}
         >
+          <span className={styles.burgerLine} />
           <span className={styles.burgerLine} />
           <span className={styles.burgerLine} />
         </button>

@@ -8,7 +8,7 @@
   gap: 12px;
   background: none;
   border: none;
-  cursor: none;
+  /* cursor: none; */
   padding: 8px 16px;
   border-radius: var(--radius-xl);
   transition: background 0.3s ease;

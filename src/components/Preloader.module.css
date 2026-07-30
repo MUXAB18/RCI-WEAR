@@ -1,0 +1,130 @@
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s cubic-bezier(0.7, 0, 0.3, 1), visibility 0.8s;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.preloader.fadeOut {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+}
+
+.text {
+  font-family: var(--font-sans);
+  color: #111111;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeInText 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.2s;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding: 0 10px;
+}
+
+.lineWrapper {
+  width: 180px;
+  height: 1px;
+  background: rgba(17, 17, 17, 0.1);
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111111;
+  transform: translateX(-100%);
+  animation: loadLine 1.4s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.1s;
+}
+
+/* Mobile specific centering */
+@media (max-width: 768px) {
+  .preloader {
+    padding: 30px 20px;
+  }
+  
+  .content {
+    gap: 20px;
+  }
+  
+  .text {
+    font-size: 11px;
+    letter-spacing: 6px;
+    line-height: 1.4;
+    padding: 0 15px;
+  }
+  
+  .lineWrapper {
+    width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .preloader {
+    padding: 30px 15px;
+  }
+  
+  .text {
+    font-size: 9px;
+    letter-spacing: 4px;
+    line-height: 1.5;
+    padding: 0 10px;
+  }
+  
+  .lineWrapper {
+    width: 100px;
+  }
+}
+
+@keyframes fadeInText {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loadLine {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}

@@ -2,7 +2,6 @@
   background: #F9F8F6;
   position: relative;
   overflow: visible; /* Prevent clipping */
-  padding-bottom: 80px;
 }
 
 .container {
@@ -30,7 +29,7 @@
 /* ── Timeline Wrapper ── */
 .timelineWrapper {
   width: 100%;
-  padding: 40px 0 80px;
+  padding: 40px 0 0;
 }
 
 /* ── New Robust Grid Layout ── */
