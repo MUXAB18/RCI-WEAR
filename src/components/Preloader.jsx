@@ -6,23 +6,19 @@ export default function Preloader() {
   const [isFading, setIsFading] = useState(false)
 
   useEffect(() => {
-    // Start fading out after 1.6 seconds to allow animation to complete
+    // Start fading out after 1s
     const fadeTimer = setTimeout(() => {
       setIsFading(true)
-    }, 1600)
+    }, 1000)
 
-    // Remove from DOM completely after fade out completes
+    // Remove from DOM after fade completes (1000 + 500ms transition)
     const removeTimer = setTimeout(() => {
       setIsVisible(false)
-    }, 2400) // 1600 + 800ms transition
-
-    // Prevent scrolling while loading
-    document.body.style.overflow = 'hidden'
+    }, 1500)
 
     return () => {
       clearTimeout(fadeTimer)
       clearTimeout(removeTimer)
-      document.body.style.overflow = '' // Revert inline style
     }
   }, [])
 

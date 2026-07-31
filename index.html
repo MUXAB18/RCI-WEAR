@@ -37,10 +37,13 @@
     content="custom clothing Pakistan, bulk order clothing, bridal collection, corporate uniforms, premium hoodies, custom sportswear, Sialkot clothing manufacturer" />
   <meta name="author" content="Rasheed Clothing International" />
 
-  <!-- Preconnect only for fonts -->
+  <!-- Preconnect for fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+  <!-- dns-prefetch for deferred 3rd-party origins (non-blocking) -->
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
 
   <!--
       Non-blocking font loading:
@@ -55,13 +58,15 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@200;300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Serif+Display:ital@0;1&display=swap" />
   </noscript>
 
-  <!-- Google Analytics — defer so it never blocks render -->
+  <!-- Google Analytics — both scripts deferred; inline config uses lazy-push pattern -->
   <script defer src="https://www.googletagmanager.com/gtag/js?id=G-JZHHWJ6J4G"></script>
-  <script>
+  <script defer>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+    function gtag() { window.dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'G-JZHHWJ6J4G');
+    gtag('config', 'G-JZHHWJ6J4G', { send_page_view: false });
+    // Send page view after page loads so it never competes with LCP
+    window.addEventListener('load', function () { gtag('event', 'page_view'); }, { once: true });
   </script>
 
   <!-- Google AdSense — load after page is interactive to avoid blocking -->

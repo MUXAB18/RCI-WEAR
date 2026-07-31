@@ -8,8 +8,8 @@ const filters = ['All', 'Hoodies', 'Tees & Essentials', 'Tracksuits', 'Gymwear',
 const items = [
   { id: 101, cat: 'Hoodies', title: 'Celestial Blue Zip-Up', desc: 'Blue heavyweight zip-up with white star graphics', img: '/portfolio/custom_hoodie_1.jpg', badge: 'New Arrival' },
   { id: 102, cat: 'Hoodies', title: 'Celestial Purple Zip-Up', desc: 'Purple heavyweight zip-up with white star graphics', img: '/portfolio/custom_hoodie_2.jpg', badge: 'New Arrival' },
-  { id: 103, cat: 'Hoodies', title: 'Celestial Blue Detail', desc: 'Detailed view of the blue star zip-up hoodie', img: '/portfolio/custom_hoodie_3.png' },
-  { id: 104, cat: 'Hoodies', title: 'Celestial Purple Detail', desc: 'Detailed view of the purple star zip-up hoodie', img: '/portfolio/custom_hoodie_4.png' },
+  { id: 103, cat: 'Hoodies', title: 'Celestial Blue Detail', desc: 'Detailed view of the blue star zip-up hoodie', img: '/portfolio/custom_hoodie_3.webp' },
+  { id: 104, cat: 'Hoodies', title: 'Celestial Purple Detail', desc: 'Detailed view of the purple star zip-up hoodie', img: '/portfolio/custom_hoodie_4.webp' },
   { id: 1, cat: 'Hoodies', title: 'Dead Snake Custom', desc: 'Black hoodie with red serpent graphic', img: '/portfolio/IMG_5442.PNG', badge: 'Limited' },
   { id: 2, cat: 'Hoodies', title: 'Forever Havin Motion', desc: 'Heavyweight black hoodie with white puff print', img: '/portfolio/IMG_5441.PNG', badge: 'Signature' },
   { id: 3, cat: 'Hoodies', title: 'Jetlag Studios Signature', desc: 'Two-tone sleeve lettering with chest logo', img: '/portfolio/IMG_5440.PNG', badge: 'Premium' },
@@ -163,10 +163,18 @@ export default function Portfolio() {
       const categories = ['Hoodies', 'Tees & Essentials', 'Tracksuits', 'Gymwear', 'Corporate Uniforms'];
       
       categories.forEach(cat => {
-        const catItems = items.filter(i => i.cat === cat);
-        topItems.push(...catItems.slice(0, 2));
-        remainingItems.push(...catItems.slice(2));
+        let catItems = items.filter(i => i.cat === cat);
+        // Shuffle items to pick random ones
+        catItems = [...catItems].sort(() => 0.5 - Math.random());
+        
+        const pickCount = Math.min(2, catItems.length);
+        topItems.push(...catItems.slice(0, pickCount));
+        remainingItems.push(...catItems.slice(pickCount));
       });
+      
+      // Shuffle the top items so categories are mixed
+      topItems.sort(() => 0.5 - Math.random());
+
       return [...topItems, ...remainingItems];
     }
     return items.filter(i => i.cat === active)
@@ -259,8 +267,7 @@ export default function Portfolio() {
             })}
             
             <button
-              className="btn-primary"
-              style={{ marginLeft: 'auto', padding: '10px 24px', fontSize: '10px', height: 'fit-content' }}
+              className={`btn-primary ${styles.mockupBtn}`}
               onClick={() => {
                 const formEl = document.querySelector('#quote-form')
                 if (formEl) {
@@ -317,18 +324,29 @@ export default function Portfolio() {
         </div>
 
         {/* Grid */}
-        <div className={styles.grid} ref={gridRef}>
+        <div className={`${styles.grid} ${visibleCount > 8 ? styles.gridExpanded : ''}`} ref={gridRef}>
           {visibleItems.map((item, i) => (
             <ProductCard key={item.id} item={item} index={i} onOpen={setSelectedItem} />
           ))}
         </div>
 
-        {/* Load More Button */}
-        {visibleCount < filtered.length && (
+        {/* Load More / Show Less Buttons */}
+        {(visibleCount < filtered.length || visibleCount > 8) && (
           <div className={styles.loadMore}>
-            <button className={`btn-primary ${styles.loadMoreBtn}`} onClick={handleShowMore}>
-              Show More
-            </button>
+            {visibleCount < filtered.length && (
+              <button className={`btn-primary ${styles.loadMoreBtn}`} onClick={handleShowMore}>
+                Show More
+              </button>
+            )}
+            {visibleCount > 8 && (
+              <button 
+                className={`btn-outline ${styles.loadMoreBtn}`} 
+                onClick={() => setVisibleCount(8)}
+                style={{ marginLeft: visibleCount < filtered.length ? '16px' : '0' }}
+              >
+                Show Less
+              </button>
+            )}
           </div>
         )}
       </div>

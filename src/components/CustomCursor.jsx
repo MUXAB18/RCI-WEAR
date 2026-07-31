@@ -1,6 +1,12 @@
 import { useEffect, useRef } from 'react'
 
-export default function CustomCursor() {
+// Check once at module level — stable, never changes per session
+const isTouchDevice =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(hover: none), (pointer: coarse)').matches
+
+// Inner component — only mounted on pointer/mouse devices
+function DesktopCursor() {
   const dotRef = useRef(null)
   const ringRef = useRef(null)
   const posRef = useRef({ dotX: -100, dotY: -100, ringX: -100, ringY: -100 })
@@ -10,10 +16,6 @@ export default function CustomCursor() {
   const hoveredElementRef = useRef(null)
 
   useEffect(() => {
-    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) {
-      return undefined
-    }
-
     const lerp = (a, b, t) => a + (b - a) * t
 
     const getCursorTarget = (node) => {
@@ -45,12 +47,8 @@ export default function CustomCursor() {
       const textSpan = document.getElementById('cursor-text-inner')
       if (textSpan) textSpan.innerText = ''
     }
-    const onPress = () => {
-      ringRef.current?.classList.add('press')
-    }
-    const onRelease = () => {
-      ringRef.current?.classList.remove('press')
-    }
+    const onPress = () => { ringRef.current?.classList.add('press') }
+    const onRelease = () => { ringRef.current?.classList.remove('press') }
 
     const onOver = (e) => {
       const target = getCursorTarget(e.target)
@@ -74,11 +72,8 @@ export default function CustomCursor() {
     document.addEventListener('mouseout', onOut)
 
     const tick = () => {
-      // Dot follows immediately
       posRef.current.dotX = lerp(posRef.current.dotX, targetRef.current.x, 0.95)
       posRef.current.dotY = lerp(posRef.current.dotY, targetRef.current.y, 0.95)
-
-      // Ring follows with lag (luxury feel)
       posRef.current.ringX = lerp(posRef.current.ringX, targetRef.current.x, 0.12)
       posRef.current.ringY = lerp(posRef.current.ringY, targetRef.current.y, 0.12)
 
@@ -114,4 +109,10 @@ export default function CustomCursor() {
       </div>
     </>
   )
+}
+
+// Outer wrapper — returns null on touch/mobile: zero DOM, zero RAF, zero listeners
+export default function CustomCursor() {
+  if (isTouchDevice) return null
+  return <DesktopCursor />
 }

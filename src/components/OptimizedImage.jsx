@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, forwardRef } from 'react'
+import { useState, useRef, useCallback, forwardRef, useEffect } from 'react'
 
 /**
  * OptimizedImage Component - Production Ready
@@ -54,6 +54,12 @@ const OptimizedImage = forwardRef(function OptimizedImage({
     setImageError(true)
   }, [])
 
+  useEffect(() => {
+    if (imgRef && imgRef.current && imgRef.current.complete) {
+      setImageLoaded(true)
+    }
+  }, [imgRef])
+
   // Prevent layout shift with aspect ratio
   const aspectRatioStyle = width && height
     ? { aspectRatio: `${width} / ${height}` }
@@ -93,10 +99,10 @@ const OptimizedImage = forwardRef(function OptimizedImage({
   // Generate srcSet for WebP and AVIF
   const generateSrcSet = (format) => {
     if (!src) return ''
-    const basePath = src.replace(/\.(jpg|jpeg|png)$/i, '')
-    const sizes = [400, 800]
-    return sizes
-      .map(size => `${basePath}_${size}w.${format} ${size}w`)
+    const basePath = src.replace(/\.(jpg|jpeg|png|webp|avif)$/i, '')
+    const sizesArr = [400, 800]
+    return sizesArr
+      .map(size => `${basePath}_${size}w.${format}?v=2 ${size}w`)
       .join(', ')
   }
 
@@ -122,7 +128,7 @@ const OptimizedImage = forwardRef(function OptimizedImage({
       {/* Fallback to original format - 100% browser compatibility */}
       <img
         ref={imgRef}
-        src={src}
+        src={`${src}?v=2`}
         alt={alt}
         width={width}
         height={height}
@@ -149,7 +155,7 @@ export default OptimizedImage
 export function preloadImage(src) {
   if (!src) return
 
-  const basePath = src.replace(/\.(jpg|jpeg|png)$/i, '')
+  const basePath = src.replace(/\.(jpg|jpeg|png|webp|avif)$/i, '')
 
   // Try AVIF first (best), then WebP, then original
   const formats = [
@@ -178,7 +184,7 @@ export function preloadImage(src) {
 export function getImageSrcSet(baseSrc) {
   if (!baseSrc) return null
 
-  const basePath = baseSrc.replace(/\.(jpg|jpeg|png)$/i, '')
+  const basePath = baseSrc.replace(/\.(jpg|jpeg|png|webp|avif)$/i, '')
   const sizes = [400, 800] // Only sizes we have
 
   return {

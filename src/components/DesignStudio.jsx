@@ -4,15 +4,15 @@ import useImage from 'use-image';
 import styles from './DesignStudio.module.css';
 
 const GARMENTS = {
-  hoodie: { front: '/studio/base_hoodie_front.png', back: '/studio/base_hoodie_back.png' },
-  shirt: { front: '/studio/base_shirt_front.png', back: '/studio/base_shirt_back.png' },
-  tracksuit: { front: '/studio/base_tracksuit_front.png', back: '/studio/base_tracksuit_back.png' },
-  teamuniform: { front: '/studio/base_teamuniform_front.png', back: '/studio/base_teamuniform_back.png' },
+  hoodie: { front: '/studio/base_hoodie_front.webp', back: '/studio/base_hoodie_back.webp' },
+  shirt: { front: '/studio/base_shirt_front.webp', back: '/studio/base_shirt_back.webp' },
+  tracksuit: { front: '/studio/base_tracksuit_front.webp', back: '/studio/base_tracksuit_back.webp' },
+  teamuniform: { front: '/studio/base_teamuniform_front.webp', back: '/studio/base_teamuniform_back.webp' },
 };
 
 const PATCHES = [
-  { id: 'tiger', src: '/studio/patch_tiger.png' },
-  { id: 'vintage', src: '/studio/patch_vintage.png' },
+  { id: 'tiger', src: '/studio/patch_tiger.webp' },
+  { id: 'vintage', src: '/studio/patch_vintage.webp' },
 ];
 
 const FONTS = ['sans-serif', 'serif', 'monospace', 'Impact', 'Comic Sans MS', 'Arial Black'];

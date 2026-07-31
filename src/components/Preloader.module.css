@@ -9,7 +9,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s cubic-bezier(0.7, 0, 0.3, 1), visibility 0.8s;
+  /* Shorten to 500ms to match JS timing */
+  transition: opacity 0.5s cubic-bezier(0.7, 0, 0.3, 1), visibility 0.5s;
   padding: 20px;
   overflow: hidden;
 }

@@ -99,59 +99,19 @@
   align-items: flex-start;
 }
 
-/* ── Eyebrow ── */
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 40px;
-}
-
-.eyebrowLine {
-  display: inline-block;
-  width: 48px;
-  height: 1px;
-  background: rgba(11, 11, 11, 0.3);
-  position: relative;
-}
-
-.eyebrowLine::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: -3px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  border: 1px solid rgba(11, 11, 11, 0.4);
-  background: transparent;
-}
-
-.eyebrowSticker {
-  background: rgba(245, 245, 240, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 6px 12px;
-  transform: rotate(-3deg);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-.eyebrowBold {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--near-black);
-}
-
-.eyebrowLight {
+/* ── EST Badge ── */
+.estBadge {
+  margin-left: 16px;
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
   font-family: var(--font-sans);
   font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 2px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   color: rgba(11, 11, 11, 0.6);
+  white-space: nowrap;
 }
 
 /* ── Title ── */
@@ -639,19 +599,17 @@
     max-width: 100%;
   }
 
-  .eyebrow {
-    display: none !important;
-  }
-
-  .eyebrowLine {
-    display: none !important;
-  }
-
   .tagline {
     justify-content: center;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .estBadge {
+    margin-left: 0;
   }
 
   .taglineBar {
@@ -671,6 +629,15 @@
 
   .actions {
     justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .ctaPill {
+    width: 100%;
+    padding: 16px 24px;
+    letter-spacing: 2.5px;
   }
 
   .scrollIndicator {

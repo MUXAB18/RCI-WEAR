@@ -10,7 +10,7 @@ const collections = [
     desc: 'Engineered from premium 450gsm fleece for a structured fit, featuring double-lined hoods and enduring warmth.',
     tag: 'Premium',
     color: 'rgba(30,50,80,0.6)',
-    img: '/hoodie-new.png', // Updated path for the new green hoodie
+    img: '/hoodie-new.webp',
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const collections = [
     desc: 'Crafted from tightly knit, enzyme-washed cotton for an ultra-soft feel and relaxed drape that elevates your everyday rotation.',
     tag: 'Core',
     color: 'rgba(80,60,20,0.6)',
-    img: '/tees-essential.png', // Updated path for the new t-shirt image
+    img: '/tees-essential.webp',
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const collections = [
     desc: 'Moisture-wicking tech-fleece sets with sleek profiles, seamlessly blending athletic function with luxury aesthetics.',
     tag: 'Signature',
     color: 'rgba(50,30,30,0.6)',
-    img: '/tracksuit.png', // Updated path for the new tracksuit image
+    img: '/tracksuit.webp',
   },
   {
     id: 4,
@@ -40,7 +40,7 @@ const collections = [
     desc: 'Built for high-intensity output with four-way stretch fabrics and targeted breathability to withstand the toughest workouts.',
     tag: 'Active',
     color: 'rgba(20,40,60,0.6)',
-    img: '/gymwear.png', // Updated path for the new gymwear image
+    img: '/gymwear.webp',
   },
   {
     id: 5,
@@ -50,7 +50,7 @@ const collections = [
     desc: 'Bespoke corporate apparel designed to perfectly translate your brand identity into professional, highly durable daily wear.',
     tag: 'Custom',
     color: 'rgba(20,40,20,0.6)',
-    img: '/corporate-uniform.png', // Updated path for the new corporate uniform image
+    img: '/corporate-uniform.webp',
   },
   {
     id: 6,
@@ -59,8 +59,8 @@ const collections = [
     subtitle: 'Weather-Ready Style',
     desc: 'Constructed with weatherproof materials and technical hardware, offering ultimate protection without compromising on modern style.',
     tag: 'Exclusive',
-    color: 'rgba(30,30,30,0.8)', // Dark grey / black tones as requested
-    img: '/outerwear.png',
+    color: 'rgba(30,30,30,0.8)',
+    img: '/outerwear.webp',
   },
 ]
 

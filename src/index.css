@@ -124,6 +124,8 @@ html {
   position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent layout shift when scrollbar appears/disappears (Windows, zoom) */
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -139,6 +141,8 @@ body {
   width: 100%;
   max-width: 100vw;
   position: relative;
+  /* GPU-hint for scroll — reduces paint cost on compositor thread */
+  will-change: scroll-position;
 }
 
 /* Prevent horizontal scroll on all elements */

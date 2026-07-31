@@ -7,7 +7,7 @@ import MagneticButton from './MagneticButton'
 export default function Hero({ onGetQuote }) {
   const heroRef = useRef(null)
   const bgRef = useRef(null)
-  const eyebrowRef = useRef(null)
+
   const line1Ref = useRef(null)
   const line2Ref = useRef(null)
   const taglineRef = useRef(null)
@@ -46,12 +46,7 @@ export default function Hero({ onGetQuote }) {
             0
           )
 
-          // Eyebrow — animate from current visible state to enhanced state
-          tl.fromTo(eyebrowRef.current,
-            { opacity: 0.4, y: 8 },
-            { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-            0.1
-          )
+
 
           // Title lines
           tl.fromTo(line1Ref.current,
@@ -130,15 +125,6 @@ export default function Hero({ onGetQuote }) {
         {/* Left text column */}
         <div className={styles.contentText}>
 
-          {/* Eyebrow / Est line (now above title) */}
-          <div ref={eyebrowRef} className={styles.eyebrow}>
-            <span className={styles.eyebrowLine} />
-            <div className={styles.eyebrowSticker}>
-              <span className={styles.eyebrowBold}>EST. 2017</span>
-              <span className={styles.eyebrowLight}>SIALKOT, PAKISTAN</span>
-            </div>
-          </div>
-
           {/*
             LCP ELEMENT: The h1 is the Largest Contentful Paint element.
             It must be visible on first paint — no opacity:0, no clip-path hide.
@@ -156,6 +142,7 @@ export default function Hero({ onGetQuote }) {
           {/* Tagline */}
           <div ref={taglineRef} className={styles.tagline}>
             <p className={styles.taglineText}>Where imagination meets fabrication</p>
+            <div className={styles.estBadge}>EST. 2017 — SIALKOT, PAKISTAN</div>
           </div>
 
           {/* Description */}
