@@ -190,6 +190,14 @@ export default function Portfolio() {
     setVisibleCount(prev => prev + 8)
   }
 
+  const handleShowLess = () => {
+    setVisibleCount(8)
+    // Small delay ensures the DOM updates and layout shifts before we scroll
+    setTimeout(() => {
+      document.querySelector('#portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 10)
+  }
+
   const handleScroll = () => {
     if (gridRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = gridRef.current
@@ -341,7 +349,7 @@ export default function Portfolio() {
             {visibleCount > 8 && (
               <button 
                 className={`btn-outline ${styles.loadMoreBtn}`} 
-                onClick={() => setVisibleCount(8)}
+                onClick={handleShowLess}
                 style={{ marginLeft: visibleCount < filtered.length ? '16px' : '0' }}
               >
                 Show Less
