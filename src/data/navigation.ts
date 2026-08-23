@@ -1,4 +1,13 @@
-export const navigation = {
+export type NavItem = {
+  name: string;
+  href: string;
+  dropdown?: { name: string; href: string; }[];
+};
+
+export const navigation: {
+  main: NavItem[];
+  footer: Record<string, NavItem[]>;
+} = {
   main: [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
