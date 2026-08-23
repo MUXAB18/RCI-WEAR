@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-white: #FFFFFF;
+  --color-grey-100: #D6D6D6;
+  --color-grey-200: #BBBBBB;
+  --color-grey-300: #A2A2A2;
+  --color-grey-400: #959595;
+  --color-grey-500: #838383;
+  --color-near-black: #0B0B0B;
+  
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --font-display: 'DM Serif Display', 'Playfair Display', serif;
+}
+
+@layer base {
+  :root {
+    --white: #FFFFFF;
+    --grey-100: #D6D6D6;
+    --grey-200: #BBBBBB;
+    --grey-300: #A2A2A2;
+    --grey-400: #959595;
+    --grey-500: #838383;
+    --near-black: #0B0B0B;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-near-black antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+/* Base custom utilities for luxury aesthetic */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Eyebrow / Label style */
+  .eyebrow {
+    @apply flex items-center justify-center gap-5 text-[11px] font-extrabold uppercase tracking-[6px] text-black;
+  }
+  
+  .eyebrow::before,
+  .eyebrow::after {
+    content: '';
+    @apply w-8 h-[2px] bg-black shrink-0;
+  }
+}
