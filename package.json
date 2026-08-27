@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "setup-admin": "node scripts/create-admin-directly.mjs"
+    "setup-admin": "node scripts/create-admin-directly.mjs",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
