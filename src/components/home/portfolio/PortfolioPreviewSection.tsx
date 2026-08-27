@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { PortfolioProject } from '../../../../generated/prisma/client';
+import { PortfolioProject } from '@prisma/client';
 
 export function PortfolioPreviewSection({ projects }: { projects: PortfolioProject[] }) {
   if (!projects || projects.length === 0) return null;
