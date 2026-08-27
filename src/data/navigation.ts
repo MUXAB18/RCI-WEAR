@@ -28,11 +28,8 @@ export const navigation: {
       { name: 'Global Reach', href: '/global' },
     ],
     products: [
-      { name: 'Sportswear & Gymwear', href: '/portfolio?category=Gymwear' },
-      { name: 'Streetwear Hoodies', href: '/portfolio?category=Hoodies' },
-      { name: 'Casual Wear', href: '/portfolio?category=Tees & Essentials' },
-      { name: 'Corporate Uniforms', href: '/portfolio?category=Corporate Uniforms' },
-      { name: 'Tracksuits', href: '/portfolio?category=Tracksuits' },
+      { name: 'Portfolio', href: '/portfolio' },
+      { name: 'Collections', href: '/collections' },
     ],
     services: [
       { name: 'Private Label', href: '/private-label' },

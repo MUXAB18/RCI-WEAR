@@ -7,6 +7,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'outline' | 'ghost';
   href?: string;
   withArrow?: boolean;
+  loading?: boolean;
+  icon?: React.ReactNode;
 }
 
 export function Button({ 
@@ -14,10 +16,12 @@ export function Button({
   variant = 'primary', 
   href, 
   withArrow = false,
+  loading = false,
+  icon,
   className,
   ...props 
 }: ButtonProps) {
-  const baseStyles = "relative inline-flex items-center justify-center gap-3 px-8 py-4 text-[10px] font-bold tracking-[3px] uppercase overflow-hidden transition-all duration-300";
+  const baseStyles = "relative inline-flex items-center justify-center gap-3 px-8 py-4 text-[10px] font-bold tracking-[3px] uppercase overflow-hidden transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
     primary: "bg-near-black text-white hover:bg-[#1a1a1a] hover:-translate-y-[2px] hover:shadow-xl",
@@ -28,6 +32,10 @@ export function Button({
   const content = (
     <>
       <span className="relative z-10 flex items-center gap-3">
+        {loading && (
+          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        )}
+        {!loading && icon}
         {children}
         {withArrow && <ArrowRight className="w-4 h-4" />}
       </span>
@@ -48,7 +56,7 @@ export function Button({
   }
 
   return (
-    <button className={finalClassName} {...props}>
+    <button className={finalClassName} disabled={loading || props.disabled} {...props}>
       {content}
     </button>
   );

@@ -34,24 +34,30 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 z-50 flex justify-center transition-all duration-500 px-4 md:px-8 pointer-events-none",
-          scrolled ? "top-4" : "top-0 pt-6"
+          "fixed inset-x-0 z-50 flex justify-center transition-all duration-500 pointer-events-none",
+          scrolled ? "top-4 px-4 md:px-8" : "top-0 pt-6"
         )}
       >
-        <div 
+        <div
           className={cn(
             "pointer-events-auto flex items-center justify-between transition-all duration-500 w-full",
-            scrolled 
-              ? "max-w-5xl bg-white/70 backdrop-blur-xl shadow-lg border border-white/40 rounded-full px-6 py-3" 
-              : "container mx-auto px-0 py-2 bg-transparent"
+            scrolled
+              ? "max-w-5xl bg-white/70 backdrop-blur-xl shadow-lg border border-white/40 rounded-full px-6 py-3"
+              : "container mx-auto px-6 md:px-12 py-2 bg-transparent"
           )}
         >
           {/* Logo */}
-          <Link href="/" className="relative z-50 flex items-center h-10 w-10 md:h-12 md:w-12">
-            <Image 
-              src="/logo.png" 
-              alt="RCI Logo" 
-              fill 
+          <Link
+            href="/"
+            className={cn(
+              "relative z-50 flex items-center transition-all duration-500",
+              scrolled ? "h-12 w-12 md:h-14 md:w-14" : "h-16 w-16 md:h-20 md:w-20"
+            )}
+          >
+            <Image
+              src="/logo-v2.png"
+              alt="RCI Logo"
+              fill
               className="object-contain"
               priority
             />
@@ -60,13 +66,13 @@ export function Navbar() {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8">
             {navigation.main.map((item) => (
-              <div 
-                key={item.name} 
+              <div
+                key={item.name}
                 className="relative"
                 onMouseEnter={() => setHoveredMenu(item.name)}
                 onMouseLeave={() => setHoveredMenu(null)}
               >
-                <Link 
+                <Link
                   href={item.href}
                   className={cn(
                     "flex items-center gap-1 text-[11px] font-bold tracking-[2px] uppercase transition-colors duration-300 py-2",
@@ -85,7 +91,7 @@ export function Navbar() {
                 {/* Dropdown with Framer Motion */}
                 <AnimatePresence>
                   {item.dropdown && hoveredMenu === item.name && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -94,8 +100,8 @@ export function Navbar() {
                     >
                       <div className="bg-white/90 backdrop-blur-xl shadow-2xl border border-gray-100/50 rounded-2xl p-4 min-w-[220px] flex flex-col gap-2 relative overflow-hidden">
                         {item.dropdown.map((subItem) => (
-                          <Link 
-                            key={subItem.name} 
+                          <Link
+                            key={subItem.name}
                             href={subItem.href}
                             className="text-[13px] font-medium text-near-black/70 hover:text-near-black hover:bg-gray-50 px-4 py-2 rounded-xl transition-colors"
                           >
@@ -112,8 +118,8 @@ export function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:block">
-            <Button 
-              href="/request-quote" 
+            <Button
+              href="/request-quote"
               className="py-2.5 px-6 rounded-full bg-near-black text-white hover:bg-black transition-colors border-none"
             >
               Request Quote
@@ -121,7 +127,7 @@ export function Navbar() {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button 
+          <button
             className="lg:hidden relative z-50 p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -146,14 +152,14 @@ export function Navbar() {
           >
             <nav className="flex flex-col gap-8 mt-8">
               {navigation.main.map((item, i) => (
-                <motion.div 
+                <motion.div
                   key={item.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + (i * 0.05), ease: "easeOut" }}
                   className="flex flex-col gap-4"
                 >
-                  <Link 
+                  <Link
                     href={item.href}
                     className="text-4xl font-display text-near-black tracking-tight"
                   >
@@ -162,8 +168,8 @@ export function Navbar() {
                   {item.dropdown && (
                     <div className="flex flex-col gap-4 pl-4 border-l-2 border-near-black/10">
                       {item.dropdown.map((subItem) => (
-                        <Link 
-                          key={subItem.name} 
+                        <Link
+                          key={subItem.name}
                           href={subItem.href}
                           className="text-sm font-bold text-near-black/60 hover:text-near-black uppercase tracking-[2px] transition-colors"
                         >
@@ -176,7 +182,7 @@ export function Navbar() {
               ))}
             </nav>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}

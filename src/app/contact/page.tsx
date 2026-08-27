@@ -9,14 +9,32 @@ import { Button } from '@/components/ui/Button';
 
 export default function ContactPage() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [formData, setFormData] = useState({
+    firstName: '', lastName: '', email: '', company: '', message: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('submitting');
-    // Simulate form submission
-    setTimeout(() => {
-      setFormStatus('success');
-    }, 1500);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        setFormStatus('success');
+        setFormData({ firstName: '', lastName: '', email: '', company: '', message: '' });
+      } else {
+        setFormStatus('error');
+      }
+    } catch {
+      setFormStatus('error');
+    }
   };
 
   return (
@@ -111,32 +129,38 @@ export default function ContactPage() {
                   Send another message
                 </button>
               </div>
+            ) : formStatus === 'error' ? (
+              <div className="bg-red-50 text-red-800 p-6 flex flex-col items-center text-center">
+                <h4 className="text-xl font-bold mb-2">Something went wrong</h4>
+                <p className="text-sm">Please try again or email us directly.</p>
+                <button onClick={() => setFormStatus('idle')} className="mt-6 text-sm font-bold underline">Try again</button>
+              </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="firstName" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">First Name</label>
-                    <input type="text" id="firstName" required className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                    <input type="text" id="firstName" required value={formData.firstName} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="lastName" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Last Name</label>
-                    <input type="text" id="lastName" required className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                    <input type="text" id="lastName" required value={formData.lastName} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Email Address</label>
-                  <input type="email" id="email" required className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                  <input type="email" id="email" required value={formData.email} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
                 </div>
                 
                 <div className="space-y-2">
                   <label htmlFor="company" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Company / Brand Name</label>
-                  <input type="text" id="company" className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                  <input type="text" id="company" value={formData.company} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
                 </div>
                 
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Project Details</label>
-                  <textarea id="message" required rows={5} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors resize-none" placeholder="Please describe your requirements, expected quantities, and timeline..." />
+                  <textarea id="message" required value={formData.message} onChange={handleChange} rows={5} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors resize-none" placeholder="Please describe your requirements, expected quantities, and timeline..." />
                 </div>
                 
                 <Button 

@@ -1,7 +1,7 @@
 import './globals.css';
 import { Inter, Playfair_Display, DM_Serif_Display, Cormorant_Garamond } from 'next/font/google';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { ConditionalLayout } from '@/components/layout/ConditionalLayout';
+import Script from 'next/script';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 const dmSerif = DM_Serif_Display({ weight: '400', subsets: ['latin'], variable: '--font-display' });
@@ -53,26 +53,25 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-white text-near-black antialiased overflow-x-hidden flex flex-col min-h-screen">
-        {/* Google Analytics Script */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-425WFFBRLP"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-425WFFBRLP');
-            `,
-          }}
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-425WFFBRLP"
+          strategy="afterInteractive"
         />
-        {/* AdSense Script */}
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6650426189914940" crossOrigin="anonymous"></script>
+        <Script id="ga-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-425WFFBRLP');
+        `}</Script>
+        {/* AdSense */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6650426189914940"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
 
-        <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <ConditionalLayout>{children}</ConditionalLayout>
       </body>
     </html>
   );

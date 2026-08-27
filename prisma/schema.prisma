@@ -1,0 +1,201 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+// ─── AUTHENTICATION ──────────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("user") // user | admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminOtp {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+// ─── PORTFOLIO ───────────────────────────────────────────────────────────────
+model PortfolioProject {
+  id          String   @id @default(uuid())
+  title       String
+  category    String
+  description String?
+  imageUrl    String
+  images      String[] @default([]) // Multiple images
+  isFeatured  Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  order       Int      @default(0)
+  tags        String[] @default([])
+  clientName  String?
+  projectDate DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── COLLECTIONS ─────────────────────────────────────────────────────────────
+model Collection {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  isPublished Boolean   @default(true)
+  order       Int       @default(0)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ─── PRODUCTS ────────────────────────────────────────────────────────────────
+model Product {
+  id           String      @id @default(uuid())
+  name         String
+  slug         String      @unique
+  description  String?
+  price        Float?
+  sku          String?     @unique
+  images       String[]    @default([])
+  category     String?
+  isPublished  Boolean     @default(true)
+  isFeatured   Boolean     @default(false)
+  stock        Int         @default(0)
+  minOrder     Int         @default(1)
+  tags         String[]    @default([])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collectionId String?
+  orderItems   OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+// ─── ORDERS ──────────────────────────────────────────────────────────────────
+model Order {
+  id              String      @id @default(uuid())
+  orderNumber     String      @unique
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  company         String?
+  shippingAddress String?
+  billingAddress  String?
+  // Manufacturing Stages: pending | sourcing | production | qc | packaging | shipped | delivered | cancelled
+  status          String      @default("pending") 
+  paymentStatus   String      @default("unpaid") // unpaid | paid | refunded
+  subtotal        Float       @default(0)
+  tax             Float       @default(0)
+  shipping        Float       @default(0)
+  total           Float       @default(0)
+  notes           String?
+  trackingNumber  String?
+  estimatedDelivery DateTime?
+  items           OrderItem[]
+  review          Review?
+  isTrackingArchived Boolean @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String   @unique
+  rating    Int      // 1-5 stars
+  comment   String?
+  isPublic  Boolean  @default(false)
+  adminNotes String? // Internal notes for admin use
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+  name      String
+  quantity  Int
+  price     Float
+  subtotal  Float
+  createdAt DateTime @default(now())
+}
+
+// ─── CONTACT INQUIRIES ───────────────────────────────────────────────────────
+model ContactInquiry {
+  id          String   @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String
+  phone       String?
+  company     String?
+  subject     String?
+  message     String
+  status      String   @default("new") // new | read | replied | archived
+  priority    String   @default("normal") // low | normal | high | urgent
+  assignedTo  String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── QUOTES ──────────────────────────────────────────────────────────────────
+model Quote {
+  id              String   @id @default(uuid())
+  quoteNumber     String   @unique
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  company         String?
+  productType     String
+  quantity        Int
+  specifications  String?
+  budget          String?
+  deadline        DateTime?
+  status          String   @default("pending") // pending | sent | accepted | rejected | expired
+  sentAt          DateTime?
+  expiresAt       DateTime?
+  amount          Float?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ─── BLOG POSTS ──────────────────────────────────────────────────────────────
+model BlogPost {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?
+  content     String
+  coverImage  String?
+  author      String   @default("Admin")
+  isPublished Boolean  @default(false)
+  isFeatured  Boolean  @default(false)
+  tags        String[] @default([])
+  views       Int      @default(0)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── SETTINGS ────────────────────────────────────────────────────────────────
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  type      String   @default("string") // string | number | boolean | json
+  group     String   @default("general") // general | contact | social | seo
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
