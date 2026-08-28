@@ -210,7 +210,7 @@ export function QuotesClient({ initialQuotes }: Props) {
   const handleSendQuote = (quote: Quote) => {
     setSendingQuote(quote);
     setSendFormData({
-      quoteAmount: quote.quoteAmount || 0,
+      quoteAmount: String(quote.quoteAmount || ''),
       validUntil: quote.validUntil || '',
     });
   };

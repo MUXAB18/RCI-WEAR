@@ -51,7 +51,7 @@ export function PortfolioClient({ initialProjects }: Props) {
     tags: '',
     isFeatured: false,
     isPublished: true,
-    order: 0,
+    order: '' as string | number,
   });
 
   const columns: Column<PortfolioProject>[] = [
@@ -245,7 +245,7 @@ export function PortfolioClient({ initialProjects }: Props) {
       tags: '',
       isFeatured: false,
       isPublished: true,
-      order: 0,
+      order: '' as string | number,
     });
     setEditingProject(null);
   };
