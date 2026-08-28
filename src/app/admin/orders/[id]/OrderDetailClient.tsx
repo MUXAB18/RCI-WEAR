@@ -34,6 +34,20 @@ type Order = {
   estimatedDelivery: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  // Custom Fields
+  website: string | null;
+  country: string | null;
+  category: string | null;
+  fabric: string | null;
+  gsm: string | null;
+  quantity: string | null;
+  sizes: string[];
+  decoration: string[];
+  extras: string[];
+  colors: string | null;
+  timeline: string | null;
+  budget: string | null;
+  comments: string | null;
   review?: {
     id: string;
     rating: number;
@@ -92,6 +106,7 @@ interface Props {
 export function OrderDetailClient({ order }: Props) {
   const router = useRouter();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditPricingModalOpen, setIsEditPricingModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -119,6 +134,57 @@ export function OrderDetailClient({ order }: Props) {
       }
     } catch (error) {
       console.error('Failed to update order:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [pricingFormData, setPricingFormData] = useState({
+    shipping: order.shipping.toString(),
+    tax: order.tax.toString(),
+    items: order.items.map((item: any) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      price: item.price.toString(),
+    }))
+  });
+
+  const handleUpdatePricing = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const subtotal = pricingFormData.items.reduce((sum: number, item: any) => sum + (Number(item.price) * item.quantity), 0);
+      const tax = Number(pricingFormData.tax);
+      const shipping = Number(pricingFormData.shipping);
+      const total = subtotal + tax + shipping;
+
+      const payload = {
+        subtotal,
+        tax,
+        shipping,
+        total,
+        items: pricingFormData.items.map((item: any) => ({
+          id: item.id,
+          price: Number(item.price),
+          quantity: Number(item.quantity),
+          subtotal: Number(item.price) * Number(item.quantity)
+        }))
+      };
+
+      const res = await fetch(`/api/admin/orders/${order.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        router.refresh();
+        setIsEditPricingModalOpen(false);
+      }
+    } catch (error) {
+      console.error('Failed to update pricing:', error);
     } finally {
       setLoading(false);
     }
@@ -184,7 +250,12 @@ export function OrderDetailClient({ order }: Props) {
 
           {/* Order Items */}
           <div className="bg-white/[0.02] border border-white/[0.08] rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-4">Order Items</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-white">Order Items</h2>
+              <Button variant="ghost" className="text-sm px-3 py-1.5" onClick={() => setIsEditPricingModalOpen(true)}>
+                Edit Pricing
+              </Button>
+            </div>
             <div className="space-y-4">
               {order.items.map((item) => (
                 <div key={item.id} className="flex items-center gap-4 p-4 bg-white/[0.02] rounded-lg border border-white/[0.05]">
@@ -236,6 +307,82 @@ export function OrderDetailClient({ order }: Props) {
               </div>
             </div>
           </div>
+
+          {/* Customization Details (if any custom fields are present) */}
+          {(order.category || order.fabric || order.colors || (order.sizes && order.sizes.length > 0) || (order.decoration && order.decoration.length > 0) || (order.extras && order.extras.length > 0) || order.comments) && (
+            <div className="bg-white/[0.02] border border-white/[0.08] rounded-xl p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">Customization Details</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {order.category && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">Category</span>
+                    <p className="text-white text-sm mt-1">{order.category}</p>
+                  </div>
+                )}
+                {order.fabric && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">Fabric</span>
+                    <p className="text-white text-sm mt-1">{order.fabric}</p>
+                  </div>
+                )}
+                {order.gsm && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">GSM</span>
+                    <p className="text-white text-sm mt-1">{order.gsm}</p>
+                  </div>
+                )}
+                {order.colors && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">Colors</span>
+                    <p className="text-white text-sm mt-1">{order.colors}</p>
+                  </div>
+                )}
+                {order.quantity && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">Est. Quantity</span>
+                    <p className="text-white text-sm mt-1">{order.quantity}</p>
+                  </div>
+                )}
+                {order.sizes && order.sizes.length > 0 && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">Sizes</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {order.sizes.map((size: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 bg-white/10 text-white rounded text-xs">{size}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {order.decoration && order.decoration.length > 0 && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">Decoration</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {order.decoration.map((dec: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 bg-white/10 text-white rounded text-xs">{dec}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {order.extras && order.extras.length > 0 && (
+                  <div>
+                    <span className="text-white/40 text-xs uppercase tracking-wider">Extras</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {order.extras.map((extra: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 bg-white/10 text-white rounded text-xs">{extra}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {order.comments && (
+                <div className="mt-4 pt-4 border-t border-white/[0.05]">
+                  <span className="text-white/40 text-xs uppercase tracking-wider">Customer Comments</span>
+                  <p className="text-white text-sm mt-2 leading-relaxed bg-white/[0.02] p-4 rounded-lg">{order.comments}</p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Customer Review Section */}
           {order.status === 'delivered' && (
@@ -311,8 +458,8 @@ export function OrderDetailClient({ order }: Props) {
               
               {order.customerPhone && (
                 <div className="flex items-center gap-2 text-white/60">
-                  <Phone className="w-4 h-4" />
-                  <span>{order.customerPhone}</span>
+                <Phone className="w-4 h-4" />
+                <span>{order.customerPhone}</span>
                 </div>
               )}
               
@@ -324,6 +471,41 @@ export function OrderDetailClient({ order }: Props) {
               )}
             </div>
           </div>
+
+          {/* Project Details (if custom) */}
+          {(order.website || order.country || order.timeline || order.budget) && (
+            <div className="bg-white/[0.02] border border-white/[0.08] rounded-xl p-6">
+              <h2 className="text-lg font-semibold text-white mb-4">Project Details</h2>
+              <div className="space-y-3 text-sm">
+                {order.website && (
+                  <div>
+                    <span className="text-white/40 block mb-1">Website/Social:</span>
+                    <a href={order.website.startsWith('http') ? order.website : `https://${order.website}`} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline break-all">
+                      {order.website}
+                    </a>
+                  </div>
+                )}
+                {order.country && (
+                  <div className="flex justify-between">
+                    <span className="text-white/40">Country:</span>
+                    <span className="text-white">{order.country}</span>
+                  </div>
+                )}
+                {order.timeline && (
+                  <div className="flex justify-between">
+                    <span className="text-white/40">Timeline:</span>
+                    <span className="text-white">{order.timeline}</span>
+                  </div>
+                )}
+                {order.budget && (
+                  <div className="flex justify-between">
+                    <span className="text-white/40">Budget:</span>
+                    <span className="text-white">{order.budget}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Shipping Information */}
           {order.shippingAddress && (
@@ -432,6 +614,66 @@ export function OrderDetailClient({ order }: Props) {
             placeholder="Internal notes about this order..."
             rows={3}
           />
+        </form>
+      </Modal>
+
+      {/* Edit Pricing Modal */}
+      <Modal
+        isOpen={isEditPricingModalOpen}
+        onClose={() => setIsEditPricingModalOpen(false)}
+        title="Edit Quoted Price"
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setIsEditPricingModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleUpdatePricing} loading={loading}>
+              Save Pricing
+            </Button>
+          </>
+        }
+      >
+        <form onSubmit={handleUpdatePricing} className="space-y-6">
+          <div className="space-y-4">
+            <h3 className="font-medium text-white/80 text-sm">Order Items</h3>
+            {pricingFormData.items.map((item: any, index: number) => (
+              <div key={item.id} className="flex gap-4 items-center">
+                <div className="flex-1">
+                  <p className="text-sm text-white/80">{item.name}</p>
+                </div>
+                <div className="w-24">
+                  <Input
+                    label="Qty"
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => {
+                      const newItems = [...pricingFormData.items];
+                      newItems[index].quantity = e.target.value;
+                      setPricingFormData({ ...pricingFormData, items: newItems });
+                    }}
+                    required
+                  />
+                </div>
+                <div className="w-32">
+                  <Input
+                    label="Unit Price ($)"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    value={item.price}
+                    onChange={(e) => {
+                      const newItems = [...pricingFormData.items];
+                      newItems[index].price = e.target.value;
+                      setPricingFormData({ ...pricingFormData, items: newItems });
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          
         </form>
       </Modal>
     </>

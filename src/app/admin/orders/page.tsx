@@ -2,6 +2,8 @@ import { AdminShell } from '@/app/admin/layout';
 import { OrdersClient } from './OrdersClient';
 import { getOrdersForAdminList } from '@/lib/api/order.service';
 
+export const dynamic = 'force-dynamic';
+
 export default async function OrdersPage() {
   const orders = await getOrdersForAdminList();
 

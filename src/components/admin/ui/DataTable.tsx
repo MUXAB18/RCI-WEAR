@@ -19,6 +19,10 @@ type DataTableProps<T> = {
   searchable?: boolean;
   searchPlaceholder?: string;
   onSearch?: (query: string) => void;
+  selectable?: boolean;
+  selectedIds?: string[];
+  onSelectionChange?: (ids: string[]) => void;
+  bulkActions?: ReactNode;
 };
 
 export function DataTable<T extends { id: string }>({
@@ -30,21 +34,58 @@ export function DataTable<T extends { id: string }>({
   searchable = false,
   searchPlaceholder = 'Search...',
   onSearch,
+  selectable = false,
+  selectedIds = [],
+  onSelectionChange,
+  bulkActions,
 }: DataTableProps<T>) {
+  const allSelected = data.length > 0 && selectedIds.length === data.length;
+  const someSelected = selectedIds.length > 0 && selectedIds.length < data.length;
+
+  const handleSelectAll = () => {
+    if (onSelectionChange) {
+      if (allSelected) {
+        onSelectionChange([]);
+      } else {
+        onSelectionChange(data.map(item => item.id));
+      }
+    }
+  };
+
+  const handleSelectRow = (id: string, checked: boolean) => {
+    if (onSelectionChange) {
+      if (checked) {
+        onSelectionChange([...selectedIds, id]);
+      } else {
+        onSelectionChange(selectedIds.filter(selectedId => selectedId !== id));
+      }
+    }
+  };
+
   return (
     <div className="bg-white/[0.03] border border-white/[0.08] rounded-2xl overflow-hidden">
-      {/* Search Bar */}
-      {searchable && (
-        <div className="p-4 border-b border-white/[0.08]">
+      {/* Top Bar: Bulk Actions & Search */}
+      {(searchable || bulkActions) && (
+        <div className="p-4 border-b border-white/[0.08] flex items-center justify-between gap-4">
+          <div className="flex-1">
+            {searchable && (
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <input
               type="text"
               placeholder={searchPlaceholder}
               onChange={(e) => onSearch?.(e.target.value)}
-              className="w-full bg-white/[0.05] border border-white/[0.1] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/[0.2] focus:bg-white/[0.08] transition"
+              className="w-full max-w-md bg-white/[0.05] border border-white/[0.1] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/[0.2] focus:bg-white/[0.08] transition"
             />
           </div>
+            )}
+          </div>
+          {bulkActions && selectedIds.length > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-white/60 mr-2">{selectedIds.length} selected</span>
+              {bulkActions}
+            </div>
+          )}
         </div>
       )}
 
@@ -53,6 +94,19 @@ export function DataTable<T extends { id: string }>({
         <table className="w-full">
           <thead className="bg-white/[0.02]">
             <tr>
+              {selectable && (
+                <th className="px-6 py-4 text-left w-12">
+                  <input 
+                    type="checkbox" 
+                    checked={allSelected}
+                    ref={input => {
+                      if (input) input.indeterminate = someSelected;
+                    }}
+                    onChange={handleSelectAll}
+                    className="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900 cursor-pointer"
+                  />
+                </th>
+              )}
               {columns.map((column) => (
                 <th
                   key={column.key}
@@ -66,7 +120,7 @@ export function DataTable<T extends { id: string }>({
           <tbody className="divide-y divide-white/[0.06]">
             {data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="px-6 py-12 text-center">
+                <td colSpan={columns.length + (selectable ? 1 : 0)} className="px-6 py-12 text-center">
                   <div className="flex flex-col items-center justify-center">
                     {emptyIcon && <div className="mb-3 text-white/10">{emptyIcon}</div>}
                     <p className="text-white/40 text-sm">{emptyMessage}</p>
@@ -74,23 +128,36 @@ export function DataTable<T extends { id: string }>({
                 </td>
               </tr>
             ) : (
-              data.map((item) => (
-                <tr
-                  key={item.id}
-                  onClick={() => onRowClick?.(item)}
-                  className={`hover:bg-white/[0.03] transition-colors ${
-                    onRowClick ? 'cursor-pointer' : ''
-                  }`}
-                >
-                  {columns.map((column) => (
+              data.map((item) => {
+                const isSelected = selectedIds.includes(item.id);
+                return (
+                  <tr
+                    key={item.id}
+                    onClick={() => onRowClick?.(item)}
+                    className={`hover:bg-white/[0.03] transition-colors ${
+                      onRowClick ? 'cursor-pointer' : ''
+                    } ${isSelected ? 'bg-blue-500/5 hover:bg-blue-500/10' : ''}`}
+                  >
+                    {selectable && (
+                      <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                        <input 
+                          type="checkbox" 
+                          checked={isSelected}
+                          onChange={(e) => handleSelectRow(item.id, e.target.checked)}
+                          className="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900 cursor-pointer"
+                        />
+                      </td>
+                    )}
+                    {columns.map((column) => (
                     <td key={column.key} className="px-6 py-4 text-sm text-white/80">
                       {column.render
                         ? column.render(item)
                         : (item as any)[column.key]?.toString() || '-'}
                     </td>
                   ))}
-                </tr>
-              ))
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

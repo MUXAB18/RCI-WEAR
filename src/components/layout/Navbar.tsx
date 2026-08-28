@@ -32,113 +32,133 @@ export function Navbar() {
 
   return (
     <>
-      <header
+      <motion.header
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 80, damping: 20, delay: 0.1 }}
         className={cn(
-          "fixed inset-x-0 z-50 flex justify-center transition-all duration-500 pointer-events-none",
-          scrolled ? "top-4 px-4 md:px-8" : "top-0 pt-6"
+          "fixed inset-x-0 top-0 z-50 flex justify-center transition-all duration-500 pointer-events-none pt-4 md:pt-6 px-4 md:px-8"
         )}
       >
-        <div
-          className={cn(
-            "pointer-events-auto flex items-center justify-between transition-all duration-500 w-full",
-            scrolled
-              ? "max-w-5xl bg-white/70 backdrop-blur-xl shadow-lg border border-white/40 rounded-full px-6 py-3"
-              : "container mx-auto px-6 md:px-12 py-2 bg-transparent"
-          )}
-        >
-          {/* Logo */}
-          <Link
-            href="/"
+        <div className="w-full max-w-5xl relative group pointer-events-auto">
+          {/* Ambient Glow Behind Navbar */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+          
+          <div
             className={cn(
-              "relative z-50 flex items-center transition-all duration-500",
-              scrolled ? "h-12 w-12 md:h-14 md:w-14" : "h-16 w-16 md:h-20 md:w-20"
+              "relative z-10 w-full flex items-center justify-between transition-all duration-500",
+              "bg-[#0f0f0f]/90 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-full p-2 pl-6"
             )}
           >
-            <Image
-              src="/logo-v2.png"
-              alt="RCI Logo"
-              fill
-              className="object-contain"
-              priority
-            />
-          </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navigation.main.map((item) => (
-              <div
-                key={item.name}
-                className="relative"
-                onMouseEnter={() => setHoveredMenu(item.name)}
-                onMouseLeave={() => setHoveredMenu(null)}
-              >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-1 text-[11px] font-bold tracking-[2px] uppercase transition-colors duration-300 py-2",
-                    pathname === item.href ? "text-near-black" : "text-near-black/70 hover:text-near-black"
-                  )}
-                >
-                  {item.name}
-                  {item.dropdown && (
-                    <ChevronDown className={cn(
-                      "w-3 h-3 transition-transform duration-300",
-                      hoveredMenu === item.name ? "rotate-180" : ""
-                    )} />
-                  )}
-                </Link>
-
-                {/* Dropdown with Framer Motion */}
-                <AnimatePresence>
-                  {item.dropdown && hoveredMenu === item.name && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2, ease: "easeOut" }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 pt-4"
-                    >
-                      <div className="bg-white/90 backdrop-blur-xl shadow-2xl border border-gray-100/50 rounded-2xl p-4 min-w-[220px] flex flex-col gap-2 relative overflow-hidden">
-                        {item.dropdown.map((subItem) => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.href}
-                            className="text-[13px] font-medium text-near-black/70 hover:text-near-black hover:bg-gray-50 px-4 py-2 rounded-xl transition-colors"
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </nav>
-
-          {/* Desktop CTA */}
-          <div className="hidden lg:block">
-            <Button
-              href="/request-quote"
-              className="py-2.5 px-6 rounded-full bg-near-black text-white hover:bg-black transition-colors border-none"
+            {/* Logo (White) */}
+            <Link
+              href="/"
+              className="flex-shrink-0 relative w-16 h-10 md:w-20 md:h-12 flex items-center justify-center transition-transform duration-300 hover:scale-105"
             >
-              Request Quote
-            </Button>
-          </div>
+              <div className="relative w-full h-full">
+                <Image
+                  src="/logo-v2.png"
+                  alt="RCI Logo"
+                  fill
+                  className="object-contain brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
+                  priority
+                />
+              </div>
+            </Link>
 
-          {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden relative z-50 p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6 text-near-black" />
-            ) : (
-              <Menu className="w-6 h-6 text-near-black" />
-            )}
-          </button>
+            {/* Desktop Nav */}
+            <nav 
+              className="hidden lg:flex items-center gap-2 xl:gap-4 px-4"
+              onMouseLeave={() => setHoveredMenu(null)}
+            >
+              {navigation.main.map((item) => (
+                <div
+                  key={item.name}
+                  className="relative"
+                  onMouseEnter={() => setHoveredMenu(item.name)}
+                >
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "relative flex items-center gap-1 text-[14px] font-medium transition-colors duration-300 px-4 py-2.5 rounded-full z-10",
+                      pathname === item.href ? "text-white" : "text-white/70 hover:text-white"
+                    )}
+                  >
+                    {/* Magnetic Sliding Hover Pill */}
+                    {hoveredMenu === item.name && (
+                      <motion.div
+                        layoutId="nav-hover-pill"
+                        className="absolute inset-0 bg-white/10 rounded-full z-[-1]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                      />
+                    )}
+                    {item.name}
+                    {item.dropdown && (
+                      <ChevronDown className={cn(
+                        "w-4 h-4 transition-transform duration-300",
+                        hoveredMenu === item.name ? "rotate-180" : ""
+                      )} />
+                    )}
+                  </Link>
+
+                  {/* Dropdown with Framer Motion */}
+                  <AnimatePresence>
+                    {item.dropdown && hoveredMenu === item.name && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 pt-6 pointer-events-auto"
+                      >
+                        <div className="bg-[#1a1a1a]/95 backdrop-blur-xl shadow-2xl border border-white/10 rounded-2xl p-4 min-w-[220px] flex flex-col gap-2 relative overflow-hidden">
+                          {item.dropdown.map((subItem) => (
+                            <Link
+                              key={subItem.name}
+                              href={subItem.href}
+                              className="text-[14px] font-medium text-white/70 hover:text-white hover:bg-white/10 px-4 py-2 rounded-xl transition-colors"
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </nav>
+
+            {/* Desktop CTA */}
+            <div className="hidden lg:block shrink-0 relative overflow-hidden rounded-full group/btn">
+              {/* Glossy Shine Effect on Hover */}
+              <div className="absolute inset-0 translate-x-[-100%] group-hover/btn:translate-x-[100%] bg-gradient-to-r from-transparent via-black/10 to-transparent transition-transform duration-1000 z-20 pointer-events-none skew-x-12" />
+              
+              <Button
+                href="/request-quote"
+                className="relative py-3.5 px-8 md:px-10 rounded-full bg-white text-black hover:bg-gray-100 transition-colors border-none text-[14px] font-semibold z-10 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+              >
+                Order Now
+              </Button>
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              className="lg:hidden relative z-50 p-4 text-white hover:bg-white/10 rounded-full transition-colors mr-1"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -189,7 +209,7 @@ export function Navbar() {
               className="mt-auto pt-12"
             >
               <Button href="/request-quote" className="w-full bg-near-black text-white py-4 rounded-full text-sm font-bold uppercase tracking-widest border-none">
-                Request a Quote
+                Order Now
               </Button>
             </motion.div>
           </motion.div>

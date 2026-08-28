@@ -1,99 +1,263 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle2, UploadCloud } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+
+const InputField = ({ label, id, type = 'text', required = false, placeholder = '', formData, setFormData }: any) => (
+  <div className="space-y-2 group">
+    <label htmlFor={id} className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">{label} {required && '*'}</label>
+    <input required={required} type={type} id={id} placeholder={placeholder}
+      value={formData[id as keyof typeof formData] as string} onChange={e => setFormData({...formData, [id]: e.target.value})}
+      className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
+  </div>
+);
+
+const SelectField = ({ label, id, options, required = false, formData, setFormData }: any) => (
+  <div className="space-y-2 group">
+    <label htmlFor={id} className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">{label} {required && '*'}</label>
+    <select required={required} id={id}
+      value={formData[id as keyof typeof formData] as string} onChange={e => setFormData({...formData, [id]: e.target.value})}
+      className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm appearance-none cursor-pointer">
+      <option value="">Select option</option>
+      {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+    </select>
+  </div>
+);
+
+const CheckboxGroup = ({ label, field, options, formData, handleCheck }: any) => (
+  <div className="space-y-3">
+    <label className="block text-[11px] font-bold uppercase tracking-widest text-gray-500">{label}</label>
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      {options.map((opt: string) => (
+        <label key={opt} className={cn(
+          "flex items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all text-sm font-sans font-bold text-center hover:-translate-y-0.5",
+          (formData[field as keyof typeof formData] as string[]).includes(opt) ? "bg-black text-white border-black shadow-md" : "bg-white border-gray-100 text-gray-600 hover:border-black/30 hover:shadow-sm"
+        )}>
+          <input type="checkbox" className="hidden" checked={(formData[field as keyof typeof formData] as string[]).includes(opt)} onChange={() => handleCheck(field, opt)} />
+          {opt}
+        </label>
+      ))}
+    </div>
+  </div>
+);
 
 export default function RequestQuotePage() {
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const [step, setStep] = useState<number>(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '', email: '', phone: '', company: '', website: '', country: '',
+    category: '', fabric: '', gsm: '', quantity: '', sizes: [] as string[],
+    decoration: [] as string[], extras: [] as string[], colors: '',
+    timeline: '', budget: '', comments: ''
+  });
+  
+  const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (step < 4) {
+      setStep(prev => prev + 1);
+    } else {
+      setIsSubmitting(true);
+      try {
+        const payload = {
+          customerName: formData.name,
+          customerEmail: formData.email,
+          customerPhone: formData.phone,
+          company: formData.company,
+          website: formData.website,
+          country: formData.country,
+          category: formData.category,
+          fabric: formData.fabric,
+          gsm: formData.gsm,
+          quantity: formData.quantity,
+          sizes: formData.sizes,
+          decoration: formData.decoration,
+          extras: formData.extras,
+          colors: formData.colors,
+          timeline: formData.timeline,
+          budget: formData.budget,
+          comments: formData.comments,
+          status: 'pending',
+          items: [{ name: 'Custom Manufacturing Request', quantity: 1, price: 0 }]
+        };
+        const res = await fetch('/api/admin/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+           setStep(5);
+        } else {
+           console.error('Failed to submit order request');
+        }
+      } catch (error) {
+        console.error('Submission error:', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
   };
+  const handleBack = () => setStep(prev => prev - 1);
+  const handleCheck = (field: 'sizes' | 'decoration' | 'extras', val: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: prev[field].includes(val) ? prev[field].filter(v => v !== val) : [...prev[field], val]
+    }));
+  };
+
+
+
+
+  const steps = [
+    {
+      id: 1, title: 'Company Details',
+      content: (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <InputField formData={formData} setFormData={setFormData} label="Full Name" id="name" required placeholder="John Doe" />
+          <InputField formData={formData} setFormData={setFormData} label="Work Email" id="email" type="email" required placeholder="john@brand.com" />
+          <InputField formData={formData} setFormData={setFormData} label="Phone Number" id="phone" type="tel" required placeholder="+1 (555) 000-0000" />
+          <InputField formData={formData} setFormData={setFormData} label="Brand / Company Name" id="company" required placeholder="Your Brand Ltd." />
+          <InputField formData={formData} setFormData={setFormData} label="Website / Instagram" id="website" placeholder="brand.com or @brand" />
+          <InputField formData={formData} setFormData={setFormData} label="Country" id="country" required placeholder="United States" />
+        </div>
+      )
+    },
+    {
+      id: 2, title: 'Product Requirements',
+      content: (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <SelectField formData={formData} setFormData={setFormData} label="Product Category" id="category" required options={['Hoodies / Sweatshirts', 'T-Shirts', 'Tracksuits / Joggers', 'Outerwear / Jackets', 'Activewear', 'Custom Uniforms']} />
+            <SelectField formData={formData} setFormData={setFormData} label="Fabric Preference" id="fabric" required options={['100% Cotton (French Terry)', '100% Cotton (Fleece)', 'Poly-Cotton Blend', 'Nylon / Polyester', 'Organic Cotton', 'Unsure - Need Advice']} />
+            <SelectField formData={formData} setFormData={setFormData} label="Fabric Weight (GSM)" id="gsm" required options={['Lightweight (< 200 GSM)', 'Midweight (200 - 350 GSM)', 'Heavyweight (350 - 500+ GSM)']} />
+            <SelectField formData={formData} setFormData={setFormData} label="Estimated Quantity" id="quantity" required options={['Under 100 pcs (Sampling)', '100 - 500 pcs', '500 - 2000 pcs', '2000+ pcs']} />
+          </div>
+          <CheckboxGroup formData={formData} handleCheck={handleCheck} label="Size Breakdown" field="sizes" options={['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL+']} />
+        </div>
+      )
+    },
+    {
+      id: 3, title: 'Customization & Branding',
+      content: (
+        <div className="space-y-6">
+          <CheckboxGroup formData={formData} handleCheck={handleCheck} label="Decoration Methods" field="decoration" options={['Screen Print', 'Puff Print', 'Embroidery', 'Direct to Garment (DTG)', 'Sublimation', 'Custom Patches']} />
+          <CheckboxGroup formData={formData} handleCheck={handleCheck} label="Branding Extras" field="extras" options={['Custom Woven Neck Labels', 'Hang Tags', 'Polybag Packaging', 'Custom Zippers/Hardware', 'Care Labels']} />
+          <div className="space-y-2 group">
+            <label htmlFor="colors" className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">Color Requirements</label>
+            <textarea id="colors" rows={2} value={formData.colors} onChange={e => setFormData({...formData, colors: e.target.value})} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all resize-none shadow-sm" placeholder="List specific Pantone colors or standard colors..."></textarea>
+          </div>
+        </div>
+      )
+    },
+    {
+      id: 4, title: 'Final Details & Uploads',
+      content: (
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <label className="block text-[11px] font-bold uppercase tracking-widest text-gray-500">Upload Tech Packs / Artwork</label>
+            <label className="border-2 border-dashed border-gray-200 rounded-2xl p-10 flex flex-col items-center justify-center text-center hover:bg-[#F8F8F8] hover:border-gray-400 transition-colors cursor-pointer group w-full">
+              <UploadCloud className="w-10 h-10 text-gray-400 group-hover:text-black transition-colors mb-4" />
+              <p className="text-sm font-sans font-medium text-gray-600 mb-1">Click to upload or drag and drop</p>
+              <p className="text-xs font-sans text-gray-400">PDF, PNG, JPG, AI up to 10MB</p>
+              <input type="file" multiple className="hidden" />
+            </label>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <InputField formData={formData} setFormData={setFormData} label="Target Delivery Date" id="timeline" type="date" />
+            <InputField formData={formData} setFormData={setFormData} label="Target Budget (Per Unit) - Optional" id="budget" placeholder="$ USD" />
+          </div>
+          <div className="space-y-2 group">
+            <label htmlFor="comments" className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">Additional Comments</label>
+            <textarea id="comments" rows={4} value={formData.comments} onChange={e => setFormData({...formData, comments: e.target.value})} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all resize-none shadow-sm" placeholder="Any specific details we should know about?"></textarea>
+          </div>
+        </div>
+      )
+    }
+  ];
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-white">
-      <div className="container mx-auto px-6 md:px-12">
-        <SectionHeading 
-          eyebrow="Get Started"
-          title="Start Your Production"
-          subtitle="Tell us about your project, and our production specialists will get back to you within 24 hours."
-        />
+      <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+        {step < 5 && (
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-sans font-black tracking-tight text-near-black mb-4">Start Your Order</h1>
+            <p className="text-gray-600 font-sans max-w-xl mx-auto">Fill out our detailed order form to receive a precise quote and timeline from our manufacturing specialists.</p>
+          </div>
+        )}
 
-        <div className="mt-16 max-w-2xl mx-auto">
-          {submitted ? (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-black text-white p-12 rounded-3xl text-center"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-6">
-                <CheckCircle2 className="w-8 h-8 text-white" />
+        {step < 5 ? (
+          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-gray-100 relative">
+            {/* Progress Bar */}
+            <div className="flex items-center justify-between mb-12 relative max-w-lg mx-auto">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-100 z-0 rounded-full overflow-hidden">
+                <motion.div 
+                  className="h-full bg-black"
+                  initial={{ width: `${((step - 1) / 3) * 100}%` }}
+                  animate={{ width: `${((step - 1) / 3) * 100}%` }}
+                  transition={{ duration: 0.3 }}
+                />
               </div>
-              <h3 className="text-3xl font-sans font-black tracking-tight mb-4">Request Received</h3>
-              <p className="text-white/70 font-sans leading-relaxed">
-                Thank you for considering Rasheed Clothing International. A member of our team will review your requirements and reach out shortly to schedule a consultation.
-              </p>
-            </motion.div>
-          ) : (
-            <motion.form 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              onSubmit={handleSubmit}
-              className="space-y-8"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="block text-sm font-bold uppercase tracking-[1px] text-near-black">Name *</label>
-                  <input required type="text" id="name" className="w-full bg-[#F8F8F8] border-none rounded-none p-4 font-sans focus:ring-1 focus:ring-black outline-none transition-shadow" placeholder="Jane Doe" />
+              {[1, 2, 3, 4].map((s) => (
+                <div key={s} className={cn(
+                  "relative z-10 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300",
+                  step >= s ? "bg-black text-white" : "bg-gray-100 text-gray-400",
+                  step === s && "ring-4 ring-black/10 scale-110"
+                )}>
+                  {s}
                 </div>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="block text-sm font-bold uppercase tracking-[1px] text-near-black">Email *</label>
-                  <input required type="email" id="email" className="w-full bg-[#F8F8F8] border-none rounded-none p-4 font-sans focus:ring-1 focus:ring-black outline-none transition-shadow" placeholder="jane@brand.com" />
-                </div>
-              </div>
+              ))}
+            </div>
 
-              <div className="space-y-2">
-                <label htmlFor="company" className="block text-sm font-bold uppercase tracking-[1px] text-near-black">Brand / Company Name</label>
-                <input type="text" id="company" className="w-full bg-[#F8F8F8] border-none rounded-none p-4 font-sans focus:ring-1 focus:ring-black outline-none transition-shadow" placeholder="Your Brand Ltd." />
-              </div>
+            <form onSubmit={handleNext}>
+              <h2 className="text-2xl font-sans font-bold text-near-black mb-8 border-b border-gray-100 pb-4">{steps[step - 1].title}</h2>
+              
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                >
+                  {steps[step - 1].content}
+                </motion.div>
+              </AnimatePresence>
 
-              <div className="space-y-2">
-                <label htmlFor="category" className="block text-sm font-bold uppercase tracking-[1px] text-near-black">Product Category *</label>
-                <select required id="category" className="w-full bg-[#F8F8F8] border-none rounded-none p-4 font-sans focus:ring-1 focus:ring-black outline-none transition-shadow appearance-none">
-                  <option value="">Select a category</option>
-                  <option value="streetwear">Streetwear & Casuals</option>
-                  <option value="activewear">Activewear & Performance</option>
-                  <option value="corporate">Corporate & Uniforms</option>
-                  <option value="other">Other / Custom</option>
-                </select>
+              <div className="mt-12 flex items-center justify-between pt-6 border-t border-gray-100">
+                <button type="button" onClick={handleBack} disabled={step === 1} className={cn(
+                  "flex items-center text-sm font-bold uppercase tracking-widest transition-colors",
+                  step === 1 ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:text-black"
+                )}>
+                  <ArrowLeft className="w-4 h-4 mr-2" /> Back
+                </button>
+                <button type="submit" disabled={isSubmitting} className="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-[2px] text-xs hover:bg-gray-800 transition-colors flex items-center group disabled:opacity-50 disabled:cursor-not-allowed">
+                  {step === 4 ? (isSubmitting ? 'Submitting...' : 'Submit Request') : 'Next Step'}
+                  {step !== 4 && <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />}
+                </button>
               </div>
-
-              <div className="space-y-2">
-                <label htmlFor="qty" className="block text-sm font-bold uppercase tracking-[1px] text-near-black">Estimated Quantity per Style</label>
-                <select id="qty" className="w-full bg-[#F8F8F8] border-none rounded-none p-4 font-sans focus:ring-1 focus:ring-black outline-none transition-shadow appearance-none">
-                  <option value="under_100">Under 100 pcs (Sampling/Boutique)</option>
-                  <option value="100_500">100 - 500 pcs</option>
-                  <option value="500_2000">500 - 2,000 pcs</option>
-                  <option value="2000_plus">2,000+ pcs</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="details" className="block text-sm font-bold uppercase tracking-[1px] text-near-black">Project Details</label>
-                <textarea id="details" rows={6} className="w-full bg-[#F8F8F8] border-none rounded-none p-4 font-sans focus:ring-1 focus:ring-black outline-none transition-shadow resize-none" placeholder="Tell us about your tech packs, timeline, and any specific fabric requirements..."></textarea>
-              </div>
-
-              <button type="submit" className="w-full bg-black text-white p-5 font-bold uppercase tracking-[2px] text-sm hover:bg-near-black transition-colors flex items-center justify-center group">
-                Submit Request
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </motion.form>
-          )}
-        </div>
+            </form>
+          </div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-black text-white p-12 md:p-20 rounded-3xl text-center shadow-2xl max-w-2xl mx-auto"
+          >
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 mb-8">
+              <CheckCircle2 className="w-10 h-10 text-white" />
+            </div>
+            <h3 className="text-4xl md:text-5xl font-sans font-black tracking-tight mb-6">Order Request Received</h3>
+            <p className="text-white/70 font-sans text-lg leading-relaxed mb-10">
+              Thank you, {formData.name.split(' ')[0] || 'there'}. We've received your comprehensive manufacturing request for {formData.company || 'your brand'}. Our production team will review your requirements and reach out within 24 hours to schedule a consultation.
+            </p>
+            <button onClick={() => window.location.href = '/'} className="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-gray-200 transition-colors">
+              Return Home
+            </button>
+          </motion.div>
+        )}
       </div>
     </div>
   );

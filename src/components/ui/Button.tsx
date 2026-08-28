@@ -9,6 +9,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   withArrow?: boolean;
   loading?: boolean;
   icon?: React.ReactNode;
+  download?: boolean | string;
+  target?: string;
 }
 
 export function Button({ 
@@ -19,6 +21,8 @@ export function Button({
   loading = false,
   icon,
   className,
+  download,
+  target,
   ...props 
 }: ButtonProps) {
   const baseStyles = "relative inline-flex items-center justify-center gap-3 px-8 py-4 text-[10px] font-bold tracking-[3px] uppercase overflow-hidden transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -48,8 +52,21 @@ export function Button({
   const finalClassName = cn(baseStyles, variants[variant], 'group', className);
 
   if (href) {
+    if (href.startsWith('http') || href.endsWith('.pdf') || download) {
+      return (
+        <a 
+          href={href} 
+          className={finalClassName} 
+          download={download} 
+          target={target || (href.endsWith('.pdf') ? "_blank" : undefined)} 
+          rel={target === "_blank" || href.endsWith('.pdf') ? "noopener noreferrer" : undefined}
+        >
+          {content}
+        </a>
+      );
+    }
     return (
-      <Link href={href} className={finalClassName}>
+      <Link href={href} className={finalClassName} target={target}>
         {content}
       </Link>
     );

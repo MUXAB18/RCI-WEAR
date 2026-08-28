@@ -3,16 +3,15 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { 
-  LayoutDashboard, 
-  ImageIcon, 
-  FolderOpen, 
-  ShoppingBag, 
-  ShoppingCart, 
-  Mail, 
-  FileText, 
-  BookOpen, 
-  Settings, 
+import {
+  LayoutDashboard,
+  ImageIcon,
+  FolderOpen,
+  ShoppingBag,
+  ShoppingCart,
+  Mail,
+  BookOpen,
+  Settings,
   LogOut,
   Package,
   Star
@@ -37,14 +36,13 @@ const navSections = [
     items: [
       { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
       { href: '/admin/tracking', label: 'Tracking Board', icon: Package },
-      { href: '/admin/quotes', label: 'Quotes', icon: FileText },
       { href: '/admin/reviews', label: 'Reviews', icon: Star },
     ]
   },
   {
     title: 'Communication',
     items: [
-      { href: '/admin/contacts', label: 'Contact Inquiries', icon: Mail },
+      { href: '/admin/contacts', label: 'Quote', icon: Mail },
     ]
   },
   {
@@ -100,11 +98,10 @@ export function AdminSidebar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                      isActive
-                        ? 'bg-white text-black shadow-lg shadow-white/10'
-                        : 'text-white/60 hover:text-white hover:bg-white/[0.06]'
-                    }`}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
+                      ? 'bg-white text-black shadow-lg shadow-white/10'
+                      : 'text-white/60 hover:text-white hover:bg-white/[0.06]'
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     {item.label}

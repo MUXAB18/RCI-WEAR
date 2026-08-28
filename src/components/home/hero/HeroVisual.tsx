@@ -34,7 +34,7 @@ export function HeroVisual() {
         <motion.div variants={itemVariants} className="relative w-full flex-[1.2] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
           <Image
             src="/media__1775818866466.webp"
-            alt="Manufacturing process"
+            alt="Custom apparel design"
             fill
             sizes="(max-width: 1024px) 45vw, 25vw"
             className="object-cover"
@@ -45,8 +45,8 @@ export function HeroVisual() {
         {/* Middle Left (Flex 1.5 - Square-ish) */}
         <motion.div variants={itemVariants} className="relative w-full flex-[1.5] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-[#223B65]">
           <Image
-            src="/custom_hoodie_1.webp"
-            alt="Custom hoodie"
+            src="/media__1775818869472.webp"
+            alt="Clothing manufacturing process"
             fill
             sizes="(max-width: 1024px) 45vw, 25vw"
             className="object-cover opacity-90"
@@ -56,11 +56,11 @@ export function HeroVisual() {
         {/* Bottom Left (Flex 1 - Landscape) */}
         <motion.div variants={itemVariants} className="relative w-full flex-1 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
           <Image
-            src="/media__1775818866466.webp"
-            alt="Fabric details"
+            src="/IMG_5464.webp"
+            alt="Premium fabric details"
             fill
             sizes="(max-width: 1024px) 45vw, 25vw"
-            className="object-cover object-bottom"
+            className="object-cover object-center"
           />
         </motion.div>
       </div>
@@ -71,7 +71,7 @@ export function HeroVisual() {
         <motion.div variants={itemVariants} className="relative w-full flex-[1.8] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
           <Image
             src="/custom_hoodie_1.webp"
-            alt="Apparel model"
+            alt="Custom hoodie modeled"
             fill
             sizes="(max-width: 1024px) 45vw, 25vw"
             className="object-cover object-top"
@@ -82,11 +82,11 @@ export function HeroVisual() {
         {/* Bottom Right (Flex 1.2 - Landscape to match bottom alignment) */}
         <motion.div variants={itemVariants} className="relative w-full flex-[1.2] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-[#90B79B]">
           <Image
-            src="/media__1775818866466.webp"
-            alt="Product details"
+            src="/media__1775817925946.webp"
+            alt="Detailed product stitching"
             fill
             sizes="(max-width: 1024px) 45vw, 25vw"
-            className="object-cover object-left opacity-90"
+            className="object-cover object-center opacity-90"
           />
         </motion.div>
       </div>

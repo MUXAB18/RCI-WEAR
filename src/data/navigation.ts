@@ -17,7 +17,7 @@ export const navigation: {
     },
     { name: 'Portfolio', href: '/portfolio' },
     { name: 'Design Studio', href: '/design-studio' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Quote', href: '/contact' },
   ],
   footer: {
     company: [

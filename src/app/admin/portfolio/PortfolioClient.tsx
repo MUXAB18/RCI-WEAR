@@ -10,6 +10,7 @@ import { Modal } from '@/components/admin/ui/Modal';
 import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
 import { Input } from '@/components/admin/ui/Input';
 import { Textarea } from '@/components/admin/ui/Textarea';
+import { ImageUpload } from '@/components/admin/ui/ImageUpload';
 import { useRouter } from 'next/navigation';
 
 type PortfolioProject = {
@@ -207,7 +208,7 @@ export function PortfolioClient({ initialProjects }: Props) {
 
       const payload = {
         ...formData,
-        order: parseInt(formData.order.toString()),
+        order: Number(formData.order) || 0,
         images: formData.images.split('\n').filter(url => url.trim()),
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
         projectDate: formData.projectDate || null,
@@ -346,12 +347,11 @@ export function PortfolioClient({ initialProjects }: Props) {
             rows={3}
           />
 
-          <Input
-            label="Main Image URL"
+          <ImageUpload
+            label="Main Image"
             value={formData.imageUrl}
-            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+            onChange={(url) => setFormData({ ...formData, imageUrl: url })}
             required
-            placeholder="https://example.com/main-image.jpg"
           />
 
           <Textarea
@@ -391,7 +391,7 @@ export function PortfolioClient({ initialProjects }: Props) {
             label="Display Order"
             type="number"
             value={formData.order}
-            onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+            onChange={(e) => setFormData({ ...formData, order: e.target.value })}
             helperText="Lower numbers appear first"
           />
 

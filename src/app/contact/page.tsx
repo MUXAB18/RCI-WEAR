@@ -55,53 +55,55 @@ export default function ContactPage() {
             className="flex flex-col gap-12"
           >
             <div>
-              <h3 className="text-2xl font-display mb-8">Contact Information</h3>
-              <div className="space-y-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#F8F8F8] flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5 text-near-black" />
+              <h3 className="text-3xl font-sans font-bold tracking-tight mb-10">Contact Information</h3>
+              <div className="space-y-10">
+                <div className="flex items-start gap-5 group">
+                  <div className="w-12 h-12 rounded-2xl bg-[#F8F8F8] flex items-center justify-center shrink-0 border border-gray-100 group-hover:bg-black group-hover:border-black transition-colors duration-300 shadow-sm">
+                    <MapPin className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
-                    <h4 className="text-[11px] font-bold tracking-[2px] uppercase text-near-black/50 mb-1">Headquarters</h4>
-                    <p className="font-medium">Address</p>
-                    <p className="text-gray-600">{companyData.location}</p>
+                    <h4 className="text-[11px] font-sans font-bold tracking-[2px] uppercase text-gray-400 mb-2">Headquarters</h4>
+                    <p className="font-sans font-bold text-lg text-near-black mb-1">Address</p>
+                    <p className="font-sans text-gray-500 leading-relaxed">{companyData.location}</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#F8F8F8] flex items-center justify-center shrink-0">
-                    <Phone className="w-5 h-5 text-near-black" />
+                <div className="flex items-start gap-5 group">
+                  <div className="w-12 h-12 rounded-2xl bg-[#F8F8F8] flex items-center justify-center shrink-0 border border-gray-100 group-hover:bg-black group-hover:border-black transition-colors duration-300 shadow-sm">
+                    <Phone className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
-                    <h4 className="text-[11px] font-bold tracking-[2px] uppercase text-near-black/50 mb-1">Phone / WhatsApp</h4>
-                    {companyData.phones.map(phone => (
-                      <p key={phone.country} className="text-sm text-near-black/80">
-                        {phone.country}: <a href={`tel:${phone.code}`} className="hover:underline">{phone.number}</a>
-                      </p>
-                    ))}
+                    <h4 className="text-[11px] font-sans font-bold tracking-[2px] uppercase text-gray-400 mb-2">Phone / WhatsApp</h4>
+                    <div className="space-y-1">
+                      {companyData.phones.map(phone => (
+                        <p key={phone.country} className="font-sans text-near-black">
+                          <span className="font-bold">{phone.country}:</span> <a href={`tel:${phone.code}`} className="text-gray-500 hover:text-black hover:underline transition-colors">{phone.number}</a>
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#F8F8F8] flex items-center justify-center shrink-0">
-                    <Mail className="w-5 h-5 text-near-black" />
+                <div className="flex items-start gap-5 group">
+                  <div className="w-12 h-12 rounded-2xl bg-[#F8F8F8] flex items-center justify-center shrink-0 border border-gray-100 group-hover:bg-black group-hover:border-black transition-colors duration-300 shadow-sm">
+                    <Mail className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
-                    <h4 className="text-[11px] font-bold tracking-[2px] uppercase text-near-black/50 mb-1">Email</h4>
-                    <p className="text-sm text-near-black/80">
-                      <a href={`mailto:${companyData.emails.primary}`} className="hover:underline">{companyData.emails.primary}</a>
+                    <h4 className="text-[11px] font-sans font-bold tracking-[2px] uppercase text-gray-400 mb-2">Email Address</h4>
+                    <p className="font-sans font-bold text-lg text-near-black">
+                      <a href={`mailto:${companyData.emails.primary}`} className="hover:underline hover:text-black transition-colors">{companyData.emails.primary}</a>
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#F8F8F8] flex items-center justify-center shrink-0">
-                    <Clock className="w-5 h-5 text-near-black" />
+                <div className="flex items-start gap-5 group">
+                  <div className="w-12 h-12 rounded-2xl bg-[#F8F8F8] flex items-center justify-center shrink-0 border border-gray-100 group-hover:bg-black group-hover:border-black transition-colors duration-300 shadow-sm">
+                    <Clock className="w-5 h-5 text-gray-500 group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
-                    <h4 className="text-[11px] font-bold tracking-[2px] uppercase text-near-black/50 mb-1">Business Hours</h4>
-                    <p className="text-sm text-near-black/80">Monday - Saturday</p>
-                    <p className="text-sm text-near-black/80">9:00 AM - 6:00 PM (PKT)</p>
+                    <h4 className="text-[11px] font-sans font-bold tracking-[2px] uppercase text-gray-400 mb-2">Business Hours</h4>
+                    <p className="font-sans font-bold text-near-black mb-1">Monday - Saturday</p>
+                    <p className="font-sans text-gray-500">9:00 AM - 6:00 PM (PKT)</p>
                   </div>
                 </div>
               </div>
@@ -113,12 +115,14 @@ export default function ContactPage() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="bg-[#F8F8F8] p-8 md:p-12 border border-gray-100"
+            className="bg-white p-8 md:p-12 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-100 relative overflow-hidden"
           >
-            <h3 className="text-2xl font-display mb-8">Send us a message</h3>
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-black via-gray-600 to-black"></div>
+            
+            <h3 className="text-2xl font-sans font-bold tracking-tight mb-8">Send us a message</h3>
             
             {formStatus === 'success' ? (
-              <div className="bg-green-50 text-green-800 p-6 flex flex-col items-center text-center">
+              <div className="bg-green-50 text-green-800 p-8 rounded-2xl flex flex-col items-center text-center font-sans">
                 <CheckCircle2 className="w-12 h-12 mb-4 text-green-500" />
                 <h4 className="text-xl font-bold mb-2">Message Sent Successfully</h4>
                 <p className="text-sm">Thank you for reaching out. One of our manufacturing experts will get back to you within 24 hours.</p>
@@ -130,47 +134,46 @@ export default function ContactPage() {
                 </button>
               </div>
             ) : formStatus === 'error' ? (
-              <div className="bg-red-50 text-red-800 p-6 flex flex-col items-center text-center">
+              <div className="bg-red-50 text-red-800 p-8 rounded-2xl flex flex-col items-center text-center font-sans">
                 <h4 className="text-xl font-bold mb-2">Something went wrong</h4>
                 <p className="text-sm">Please try again or email us directly.</p>
                 <button onClick={() => setFormStatus('idle')} className="mt-6 text-sm font-bold underline">Try again</button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label htmlFor="firstName" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">First Name</label>
-                    <input type="text" id="firstName" required value={formData.firstName} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                  <div className="space-y-2 group">
+                    <label htmlFor="firstName" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">First Name</label>
+                    <input type="text" id="firstName" required value={formData.firstName} onChange={handleChange} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="lastName" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Last Name</label>
-                    <input type="text" id="lastName" required value={formData.lastName} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                  <div className="space-y-2 group">
+                    <label htmlFor="lastName" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Last Name</label>
+                    <input type="text" id="lastName" required value={formData.lastName} onChange={handleChange} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Email Address</label>
-                  <input type="email" id="email" required value={formData.email} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                <div className="space-y-2 group">
+                  <label htmlFor="email" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Email Address</label>
+                  <input type="email" id="email" required value={formData.email} onChange={handleChange} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
                 </div>
                 
-                <div className="space-y-2">
-                  <label htmlFor="company" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Company / Brand Name</label>
-                  <input type="text" id="company" value={formData.company} onChange={handleChange} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors" />
+                <div className="space-y-2 group">
+                  <label htmlFor="company" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Company / Brand Name</label>
+                  <input type="text" id="company" value={formData.company} onChange={handleChange} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
                 </div>
                 
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-[10px] font-bold tracking-[2px] uppercase text-near-black/70">Project Details</label>
-                  <textarea id="message" required value={formData.message} onChange={handleChange} rows={5} className="w-full bg-white border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-near-black transition-colors resize-none" placeholder="Please describe your requirements, expected quantities, and timeline..." />
+                <div className="space-y-2 group">
+                  <label htmlFor="message" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Project Details</label>
+                  <textarea id="message" required value={formData.message} onChange={handleChange} rows={5} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm resize-none" placeholder="Please describe your requirements, expected quantities, and timeline..." />
                 </div>
                 
-                <Button 
+                <button 
                   type="submit" 
-                  variant="primary" 
-                  className="w-full"
                   disabled={formStatus === 'submitting'}
+                  className="w-full bg-black text-white rounded-full py-4 text-[13px] font-bold tracking-[1px] uppercase hover:bg-gray-800 transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200 disabled:opacity-70 disabled:hover:translate-y-0"
                 >
                   {formStatus === 'submitting' ? 'Sending...' : 'Submit Inquiry'}
-                </Button>
+                </button>
               </form>
             )}
           </motion.div>

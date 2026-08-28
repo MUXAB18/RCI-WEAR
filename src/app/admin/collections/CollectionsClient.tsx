@@ -10,6 +10,7 @@ import { Modal } from '@/components/admin/ui/Modal';
 import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
 import { Input } from '@/components/admin/ui/Input';
 import { Textarea } from '@/components/admin/ui/Textarea';
+import { ImageUpload } from '@/components/admin/ui/ImageUpload';
 import { useRouter } from 'next/navigation';
 
 type Collection = {
@@ -41,7 +42,7 @@ export function CollectionsClient({ initialCollections }: Props) {
     description: '',
     imageUrl: '',
     isPublished: true,
-    order: 0,
+    order: '',
   });
 
   const columns: Column<Collection>[] = [
@@ -129,7 +130,7 @@ export function CollectionsClient({ initialCollections }: Props) {
       description: collection.description || '',
       imageUrl: collection.imageUrl || '',
       isPublished: collection.isPublished,
-      order: collection.order,
+      order: collection.order?.toString() || '',
     });
     setIsModalOpen(true);
   };
@@ -167,10 +168,15 @@ export function CollectionsClient({ initialCollections }: Props) {
       
       const method = editingCollection ? 'PUT' : 'POST';
 
+      const payload = {
+        ...formData,
+        order: Number(formData.order) || 0,
+      };
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
@@ -189,10 +195,10 @@ export function CollectionsClient({ initialCollections }: Props) {
     setFormData({
       name: '',
       slug: '',
-      description: '',
-      imageUrl: '',
-      isPublished: true,
-      order: 0,
+    description: '',
+    imageUrl: '',
+    isPublished: true,
+    order: '',
     });
     setEditingCollection(null);
   };
@@ -275,18 +281,17 @@ export function CollectionsClient({ initialCollections }: Props) {
             placeholder="Brief description of the collection..."
           />
 
-          <Input
-            label="Image URL"
+          <ImageUpload
+            label="Image"
             value={formData.imageUrl}
-            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-            placeholder="https://example.com/image.jpg"
+            onChange={(url) => setFormData({ ...formData, imageUrl: url })}
           />
 
           <Input
             label="Display Order"
             type="number"
             value={formData.order}
-            onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+            onChange={(e) => setFormData({ ...formData, order: e.target.value })}
             helperText="Lower numbers appear first"
           />
 

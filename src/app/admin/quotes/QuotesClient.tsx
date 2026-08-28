@@ -69,7 +69,7 @@ export function QuotesClient({ initialQuotes }: Props) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   
   const [sendFormData, setSendFormData] = useState({
-    quoteAmount: 0,
+    quoteAmount: '',
     validUntil: '',
   });
 
@@ -268,7 +268,7 @@ export function QuotesClient({ initialQuotes }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           status: 'sent',
-          quoteAmount: parseFloat(sendFormData.quoteAmount.toString()),
+          quoteAmount: Number(sendFormData.quoteAmount) || 0,
           validUntil: sendFormData.validUntil,
         }),
       });
@@ -460,7 +460,7 @@ export function QuotesClient({ initialQuotes }: Props) {
               type="number"
               step="0.01"
               value={sendFormData.quoteAmount}
-              onChange={(e) => setSendFormData({ ...sendFormData, quoteAmount: parseFloat(e.target.value) || 0 })}
+              onChange={(e) => setSendFormData({ ...sendFormData, quoteAmount: e.target.value })}
               required
               placeholder="5000.00"
             />

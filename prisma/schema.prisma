@@ -88,6 +88,22 @@ model Order {
   company         String?
   shippingAddress String?
   billingAddress  String?
+  
+  // Custom Order Fields
+  website         String?
+  country         String?
+  category        String?
+  fabric          String?
+  gsm             String?
+  quantity        String?
+  sizes           String[]    @default([])
+  decoration      String[]    @default([])
+  extras          String[]    @default([])
+  colors          String?
+  timeline        String?
+  budget          String?
+  comments        String?
+
   // Manufacturing Stages: pending | sourcing | production | qc | packaging | shipped | delivered | cancelled
   status          String      @default("pending") 
   paymentStatus   String      @default("unpaid") // unpaid | paid | refunded
@@ -95,6 +111,13 @@ model Order {
   tax             Float       @default(0)
   shipping        Float       @default(0)
   total           Float       @default(0)
+  
+  // Cost & Profit Tracking
+  productionCost  Float       @default(0)
+  shippingCost    Float       @default(0)
+  otherCosts      Float       @default(0)
+  profit          Float       @default(0)
+
   notes           String?
   trackingNumber  String?
   estimatedDelivery DateTime?

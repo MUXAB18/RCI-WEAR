@@ -53,12 +53,12 @@ export function ProductsClient({ initialProducts, collections }: Props) {
     name: '',
     slug: '',
     description: '',
-    price: 0,
+    price: '',
     sku: '',
     category: '',
     images: '',
-    stockLevel: 0,
-    minOrderQuantity: 1,
+    stockLevel: '',
+    minOrderQuantity: '',
     isFeatured: false,
     isPublished: true,
     tags: '',
@@ -215,9 +215,9 @@ export function ProductsClient({ initialProducts, collections }: Props) {
 
       const payload = {
         ...formData,
-        price: parseFloat(formData.price.toString()),
-        stockLevel: parseInt(formData.stockLevel.toString()),
-        minOrderQuantity: parseInt(formData.minOrderQuantity.toString()),
+        price: Number(formData.price) || 0,
+        stockLevel: Number(formData.stockLevel) || 0,
+        minOrderQuantity: Number(formData.minOrderQuantity) || 1,
         images: formData.images.split('\n').filter(url => url.trim()),
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
         collectionId: formData.collectionId || null,
@@ -246,12 +246,12 @@ export function ProductsClient({ initialProducts, collections }: Props) {
       name: '',
       slug: '',
       description: '',
-      price: 0,
-      sku: '',
-      category: '',
-      images: '',
-      stockLevel: 0,
-      minOrderQuantity: 1,
+      price: '',
+    sku: '',
+    category: '',
+    images: '',
+    stockLevel: '',
+    minOrderQuantity: '',
       isFeatured: false,
       isPublished: true,
       tags: '',
@@ -345,7 +345,7 @@ export function ProductsClient({ initialProducts, collections }: Props) {
               type="number"
               step="0.01"
               value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
               required
               placeholder="29.99"
             />
@@ -364,7 +364,7 @@ export function ProductsClient({ initialProducts, collections }: Props) {
               label="Stock Level"
               type="number"
               value={formData.stockLevel}
-              onChange={(e) => setFormData({ ...formData, stockLevel: parseInt(e.target.value) || 0 })}
+              onChange={(e) => setFormData({ ...formData, stockLevel: e.target.value })}
               required
               placeholder="100"
             />
@@ -373,7 +373,7 @@ export function ProductsClient({ initialProducts, collections }: Props) {
               label="Min Order Quantity"
               type="number"
               value={formData.minOrderQuantity}
-              onChange={(e) => setFormData({ ...formData, minOrderQuantity: parseInt(e.target.value) || 1 })}
+              onChange={(e) => setFormData({ ...formData, minOrderQuantity: e.target.value })}
               required
               placeholder="1"
             />
