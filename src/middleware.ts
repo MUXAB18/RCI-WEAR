@@ -36,22 +36,25 @@ export async function middleware(request: NextRequest) {
   // Check for 2FA cookie
   const has2FA = request.cookies.has('admin_2fa_verified')
 
-  // If the user is not logged in and trying to access /admin (but not /admin/login), redirect to login
-  if (!user && request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
+  const ADMIN_EMAIL = 'rasheedclothingintl@gmail.com';
+  const isAdmin = user && user.email === ADMIN_EMAIL;
+
+  // If the user is not logged in or not the admin, and trying to access /admin (but not /admin/login), redirect to login
+  if ((!user || !isAdmin) && request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin/login'
     return NextResponse.redirect(url)
   }
 
   // If the user is logged in but hasn't completed 2FA, redirect to verify (unless already there)
-  if (user && !has2FA && request.nextUrl.pathname.startsWith('/admin') && request.nextUrl.pathname !== '/admin/login/verify') {
+  if (isAdmin && !has2FA && request.nextUrl.pathname.startsWith('/admin') && request.nextUrl.pathname !== '/admin/login/verify') {
     const url = request.nextUrl.clone()
     url.pathname = '/admin/login/verify'
     return NextResponse.redirect(url)
   }
 
   // If the user is logged in AND has 2FA, prevent them from accessing login/verify pages
-  if (user && has2FA && request.nextUrl.pathname.startsWith('/admin/login')) {
+  if (isAdmin && has2FA && request.nextUrl.pathname.startsWith('/admin/login')) {
     const url = request.nextUrl.clone()
     url.pathname = '/admin'
     return NextResponse.redirect(url)

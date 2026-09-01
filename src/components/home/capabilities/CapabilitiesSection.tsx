@@ -10,12 +10,12 @@ export function CapabilitiesSection() {
   return (
     <section className="bg-white py-24 md:py-32 overflow-hidden relative w-full font-sans">
       <div className="container mx-auto px-4 md:px-8 max-w-[1400px]">
-        
+
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-0 relative">
-          
+
           {/* HUGE TEXT ON THE LEFT */}
           <div className="lg:w-[35%] z-10 lg:pl-10 relative">
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -28,14 +28,14 @@ export function CapabilitiesSection() {
 
           {/* ROTATED CARD ON THE RIGHT */}
           <div className="lg:w-[65%] relative z-20">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 40, rotate: 0 }}
               whileInView={{ opacity: 1, y: 0, rotate: -4 }}
               viewport={{ once: true }}
               transition={{ duration: 1, type: "spring", bounce: 0.2 }}
               className="bg-white rounded-[32px] p-8 md:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] flex flex-col md:flex-row gap-10 md:gap-14 border border-gray-100 transform -rotate-2 md:-rotate-3"
             >
-              
+
               {/* Left Column of Card: 3 Stacked Images */}
               <div className="w-full md:w-[45%] flex flex-col gap-4">
                 <div className="relative w-full aspect-[21/9] md:aspect-[16/7] rounded-3xl overflow-hidden shadow-sm">
@@ -69,7 +69,7 @@ export function CapabilitiesSection() {
                 <h3 className="text-3xl md:text-[38px] font-sans font-extrabold text-black leading-tight mb-4 tracking-tight">
                   Why Choose <br /> RCI?
                 </h3>
-                
+
                 <p className="text-gray-500 text-[15px] leading-relaxed mb-8 max-w-sm">
                   Discover the Benefits That Drive Your Apparel Brand Forward.
                 </p>
@@ -116,7 +116,7 @@ export function CapabilitiesSection() {
                 </div>
 
                 <div>
-                  <Link 
+                  <Link
                     href="/contact"
                     className="inline-block bg-black text-white text-sm font-bold py-3 px-6 rounded-lg hover:bg-gray-800 transition-colors"
                   >
@@ -127,7 +127,7 @@ export function CapabilitiesSection() {
 
             </motion.div>
           </div>
-          
+
         </div>
       </div>
     </section>

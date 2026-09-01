@@ -40,10 +40,10 @@ export function ProcessTimelineSection() {
   return (
     <section className="bg-[#F5F5F0] py-24 md:py-32 overflow-hidden w-full">
       <div className="container mx-auto px-6 md:px-12 max-w-[1400px]">
-        
+
         {/* Header (Optional, but good for context if needed, though screenshot doesn't show one. I'll add a minimal one just in case, or leave it out if they just want the timeline. I'll add a subtle header.) */}
         <div className="mb-24 flex flex-col items-center text-center">
-           <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -55,7 +55,7 @@ export function ProcessTimelineSection() {
             </span>
             <span className="w-8 h-[1px] bg-black" />
           </motion.div>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -74,7 +74,7 @@ export function ProcessTimelineSection() {
           <div className="grid grid-cols-5 gap-4 relative z-10">
             {processSteps.map((step, index) => (
               <div key={index} className="relative flex flex-col items-center h-[350px]">
-                
+
                 {/* Top Content */}
                 <div className={`w-full px-4 flex flex-col justify-end h-1/2 pb-12 ${step.position === 'top' ? 'opacity-100' : 'opacity-0 invisible'}`}>
                   <motion.div
@@ -125,9 +125,9 @@ export function ProcessTimelineSection() {
         <div className="lg:hidden flex flex-col gap-12 relative pl-6">
           {/* Vertical Line */}
           <div className="absolute top-2 left-6 bottom-2 w-[1px] bg-[#E0DCD3] z-0 -translate-x-[7px]" />
-          
+
           {processSteps.map((step, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -139,7 +139,7 @@ export function ProcessTimelineSection() {
               <div className="absolute top-1.5 -left-[7px] -translate-x-1/2 w-4 h-4 rounded-full border-[1px] border-black bg-[#F5F5F0] flex items-center justify-center z-10 shadow-[0_0_0_4px_#F5F5F0]">
                 <div className="w-1.5 h-1.5 bg-black rounded-full" />
               </div>
-              
+
               <div className="flex items-baseline gap-2 mb-2">
                 <span className="text-[#C1A67B] font-sans italic text-sm">{step.number}</span>
                 <h3 className="text-lg font-sans font-bold text-black">{step.title}</h3>

@@ -11,6 +11,7 @@ import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
 import { Input } from '@/components/admin/ui/Input';
 import { Textarea } from '@/components/admin/ui/Textarea';
 import { Select } from '@/components/admin/ui/Select';
+import { MultiImageUpload } from '@/components/admin/ui/MultiImageUpload';
 import { useRouter } from 'next/navigation';
 
 type Product = {
@@ -19,16 +20,26 @@ type Product = {
   slug: string;
   description: string | null;
   price: number;
+  salePrice: number | null;
   sku: string;
-  category: string | null;
+  categoryId: string | null;
+  categoryRef: { id: string; name: string } | null;
   images: string[];
-  stockLevel: number;
-  minOrderQuantity: number;
+  stock: number;
+  minOrder: number;
   isFeatured: boolean;
   isPublished: boolean;
   tags: string[];
   collectionId: string | null;
   collection: { id: string; name: string } | null;
+  variants: {
+    id?: string;
+    size: string | null;
+    color: string | null;
+    sku: string | null;
+    price: number | null;
+    stock: number;
+  }[];
 };
 
 type Collection = {
@@ -36,12 +47,18 @@ type Collection = {
   name: string;
 };
 
+type Category = {
+  id: string;
+  name: string;
+};
+
 type Props = {
   initialProducts: any[];
   collections: Collection[];
+  categories: Category[];
 };
 
-export function ProductsClient({ initialProducts, collections }: Props) {
+export function ProductsClient({ initialProducts, collections, categories }: Props) {
   const router = useRouter();
   const [products, setProducts] = useState(initialProducts);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,15 +71,17 @@ export function ProductsClient({ initialProducts, collections }: Props) {
     slug: '',
     description: '',
     price: '',
+    salePrice: '',
     sku: '',
-    category: '',
-    images: '',
-    stockLevel: '',
-    minOrderQuantity: '',
+    categoryId: '',
+    images: [] as string[],
+    stock: '',
+    minOrder: '',
     isFeatured: false,
     isPublished: true,
     tags: '',
     collectionId: '',
+    variants: [] as { size: string; color: string; sku: string; price: string; stock: string }[],
   });
 
   const columns: Column<Product>[] = [
@@ -114,8 +133,8 @@ export function ProductsClient({ initialProducts, collections }: Props) {
       key: 'stock',
       label: 'Stock',
       render: (item) => (
-        <Badge variant={item.stockLevel > 0 ? 'success' : 'danger'}>
-          {item.stockLevel} units
+        <Badge variant={item.stock > 0 ? 'success' : 'danger'}>
+          {item.stock} units
         </Badge>
       ),
     },
@@ -166,16 +185,24 @@ export function ProductsClient({ initialProducts, collections }: Props) {
       name: product.name,
       slug: product.slug,
       description: product.description || '',
-      price: String(product.price),
-      sku: product.sku,
-      category: product.category || '',
-      images: product.images.join('\n'),
-      stockLevel: String(product.stockLevel),
-      minOrderQuantity: String(product.minOrderQuantity),
+      price: String(product.price || ''),
+      salePrice: product.salePrice ? String(product.salePrice) : '',
+      sku: product.sku || '',
+      categoryId: product.categoryId || '',
+      images: product.images || [],
+      stock: String(product.stock || 0),
+      minOrder: String(product.minOrder || 1),
       isFeatured: product.isFeatured,
       isPublished: product.isPublished,
       tags: product.tags.join(', '),
       collectionId: product.collectionId || '',
+      variants: product.variants?.map(v => ({
+        size: v.size || '',
+        color: v.color || '',
+        sku: v.sku || '',
+        price: v.price ? String(v.price) : '',
+        stock: String(v.stock || 0),
+      })) || [],
     });
     setIsModalOpen(true);
   };
@@ -216,11 +243,20 @@ export function ProductsClient({ initialProducts, collections }: Props) {
       const payload = {
         ...formData,
         price: Number(formData.price) || 0,
-        stockLevel: Number(formData.stockLevel) || 0,
-        minOrderQuantity: Number(formData.minOrderQuantity) || 1,
-        images: formData.images.split('\n').filter(url => url.trim()),
+        salePrice: formData.salePrice ? Number(formData.salePrice) : null,
+        stock: Number(formData.stock) || 0,
+        minOrder: Number(formData.minOrder) || 1,
+        images: formData.images,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
         collectionId: formData.collectionId || null,
+        categoryId: formData.categoryId || null,
+        variants: formData.variants.map(v => ({
+          size: v.size || null,
+          color: v.color || null,
+          sku: v.sku || null,
+          price: v.price ? Number(v.price) : null,
+          stock: Number(v.stock) || 0,
+        })),
       };
 
       const res = await fetch(url, {
@@ -247,15 +283,17 @@ export function ProductsClient({ initialProducts, collections }: Props) {
       slug: '',
       description: '',
       price: '',
-    sku: '',
-    category: '',
-    images: '',
-    stockLevel: '',
-    minOrderQuantity: '',
+      salePrice: '',
+      sku: '',
+      categoryId: '',
+      images: [],
+      stock: '',
+      minOrder: '',
       isFeatured: false,
       isPublished: true,
       tags: '',
       collectionId: '',
+      variants: [],
     });
     setEditingProduct(null);
   };
@@ -351,39 +389,50 @@ export function ProductsClient({ initialProducts, collections }: Props) {
             />
 
             <Input
-              label="SKU"
-              value={formData.sku}
-              onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-              required
-              placeholder="TSH-001"
+              label="Sale Price (USD)"
+              type="number"
+              step="0.01"
+              value={formData.salePrice}
+              onChange={(e) => setFormData({ ...formData, salePrice: e.target.value })}
+              placeholder="19.99"
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <Input
-              label="Stock Level"
+              label="SKU"
+              value={formData.sku}
+              onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+              placeholder="TSH-001"
+            />
+            
+            <Input
+              label="Stock"
               type="number"
-              value={formData.stockLevel}
-              onChange={(e) => setFormData({ ...formData, stockLevel: e.target.value })}
+              value={formData.stock}
+              onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
               required
               placeholder="100"
             />
 
             <Input
-              label="Min Order Quantity"
+              label="Min Order Qty"
               type="number"
-              value={formData.minOrderQuantity}
-              onChange={(e) => setFormData({ ...formData, minOrderQuantity: e.target.value })}
+              value={formData.minOrder}
+              onChange={(e) => setFormData({ ...formData, minOrder: e.target.value })}
               required
               placeholder="1"
             />
           </div>
 
-          <Input
+          <Select
             label="Category"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            placeholder="e.g., T-Shirts, Hoodies"
+            value={formData.categoryId}
+            onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
+            options={[
+              { value: '', label: 'No Category' },
+              ...categories.map(c => ({ value: c.id, label: c.name }))
+            ]}
           />
 
           <Select
@@ -396,14 +445,46 @@ export function ProductsClient({ initialProducts, collections }: Props) {
             ]}
           />
 
-          <Textarea
-            label="Image URLs"
+          <MultiImageUpload
+            label="Images"
             value={formData.images}
-            onChange={(e) => setFormData({ ...formData, images: e.target.value })}
-            placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
-            helperText="One URL per line"
-            rows={3}
+            onChange={(images) => setFormData({ ...formData, images })}
+            helperText="Upload images or paste URLs"
           />
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-white/80">Product Variants</label>
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                icon={<Plus className="w-3.5 h-3.5" />}
+                onClick={() => setFormData({
+                  ...formData,
+                  variants: [...formData.variants, { size: '', color: '', sku: '', price: '', stock: '0' }]
+                })}
+              >
+                Add Variant
+              </Button>
+            </div>
+            {formData.variants.map((variant, index) => (
+              <div key={index} className="grid grid-cols-12 gap-2 bg-white/5 p-3 rounded-lg relative group">
+                <div className="col-span-3"><Input placeholder="Size" value={variant.size} onChange={(e) => { const newV = [...formData.variants]; newV[index].size = e.target.value; setFormData({ ...formData, variants: newV }) }} /></div>
+                <div className="col-span-3"><Input placeholder="Color" value={variant.color} onChange={(e) => { const newV = [...formData.variants]; newV[index].color = e.target.value; setFormData({ ...formData, variants: newV }) }} /></div>
+                <div className="col-span-2"><Input placeholder="SKU" value={variant.sku} onChange={(e) => { const newV = [...formData.variants]; newV[index].sku = e.target.value; setFormData({ ...formData, variants: newV }) }} /></div>
+                <div className="col-span-2"><Input placeholder="Price" type="number" value={variant.price} onChange={(e) => { const newV = [...formData.variants]; newV[index].price = e.target.value; setFormData({ ...formData, variants: newV }) }} /></div>
+                <div className="col-span-2"><Input placeholder="Stock" type="number" value={variant.stock} onChange={(e) => { const newV = [...formData.variants]; newV[index].stock = e.target.value; setFormData({ ...formData, variants: newV }) }} /></div>
+                <button
+                  type="button"
+                  onClick={() => { const newV = [...formData.variants]; newV.splice(index, 1); setFormData({ ...formData, variants: newV }) }}
+                  className="absolute -right-2 -top-2 w-6 h-6 bg-red-500 rounded-full text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </button>
+              </div>
+            ))}
+          </div>
 
           <Input
             label="Tags"

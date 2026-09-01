@@ -8,7 +8,7 @@
   --color-grey-400: #959595;
   --color-grey-500: #838383;
   --color-near-black: #0B0B0B;
-  
+
   --font-sans: 'Inter', -apple-system, sans-serif;
   --font-serif: 'Playfair Display', serif;
   --font-display: 'DM Serif Display', 'Playfair Display', serif;
@@ -34,8 +34,25 @@
     font-family: var(--font-sans);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
+  }
+
+  /* Override browser autofill styles to match our design */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #F8F8F8 inset !important;
+    -webkit-text-fill-color: #0B0B0B !important;
+    transition: background-color 5000s ease-in-out 0s;
+    border-radius: 0px;
+    /* Let the wrapper handle rounding if needed, or match it */
   }
 }
 
@@ -44,15 +61,50 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   /* Eyebrow / Label style */
   .eyebrow {
     @apply flex items-center justify-center gap-5 text-[11px] font-extrabold uppercase tracking-[6px] text-black;
   }
-  
+
   .eyebrow::before,
   .eyebrow::after {
     content: '';
     @apply w-8 h-[2px] bg-black shrink-0;
+  }
+
+  /* Custom Date Picker Styling */
+  .date-input-custom::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+  }
+
+  /* Phone Input Styling Customizations */
+  .PhoneInput {
+    display: flex;
+    align-items: center;
+  }
+
+  .PhoneInputCountry {
+    margin-right: 12px;
+  }
+
+  .PhoneInputInput {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: black;
+    font-size: 16px;
+  }
+
+  .PhoneInputCountrySelectArrow {
+    color: #A2A2A2;
   }
 }

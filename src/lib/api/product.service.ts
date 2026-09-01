@@ -11,15 +11,24 @@ export type CreateProductInput = {
   slug: string;
   description?: string;
   price?: number;
+  salePrice?: number;
   sku?: string;
   images?: string[];
-  category?: string;
+  categoryId?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
   stock?: number;
   minOrder?: number;
   tags?: string[];
   collectionId?: string;
+  variants?: {
+    id?: string;
+    size?: string;
+    color?: string;
+    sku?: string;
+    price?: number;
+    stock?: number;
+  }[];
 };
 
 export type UpdateProductInput = Partial<CreateProductInput>;
@@ -33,6 +42,7 @@ export async function getAllProducts() {
       collection: {
         select: { id: true, name: true },
       },
+      variants: true,
     },
   });
 }
@@ -43,6 +53,7 @@ export async function getPublishedProducts() {
     orderBy: { createdAt: 'desc' },
     include: {
       collection: true,
+      variants: true,
     },
   });
 }
@@ -63,6 +74,7 @@ export async function getProductById(id: string) {
     where: { id },
     include: {
       collection: true,
+      variants: true,
     },
   });
 }
@@ -72,6 +84,7 @@ export async function getProductBySlug(slug: string) {
     where: { slug },
     include: {
       collection: true,
+      variants: true,
     },
   });
 }
@@ -89,22 +102,38 @@ export async function getProductsByCollection(collectionId: string) {
 // ─── CREATE ──────────────────────────────────────────────────────────────────
 
 export async function createProduct(data: CreateProductInput) {
+  const { variants, ...productData } = data;
   const product = await prisma.product.create({
     data: {
-      name: data.name,
-      slug: data.slug,
-      description: data.description,
-      price: data.price,
-      sku: data.sku,
-      images: data.images || [],
-      category: data.category,
-      isPublished: data.isPublished ?? true,
-      isFeatured: data.isFeatured ?? false,
-      stock: data.stock ?? 0,
-      minOrder: data.minOrder ?? 1,
-      tags: data.tags || [],
-      collectionId: data.collectionId,
+      name: productData.name,
+      slug: productData.slug,
+      description: productData.description,
+      price: productData.price,
+      salePrice: productData.salePrice,
+      sku: productData.sku,
+      images: productData.images || [],
+      categoryId: productData.categoryId,
+      isPublished: productData.isPublished ?? true,
+      isFeatured: productData.isFeatured ?? false,
+      stock: productData.stock ?? 0,
+      minOrder: productData.minOrder ?? 1,
+      tags: productData.tags || [],
+      collectionId: productData.collectionId,
+      ...(variants && variants.length > 0 && {
+        variants: {
+          create: variants.map(v => ({
+            size: v.size,
+            color: v.color,
+            sku: v.sku,
+            price: v.price,
+            stock: v.stock ?? 0,
+          })),
+        },
+      }),
     },
+    include: {
+      variants: true,
+    }
   });
   revalidatePaths();
   return product;
@@ -113,9 +142,34 @@ export async function createProduct(data: CreateProductInput) {
 // ─── UPDATE ──────────────────────────────────────────────────────────────────
 
 export async function updateProduct(id: string, data: UpdateProductInput) {
+  const { variants, ...productData } = data;
+  
+  if (variants) {
+    // Delete existing variants and recreate them to simplify sync
+    await prisma.productVariant.deleteMany({
+      where: { productId: id }
+    });
+  }
+
   const product = await prisma.product.update({
     where: { id },
-    data,
+    data: {
+      ...productData,
+      ...(variants && variants.length > 0 && {
+        variants: {
+          create: variants.map(v => ({
+            size: v.size,
+            color: v.color,
+            sku: v.sku,
+            price: v.price,
+            stock: v.stock ?? 0,
+          })),
+        },
+      }),
+    },
+    include: {
+      variants: true,
+    }
   });
   revalidatePaths();
   return product;

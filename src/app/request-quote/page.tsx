@@ -3,16 +3,48 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { ArrowRight, ArrowLeft, CheckCircle2, UploadCloud } from 'lucide-react';
+import { ArrowRight, ArrowLeft, CheckCircle2, UploadCloud, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 
 const InputField = ({ label, id, type = 'text', required = false, placeholder = '', formData, setFormData }: any) => (
   <div className="space-y-2 group">
     <label htmlFor={id} className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">{label} {required && '*'}</label>
-    <input required={required} type={type} id={id} placeholder={placeholder}
-      value={formData[id as keyof typeof formData] as string} onChange={e => setFormData({...formData, [id]: e.target.value})}
-      className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
+    <div className="relative">
+      <input required={required} type={type} id={id} placeholder={placeholder}
+        value={formData[id as keyof typeof formData] as string} onChange={e => setFormData((prev: any) => ({ ...prev, [id]: e.target.value }))}
+        className={cn(
+          "w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm",
+          type === 'date' ? "cursor-pointer date-input-custom text-gray-700" : ""
+        )} />
+      {type === 'date' && (
+        <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none group-focus-within:text-black transition-colors" />
+      )}
+    </div>
+  </div>
+);
+
+const PhoneInputField = ({ label, id, required = false, formData, setFormData }: any) => (
+  <div className="space-y-2 group">
+    <label htmlFor={id} className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">{label} {required && '*'}</label>
+    <div className="relative">
+      <PhoneInput
+        international
+        defaultCountry="US"
+        value={formData[id as keyof typeof formData] || undefined}
+        onChange={(value) => setFormData((prev: any) => ({ ...prev, [id]: value }))}
+        onKeyDown={(e: any) => {
+          if (e.key === ' ') {
+            e.preventDefault();
+            setFormData((prev: any) => ({ ...prev, [id]: '+1' }));
+          }
+        }}
+        className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus-within:ring-4 focus-within:ring-black/5 focus-within:bg-white focus-within:border-black transition-all shadow-sm"
+        required={required}
+      />
+    </div>
   </div>
 );
 
@@ -20,7 +52,7 @@ const SelectField = ({ label, id, options, required = false, formData, setFormDa
   <div className="space-y-2 group">
     <label htmlFor={id} className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">{label} {required && '*'}</label>
     <select required={required} id={id}
-      value={formData[id as keyof typeof formData] as string} onChange={e => setFormData({...formData, [id]: e.target.value})}
+      value={formData[id as keyof typeof formData] as string} onChange={e => setFormData((prev: any) => ({ ...prev, [id]: e.target.value }))}
       className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm appearance-none cursor-pointer">
       <option value="">Select option</option>
       {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
@@ -52,16 +84,31 @@ export default function RequestQuotePage() {
     name: '', email: '', phone: '', company: '', website: '', country: '',
     category: '', fabric: '', gsm: '', quantity: '', sizes: [] as string[],
     decoration: [] as string[], extras: [] as string[], colors: '',
-    timeline: '', budget: '', comments: ''
+    timeline: '', budget: '', comments: '',
+    attachments: [] as { name: string, content: string, type: string }[]
   });
-  
+
   const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (step === 1 && formData.phone) {
+      if (!isValidPhoneNumber(formData.phone)) {
+        alert('Please enter a valid phone number including your country code.');
+        return;
+      }
+    }
+
     if (step < 4) {
       setStep(prev => prev + 1);
     } else {
       setIsSubmitting(true);
       try {
+        const qtyMatch = formData.quantity.match(/\d+/);
+        const parsedQty = qtyMatch ? parseInt(qtyMatch[0], 10) : 1;
+
+        const budgetMatch = formData.budget.match(/[\d.]+/);
+        const parsedPrice = budgetMatch ? parseFloat(budgetMatch[0]) : 0;
+
         const payload = {
           customerName: formData.name,
           customerEmail: formData.email,
@@ -72,16 +119,17 @@ export default function RequestQuotePage() {
           category: formData.category,
           fabric: formData.fabric,
           gsm: formData.gsm,
-          quantity: formData.quantity,
+          quantity: formData.quantity, // Keep the original string as a reference
           sizes: formData.sizes,
           decoration: formData.decoration,
           extras: formData.extras,
           colors: formData.colors,
           timeline: formData.timeline,
-          budget: formData.budget,
+          budget: formData.budget, // Keep original string
           comments: formData.comments,
+          attachments: formData.attachments,
           status: 'pending',
-          items: [{ name: 'Custom Manufacturing Request', quantity: 1, price: 0 }]
+          items: [{ name: 'Custom Manufacturing Request', quantity: parsedQty, price: parsedPrice }]
         };
         const res = await fetch('/api/admin/orders', {
           method: 'POST',
@@ -89,9 +137,9 @@ export default function RequestQuotePage() {
           body: JSON.stringify(payload)
         });
         if (res.ok) {
-           setStep(5);
+          setStep(5);
         } else {
-           console.error('Failed to submit order request');
+          console.error('Failed to submit order request');
         }
       } catch (error) {
         console.error('Submission error:', error);
@@ -108,6 +156,37 @@ export default function RequestQuotePage() {
     }));
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    Array.from(files).forEach(file => {
+      // 10MB limit
+      if (file.size > 10 * 1024 * 1024) {
+        alert(`File ${file.name} is too large. Max size is 10MB.`);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64String = (event.target?.result as string).split(',')[1];
+        setFormData(prev => ({
+          ...prev,
+          attachments: [...prev.attachments, { name: file.name, content: base64String, type: file.type }]
+        }));
+      };
+      reader.readAsDataURL(file);
+    });
+    // clear input
+    e.target.value = '';
+  };
+
+  const removeAttachment = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      attachments: prev.attachments.filter((_, i) => i !== index)
+    }));
+  };
+
 
 
 
@@ -118,7 +197,7 @@ export default function RequestQuotePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <InputField formData={formData} setFormData={setFormData} label="Full Name" id="name" required placeholder="John Doe" />
           <InputField formData={formData} setFormData={setFormData} label="Work Email" id="email" type="email" required placeholder="john@brand.com" />
-          <InputField formData={formData} setFormData={setFormData} label="Phone Number" id="phone" type="tel" required placeholder="+1 (555) 000-0000" />
+          <PhoneInputField formData={formData} setFormData={setFormData} label="Phone Number" id="phone" required />
           <InputField formData={formData} setFormData={setFormData} label="Brand / Company Name" id="company" required placeholder="Your Brand Ltd." />
           <InputField formData={formData} setFormData={setFormData} label="Website / Instagram" id="website" placeholder="brand.com or @brand" />
           <InputField formData={formData} setFormData={setFormData} label="Country" id="country" required placeholder="United States" />
@@ -133,7 +212,7 @@ export default function RequestQuotePage() {
             <SelectField formData={formData} setFormData={setFormData} label="Product Category" id="category" required options={['Hoodies / Sweatshirts', 'T-Shirts', 'Tracksuits / Joggers', 'Outerwear / Jackets', 'Activewear', 'Custom Uniforms']} />
             <SelectField formData={formData} setFormData={setFormData} label="Fabric Preference" id="fabric" required options={['100% Cotton (French Terry)', '100% Cotton (Fleece)', 'Poly-Cotton Blend', 'Nylon / Polyester', 'Organic Cotton', 'Unsure - Need Advice']} />
             <SelectField formData={formData} setFormData={setFormData} label="Fabric Weight (GSM)" id="gsm" required options={['Lightweight (< 200 GSM)', 'Midweight (200 - 350 GSM)', 'Heavyweight (350 - 500+ GSM)']} />
-            <SelectField formData={formData} setFormData={setFormData} label="Estimated Quantity" id="quantity" required options={['Under 100 pcs (Sampling)', '100 - 500 pcs', '500 - 2000 pcs', '2000+ pcs']} />
+            <InputField formData={formData} setFormData={setFormData} label="Estimated Quantity" id="quantity" required placeholder="e.g. 325, 450, or Sample (2-5 pieces)" />
           </div>
           <CheckboxGroup formData={formData} handleCheck={handleCheck} label="Size Breakdown" field="sizes" options={['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL+']} />
         </div>
@@ -147,7 +226,7 @@ export default function RequestQuotePage() {
           <CheckboxGroup formData={formData} handleCheck={handleCheck} label="Branding Extras" field="extras" options={['Custom Woven Neck Labels', 'Hang Tags', 'Polybag Packaging', 'Custom Zippers/Hardware', 'Care Labels']} />
           <div className="space-y-2 group">
             <label htmlFor="colors" className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">Color Requirements</label>
-            <textarea id="colors" rows={2} value={formData.colors} onChange={e => setFormData({...formData, colors: e.target.value})} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all resize-none shadow-sm" placeholder="List specific Pantone colors or standard colors..."></textarea>
+            <textarea id="colors" rows={2} value={formData.colors} onChange={e => setFormData({ ...formData, colors: e.target.value })} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all resize-none shadow-sm" placeholder="List specific Pantone colors or standard colors..."></textarea>
           </div>
         </div>
       )
@@ -162,8 +241,18 @@ export default function RequestQuotePage() {
               <UploadCloud className="w-10 h-10 text-gray-400 group-hover:text-black transition-colors mb-4" />
               <p className="text-sm font-sans font-medium text-gray-600 mb-1">Click to upload or drag and drop</p>
               <p className="text-xs font-sans text-gray-400">PDF, PNG, JPG, AI up to 10MB</p>
-              <input type="file" multiple className="hidden" />
+              <input type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.ai" onChange={handleFileUpload} className="hidden" />
             </label>
+            {formData.attachments.length > 0 && (
+              <div className="mt-4 space-y-2">
+                {formData.attachments.map((file, i) => (
+                  <div key={i} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border border-gray-100">
+                    <span className="text-sm text-gray-700 truncate mr-4 font-sans">{file.name}</span>
+                    <button type="button" onClick={() => removeAttachment(i)} className="text-red-500 hover:text-red-700 text-xs font-bold uppercase tracking-wider">Remove</button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InputField formData={formData} setFormData={setFormData} label="Target Delivery Date" id="timeline" type="date" />
@@ -171,7 +260,7 @@ export default function RequestQuotePage() {
           </div>
           <div className="space-y-2 group">
             <label htmlFor="comments" className="block text-[11px] font-bold uppercase tracking-widest text-gray-500 group-focus-within:text-black transition-colors">Additional Comments</label>
-            <textarea id="comments" rows={4} value={formData.comments} onChange={e => setFormData({...formData, comments: e.target.value})} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all resize-none shadow-sm" placeholder="Any specific details we should know about?"></textarea>
+            <textarea id="comments" rows={4} value={formData.comments} onChange={e => setFormData({ ...formData, comments: e.target.value })} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl p-4 font-sans focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all resize-none shadow-sm" placeholder="Any specific details we should know about?"></textarea>
           </div>
         </div>
       )
@@ -193,7 +282,7 @@ export default function RequestQuotePage() {
             {/* Progress Bar */}
             <div className="flex items-center justify-between mb-12 relative max-w-lg mx-auto">
               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-100 z-0 rounded-full overflow-hidden">
-                <motion.div 
+                <motion.div
                   className="h-full bg-black"
                   initial={{ width: `${((step - 1) / 3) * 100}%` }}
                   animate={{ width: `${((step - 1) / 3) * 100}%` }}
@@ -213,7 +302,7 @@ export default function RequestQuotePage() {
 
             <form onSubmit={handleNext}>
               <h2 className="text-2xl font-sans font-bold text-near-black mb-8 border-b border-gray-100 pb-4">{steps[step - 1].title}</h2>
-              
+
               <AnimatePresence mode="wait">
                 <motion.div
                   key={step}
@@ -241,7 +330,7 @@ export default function RequestQuotePage() {
             </form>
           </div>
         ) : (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-black text-white p-12 md:p-20 rounded-3xl text-center shadow-2xl max-w-2xl mx-auto"

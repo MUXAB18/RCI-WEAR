@@ -42,6 +42,19 @@ model PortfolioProject {
   updatedAt   DateTime @updatedAt
 }
 
+// ─── CATEGORIES ──────────────────────────────────────────────────────────────
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  isPublished Boolean   @default(true)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 // ─── COLLECTIONS ─────────────────────────────────────────────────────────────
 model Collection {
   id          String    @id @default(uuid())
@@ -58,24 +71,45 @@ model Collection {
 
 // ─── PRODUCTS ────────────────────────────────────────────────────────────────
 model Product {
-  id           String      @id @default(uuid())
+  id           String           @id @default(uuid())
   name         String
-  slug         String      @unique
+  slug         String           @unique
   description  String?
   price        Float?
-  sku          String?     @unique
-  images       String[]    @default([])
+  salePrice    Float?
+  sku          String?          @unique
+  images       String[]         @default([])
+  
   category     String?
-  isPublished  Boolean     @default(true)
-  isFeatured   Boolean     @default(false)
-  stock        Int         @default(0)
-  minOrder     Int         @default(1)
-  tags         String[]    @default([])
-  collection   Collection? @relation(fields: [collectionId], references: [id])
+  categoryRef  Category?        @relation(fields: [categoryId], references: [id])
+  categoryId   String?
+  
+  isPublished  Boolean          @default(true)
+  isFeatured   Boolean          @default(false)
+  stock        Int              @default(0)
+  minOrder     Int              @default(1)
+  tags         String[]         @default([])
+  collection   Collection?      @relation(fields: [collectionId], references: [id])
   collectionId String?
+  variants     ProductVariant[]
   orderItems   OrderItem[]
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model ProductVariant {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      String?
+  color     String?
+  sku       String?
+  price     Float?
+  stock     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, size, color])
 }
 
 // ─── ORDERS ──────────────────────────────────────────────────────────────────

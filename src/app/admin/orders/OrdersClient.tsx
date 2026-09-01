@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { ShoppingBag, Edit, Trash2, Eye, Plus, X, Star, MessageSquare, Download, Filter } from 'lucide-react';
+import { ShoppingBag, Edit, Trash2, Eye, Plus, X, Star, MessageSquare, Download, Filter, Link as LinkIcon } from 'lucide-react';
 import { PageHeader } from '@/components/admin/ui/PageHeader';
 import { Button } from '@/components/admin/ui/Button';
 import { DataTable, Column } from '@/components/admin/ui/DataTable';
@@ -13,6 +13,7 @@ import { Select } from '@/components/admin/ui/Select';
 import { Textarea } from '@/components/admin/ui/Textarea';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 type OrderStatus = 'pending' | 'sourcing' | 'production' | 'qc' | 'packaging' | 'shipped' | 'delivered' | 'cancelled';
 
@@ -22,6 +23,7 @@ type Order = {
   customerName: string;
   customerEmail: string;
   customerPhone: string | null;
+  company: string | null;
   total: number;
   tax: number;
   shipping: number;
@@ -219,9 +221,11 @@ export function OrdersClient({ initialOrders }: Props) {
       // Update local state
       setOrders(orders.map(o => selectedIds.includes(o.id) ? { ...o, status: newStatus } : o));
       setSelectedIds([]);
+      toast.success('Orders updated successfully');
       router.refresh();
     } catch (err) {
       console.error('Bulk update failed', err);
+      toast.error('Failed to update orders');
     } finally {
       setLoading(false);
     }
@@ -232,8 +236,8 @@ export function OrdersClient({ initialOrders }: Props) {
       key: 'orderNumber',
       label: 'Order',
       render: (item) => (
-        <div>
-          <p className="font-medium text-white">#{item.orderNumber}</p>
+        <div className="max-w-[120px]">
+          <p className="font-medium text-white truncate" title={`#${item.orderNumber}`}>#{item.orderNumber}</p>
           <p className="text-xs text-white/40">
             {new Date(item.createdAt).toLocaleDateString()}
           </p>
@@ -244,17 +248,10 @@ export function OrdersClient({ initialOrders }: Props) {
       key: 'customer',
       label: 'Customer',
       render: (item) => (
-        <div>
-          <p className="text-white">{item.customerName}</p>
-          <p className="text-xs text-white/40">{item.customerEmail}</p>
+        <div className="max-w-[150px]">
+          <p className="text-white truncate" title={item.customerName}>{item.customerName}</p>
+          <p className="text-xs text-white/40 truncate" title={item.customerEmail}>{item.customerEmail}</p>
         </div>
-      ),
-    },
-    {
-      key: 'items',
-      label: 'Items',
-      render: (item) => (
-        <span className="text-white/60">{item.items.length} item(s)</span>
       ),
     },
     {
@@ -332,48 +329,53 @@ export function OrdersClient({ initialOrders }: Props) {
       key: 'actions',
       label: 'Actions',
       render: (item) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Button
             size="sm"
             variant="ghost"
+            className="!px-2"
+            title="Copy Tracking Link"
             onClick={(e) => {
               e.stopPropagation();
               navigator.clipboard.writeText(`${window.location.origin}/track/${item.orderNumber}`);
-              alert('Tracking link copied!');
+              toast.success('Tracking link copied!');
             }}
           >
-            Copy Link
+            <LinkIcon className="w-3.5 h-3.5" />
           </Button>
           <Link href={`/admin/orders/${item.id}`}>
             <Button
               size="sm"
               variant="ghost"
-              icon={<Eye className="w-3.5 h-3.5" />}
+              className="!px-2"
+              title="View Order"
             >
-              View
+              <Eye className="w-3.5 h-3.5" />
             </Button>
           </Link>
           <Button
             size="sm"
             variant="ghost"
-            icon={<Edit className="w-3.5 h-3.5" />}
+            className="!px-2"
+            title="Edit Order"
             onClick={(e) => {
               e.stopPropagation();
               handleEdit(item);
             }}
           >
-            Edit
+            <Edit className="w-3.5 h-3.5" />
           </Button>
           <Button
             size="sm"
             variant="danger"
-            icon={<Trash2 className="w-3.5 h-3.5" />}
+            className="!px-2"
+            title="Delete Order"
             onClick={(e) => {
               e.stopPropagation();
               handleDelete(item.id);
             }}
           >
-            Delete
+            <Trash2 className="w-3.5 h-3.5" />
           </Button>
         </div>
       ),
@@ -408,9 +410,14 @@ export function OrdersClient({ initialOrders }: Props) {
       const res = await fetch(`/api/admin/orders/${deleteId}`, { method: 'DELETE' });
       if (res.ok) {
         setOrders(orders.filter((o) => o.id !== deleteId));
+        toast.success('Order deleted successfully');
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Failed to delete order');
       }
     } catch (error) {
       console.error('Failed to delete order:', error);
+      toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);
       setDeleteId(null);
@@ -438,12 +445,17 @@ export function OrdersClient({ initialOrders }: Props) {
       });
 
       if (res.ok) {
+        toast.success('Order updated successfully');
         router.refresh();
         setIsModalOpen(false);
         resetForm();
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Failed to update order');
       }
     } catch (error) {
       console.error('Failed to update order:', error);
+      toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -491,12 +503,17 @@ export function OrdersClient({ initialOrders }: Props) {
       if (res.ok) {
         const newOrder = await res.json();
         setOrders([newOrder, ...orders]);
+        toast.success('Order created successfully');
         setIsCreateModalOpen(false);
         resetCreateForm();
         router.refresh();
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Failed to create order');
       }
     } catch (error) {
       console.error('Failed to create order:', error);
+      toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -679,34 +696,62 @@ export function OrdersClient({ initialOrders }: Props) {
               <p className="text-white">{editingOrder.customerName}</p>
               <p className="text-xs text-white/60">{editingOrder.customerEmail}</p>
               
-              <div className="mt-4 pt-4 border-t border-white/[0.08] grid grid-cols-2 gap-2 text-sm">
+              <div className="mt-4 pt-4 border-t border-white/[0.08] grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-xs text-white/40">Category</p>
-                  <p className="text-white">{editingOrder.category || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">Company / Brand</p>
+                  <p className="text-white font-medium">{editingOrder.company || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40">Quantity</p>
-                  <p className="text-white">{editingOrder.quantity || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">Phone Number</p>
+                  <p className="text-white font-medium">{editingOrder.customerPhone || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40">Fabric & GSM</p>
-                  <p className="text-white">{editingOrder.fabric || 'N/A'} ({editingOrder.gsm || 'N/A'})</p>
+                  <p className="text-xs text-white/40 mb-1">Website / Instagram</p>
+                  <p className="text-white font-medium">{editingOrder.website || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40">Colors</p>
-                  <p className="text-white">{editingOrder.colors || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">Location / Country</p>
+                  <p className="text-white font-medium">{editingOrder.country || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40">Sizes</p>
-                  <p className="text-white">{editingOrder.sizes?.join(', ') || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">Category</p>
+                  <p className="text-white font-medium">{editingOrder.category || 'N/A'}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40">Timeline & Budget</p>
-                  <p className="text-white">{editingOrder.timeline || 'N/A'} | {editingOrder.budget || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">Quantity</p>
+                  <p className="text-white font-medium">{editingOrder.quantity || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/40 mb-1">Fabric & GSM</p>
+                  <p className="text-white font-medium">{editingOrder.fabric || 'N/A'} {editingOrder.gsm ? `(${editingOrder.gsm})` : ''}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/40 mb-1">Colors</p>
+                  <p className="text-white font-medium">{editingOrder.colors || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/40 mb-1">Sizes</p>
+                  <p className="text-white font-medium">{editingOrder.sizes?.join(', ') || 'N/A'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/40 mb-1">Timeline & Budget</p>
+                  <p className="text-white font-medium">{editingOrder.timeline || 'N/A'} | {editingOrder.budget || 'N/A'}</p>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-xs text-white/40">Customer Comments</p>
-                  <p className="text-white">{editingOrder.comments || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">Decoration Methods</p>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {editingOrder.decoration?.length ? editingOrder.decoration.map(d => <Badge key={d}>{d}</Badge>) : <span className="text-white/60">N/A</span>}
+                  </div>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-xs text-white/40 mb-1">Branding Extras</p>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {editingOrder.extras?.length ? editingOrder.extras.map(e => <Badge key={e}>{e}</Badge>) : <span className="text-white/60">N/A</span>}
+                  </div>
+                </div>
+                <div className="col-span-2">
+                  <p className="text-xs text-white/40 mb-1">Customer Comments</p>
+                  <p className="text-white font-medium bg-white/[0.02] p-3 rounded-lg border border-white/[0.05]">{editingOrder.comments || 'No comments provided'}</p>
                 </div>
               </div>
             </div>

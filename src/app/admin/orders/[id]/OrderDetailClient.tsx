@@ -11,6 +11,7 @@ import { Input } from '@/components/admin/ui/Input';
 import { Textarea } from '@/components/admin/ui/Textarea';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 type OrderStatus = 'pending' | 'sourcing' | 'production' | 'qc' | 'packaging' | 'shipped' | 'delivered' | 'cancelled';
 
@@ -79,6 +80,15 @@ const statusOptions = [
   { value: 'cancelled', label: 'Cancelled' },
 ];
 
+const getValidNextStatuses = (currentStatus: OrderStatus): OrderStatus[] => {
+  const flow: OrderStatus[] = ['pending', 'sourcing', 'production', 'qc', 'packaging', 'shipped', 'delivered'];
+  if (currentStatus === 'cancelled') return ['pending']; // Re-open
+  const currentIndex = flow.indexOf(currentStatus);
+  if (currentIndex === -1 || currentIndex === flow.length - 1) return [currentStatus]; // Delivered or unknown
+  // Can go to next step, or cancel, or stay
+  return [currentStatus, flow[currentIndex + 1], 'cancelled'];
+};
+
 const getStatusVariant = (status: OrderStatus): 'success' | 'warning' | 'danger' | 'info' | 'default' => {
   switch (status) {
     case 'delivered':
@@ -129,11 +139,16 @@ export function OrderDetailClient({ order }: Props) {
       });
 
       if (res.ok) {
+        toast.success('Order updated successfully');
         router.refresh();
         setIsEditModalOpen(false);
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Failed to update order');
       }
     } catch (error) {
       console.error('Failed to update order:', error);
+      toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -142,6 +157,9 @@ export function OrderDetailClient({ order }: Props) {
   const [pricingFormData, setPricingFormData] = useState({
     shipping: order.shipping.toString(),
     tax: order.tax.toString(),
+    productionCost: order.productionCost?.toString() || '0',
+    shippingCost: order.shippingCost?.toString() || '0',
+    otherCosts: order.otherCosts?.toString() || '0',
     items: order.items.map((item: any) => ({
       id: item.id,
       name: item.name,
@@ -165,6 +183,9 @@ export function OrderDetailClient({ order }: Props) {
         tax,
         shipping,
         total,
+        productionCost: Number(pricingFormData.productionCost),
+        shippingCost: Number(pricingFormData.shippingCost),
+        otherCosts: Number(pricingFormData.otherCosts),
         items: pricingFormData.items.map((item: any) => ({
           id: item.id,
           price: Number(item.price),
@@ -180,11 +201,16 @@ export function OrderDetailClient({ order }: Props) {
       });
 
       if (res.ok) {
+        toast.success('Pricing updated successfully');
         router.refresh();
         setIsEditPricingModalOpen(false);
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Failed to update pricing');
       }
     } catch (error) {
       console.error('Failed to update pricing:', error);
+      toast.error('An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -304,6 +330,32 @@ export function OrderDetailClient({ order }: Props) {
               <div className="flex justify-between text-lg font-semibold text-white pt-2 border-t border-white/[0.05]">
                 <span>Total:</span>
                 <span>${order.total.toFixed(2)}</span>
+              </div>
+            </div>
+            
+            {/* Cost Tracking & Profitability */}
+            <div className="mt-6 pt-6 border-t border-white/[0.08] space-y-2">
+              <h3 className="text-sm font-medium text-white mb-3">Profitability Analysis</h3>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                  <p className="text-white/40 mb-1">Production Cost</p>
+                  <p className="text-white font-medium">${(order.productionCost || 0).toFixed(2)}</p>
+                </div>
+                <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                  <p className="text-white/40 mb-1">Shipping Cost</p>
+                  <p className="text-white font-medium">${(order.shippingCost || 0).toFixed(2)}</p>
+                </div>
+                <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                  <p className="text-white/40 mb-1">Other Costs</p>
+                  <p className="text-white font-medium">${(order.otherCosts || 0).toFixed(2)}</p>
+                </div>
+                <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                  <p className="text-white/40 mb-1">Net Profit</p>
+                  <p className={`font-medium ${order.profit > 0 ? 'text-green-400' : order.profit < 0 ? 'text-red-400' : 'text-white'}`}>
+                    ${(order.profit || 0).toFixed(2)}
+                    {order.total > 0 && order.profit !== undefined && ` (${Math.round((order.profit / (order.total - order.tax)) * 100)}%)`}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -577,8 +629,9 @@ export function OrderDetailClient({ order }: Props) {
             label="Order Status"
             value={formData.status}
             onChange={(e) => setFormData({ ...formData, status: e.target.value as OrderStatus })}
-            options={statusOptions}
+            options={statusOptions.filter(opt => getValidNextStatuses(order.status).includes(opt.value as OrderStatus) || opt.value === order.status)}
             required
+            helperText="Order status can only progress forward sequentially or be cancelled."
           />
 
           <Select
@@ -672,6 +725,55 @@ export function OrderDetailClient({ order }: Props) {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label="Shipping Charged ($)"
+              type="number"
+              step="0.01"
+              min="0"
+              value={pricingFormData.shipping}
+              onChange={(e) => setPricingFormData({ ...pricingFormData, shipping: e.target.value })}
+            />
+            <Input
+              label="Tax ($)"
+              type="number"
+              step="0.01"
+              min="0"
+              value={pricingFormData.tax}
+              onChange={(e) => setPricingFormData({ ...pricingFormData, tax: e.target.value })}
+            />
+          </div>
+
+          <div className="pt-4 border-t border-white/[0.08]">
+            <h3 className="font-medium text-white/80 text-sm mb-4">Internal Cost Tracking</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Input
+                label="Production Cost ($)"
+                type="number"
+                step="0.01"
+                min="0"
+                value={pricingFormData.productionCost}
+                onChange={(e) => setPricingFormData({ ...pricingFormData, productionCost: e.target.value })}
+              />
+              <Input
+                label="Shipping Cost ($)"
+                type="number"
+                step="0.01"
+                min="0"
+                value={pricingFormData.shippingCost}
+                onChange={(e) => setPricingFormData({ ...pricingFormData, shippingCost: e.target.value })}
+              />
+              <Input
+                label="Other Costs ($)"
+                type="number"
+                step="0.01"
+                min="0"
+                value={pricingFormData.otherCosts}
+                onChange={(e) => setPricingFormData({ ...pricingFormData, otherCosts: e.target.value })}
+              />
+            </div>
           </div>
           
         </form>

@@ -35,20 +35,20 @@ export function CollectionsSection({ collections = [] }: CollectionsSectionProps
   return (
     <section id="collections" className="py-24 lg:py-32 bg-[#F5F5F0] relative overflow-hidden">
       <div className="container mx-auto px-6 md:px-12">
-        
+
         {/* Header Section */}
-        <div className="mb-20">
-          <div className="flex items-center gap-4 mb-6">
+        <div className="mb-12 lg:mb-20 text-center lg:text-left">
+          <div className="flex items-center justify-center lg:justify-start gap-4 mb-4 lg:mb-6">
             <span className="w-12 h-[2px] bg-near-black" />
             <span className="text-[11px] font-bold tracking-[4px] uppercase text-near-black">
               What We Offer
             </span>
             <span className="w-12 h-[2px] bg-near-black" />
           </div>
-          <h2 className="text-6xl md:text-[80px] font-sans font-black text-near-black tracking-tighter leading-[0.95] mb-6">
+          <h2 className="text-[clamp(2.8rem,10vw,80px)] font-sans font-black text-near-black tracking-tighter leading-[0.95] mb-4 lg:mb-6">
             Our Collections
           </h2>
-          <p className="text-xl md:text-2xl font-sans text-near-black/70 max-w-2xl">
+          <p className="text-base md:text-xl lg:text-2xl font-sans text-near-black/70 max-w-2xl mx-auto lg:mx-0">
             Describe anything you imagine, and let our manufacturing precision bring it to life in breathtaking, high-quality garments.
           </p>
         </div>
@@ -56,17 +56,17 @@ export function CollectionsSection({ collections = [] }: CollectionsSectionProps
         {/* Grid Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {collections.map((collection, index) => {
-            const meta = collectionMeta[collection.slug] || { 
-              label: 'PREMIUM', 
-              subtitle: 'Crafted Excellence', 
-              number: String(index + 1).padStart(2, '0') 
+            const meta = collectionMeta[collection.slug] || {
+              label: 'PREMIUM',
+              subtitle: 'Crafted Excellence',
+              number: String(index + 1).padStart(2, '0')
             };
-            
+
             return (
               <div key={collection.id} className="relative group flex flex-col">
-                
+
                 {/* Image Container */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
@@ -92,7 +92,7 @@ export function CollectionsSection({ collections = [] }: CollectionsSectionProps
                 </motion.div>
 
                 {/* Content */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
@@ -112,16 +112,16 @@ export function CollectionsSection({ collections = [] }: CollectionsSectionProps
                     {collection.description || `Expertly crafted ${collection.name.toLowerCase()} designed for quality, comfort, and style.`}
                   </p>
                   <div className="flex justify-between items-end relative z-10">
-                    <Link 
+                    <Link
                       href={`/portfolio?category=${collection.name}`}
                       className="inline-flex items-center text-[11px] font-bold tracking-[2px] text-near-black uppercase border-b border-near-black/20 hover:border-near-black pb-1 w-max transition-colors"
                     >
                       View Collection &rarr;
                     </Link>
                   </div>
-                  
+
                   {/* Outlined Background Number in Text Area */}
-                  <div 
+                  <div
                     className="absolute bottom-0 right-0 text-[100px] leading-[0.75] font-sans italic font-black text-transparent pointer-events-none select-none z-0 translate-y-4 translate-x-4"
                     style={{ WebkitTextStroke: '1px rgba(166, 124, 82, 0.4)' }}
                   >

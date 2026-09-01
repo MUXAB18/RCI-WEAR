@@ -65,7 +65,7 @@ export function AdminSidebar() {
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-[#0a0a0a] border-r border-white/[0.08] flex flex-col">
+    <aside className="w-64 h-full bg-[#0a0a0a] border-r border-white/[0.08] flex flex-col">
       {/* Brand */}
       <div className="p-6 border-b border-white/[0.08]">
         <div className="flex items-center gap-3">

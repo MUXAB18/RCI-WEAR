@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { navigation } from '@/data/navigation';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 
@@ -43,7 +43,7 @@ export function Navbar() {
         <div className="w-full max-w-5xl relative group pointer-events-auto">
           {/* Ambient Glow Behind Navbar */}
           <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/5 to-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-          
+
           <div
             className={cn(
               "relative z-10 w-full flex items-center justify-between transition-all duration-500",
@@ -67,7 +67,7 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Nav */}
-            <nav 
+            <nav
               className="hidden lg:flex items-center gap-2 xl:gap-4 px-4"
               onMouseLeave={() => setHoveredMenu(null)}
             >
@@ -136,7 +136,7 @@ export function Navbar() {
             <div className="hidden lg:block shrink-0 relative overflow-hidden rounded-full group/btn">
               {/* Glossy Shine Effect on Hover */}
               <div className="absolute inset-0 translate-x-[-100%] group-hover/btn:translate-x-[100%] bg-gradient-to-r from-transparent via-black/10 to-transparent transition-transform duration-1000 z-20 pointer-events-none skew-x-12" />
-              
+
               <Button
                 href="/request-quote"
                 className="relative py-3.5 px-8 md:px-10 rounded-full bg-white text-black hover:bg-gray-100 transition-colors border-none text-[14px] font-semibold z-10 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
@@ -147,7 +147,8 @@ export function Navbar() {
 
             {/* Mobile Menu Toggle */}
             <button
-              className="lg:hidden relative z-50 p-4 text-white hover:bg-white/10 rounded-full transition-colors mr-1"
+              className="lg:hidden relative z-50 p-4 text-white hover:bg-white/10 rounded-full transition-colors mr-1 outline-none focus:outline-none focus:ring-0 active:outline-none -webkit-tap-highlight-color-transparent"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -165,33 +166,41 @@ export function Navbar() {
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(16px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 bg-white/90 pt-28 pb-8 px-6 overflow-y-auto flex flex-col"
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-40 bg-[#0f0f0f]/98 pt-32 pb-10 px-6 overflow-y-auto flex flex-col"
           >
-            <nav className="flex flex-col gap-8 mt-8">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-white/[0.03] blur-[80px] rounded-full pointer-events-none" />
+
+            <nav className="flex flex-col mt-4 relative z-10">
               {navigation.main.map((item, i) => (
                 <motion.div
                   key={item.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + (i * 0.05), ease: "easeOut" }}
-                  className="flex flex-col gap-4"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + (i * 0.05), duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col"
                 >
                   <Link
                     href={item.href}
-                    className="text-4xl font-display text-near-black tracking-tight"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between py-6 border-b border-white/10 group"
                   >
-                    {item.name}
+                    <span className="text-3xl sm:text-4xl font-sans font-light tracking-tight text-white/80 group-hover:text-white transition-colors">
+                      {item.name}
+                    </span>
+                    <ArrowRight className="w-6 h-6 text-white/0 group-hover:text-white/40 -translate-x-4 group-hover:translate-x-0 transition-all duration-300" />
                   </Link>
                   {item.dropdown && (
-                    <div className="flex flex-col gap-4 pl-4 border-l-2 border-near-black/10">
+                    <div className="flex flex-col gap-4 pl-4 pt-4 pb-2 border-l-2 border-white/10 ml-2">
                       {item.dropdown.map((subItem) => (
                         <Link
                           key={subItem.name}
                           href={subItem.href}
-                          className="text-sm font-bold text-near-black/60 hover:text-near-black uppercase tracking-[2px] transition-colors"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="text-xs font-bold text-white/50 hover:text-white uppercase tracking-[2px] transition-colors"
                         >
                           {subItem.name}
                         </Link>
@@ -205,10 +214,14 @@ export function Navbar() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mt-auto pt-12"
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="mt-auto pt-12 relative z-10"
             >
-              <Button href="/request-quote" className="w-full bg-near-black text-white py-4 rounded-full text-sm font-bold uppercase tracking-widest border-none">
+              <Button 
+                href="/request-quote" 
+                onClick={() => setMobileMenuOpen(false)} 
+                className="w-full bg-white text-black py-4 rounded-full text-[13px] font-bold uppercase tracking-[2px] border-none hover:bg-gray-200 transition-colors shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              >
                 Order Now
               </Button>
             </motion.div>

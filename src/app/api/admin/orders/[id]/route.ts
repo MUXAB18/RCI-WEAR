@@ -27,6 +27,8 @@ export async function PUT(
     const body = await request.json();
     if (body.estimatedDelivery) {
       body.estimatedDelivery = new Date(body.estimatedDelivery);
+    } else if (body.estimatedDelivery === '') {
+      body.estimatedDelivery = null;
     }
     const order = await updateOrder(resolvedParams.id, body);
     return NextResponse.json(order);

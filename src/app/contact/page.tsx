@@ -6,11 +6,14 @@ import { MapPin, Phone, Mail, Clock, CheckCircle2 } from 'lucide-react';
 import { companyData } from '@/data/company';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/Button';
+import emailjs from '@emailjs/browser';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 export default function ContactPage() {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState({
-    firstName: '', lastName: '', email: '', company: '', message: ''
+    firstName: '', lastName: '', email: '', phone: '', subject: '', message: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -19,26 +22,58 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (formData.phone && !isValidPhoneNumber(formData.phone)) {
+      alert('Please enter a valid phone number including your country code.');
+      return;
+    }
+    
     setFormStatus('submitting');
     try {
-      const res = await fetch('/api/contact', {
+      // 1. Send emails using EmailJS
+      const serviceId = 'service_8rutxkg';
+      const adminTemplateId = 'template_z3hi3hj';
+      const customerTemplateId = 'template_4pfa2ea';
+      const publicKey = '9U-BFk_8Du4GSjC2B';
+
+      const adminEmailData = {
+        from_name: `${formData.firstName} ${formData.lastName}`,
+        reply_to: formData.email,
+        phone: formData.phone || 'Not provided',
+        enquiry_type: 'General Enquiry',
+        subject: formData.subject || 'No Subject',
+        message: formData.message,
+      };
+
+      const customerEmailData = {
+        to_email: formData.email,
+        from_name: `${formData.firstName} ${formData.lastName}`,
+        phone: formData.phone || 'Not provided',
+        enquiry_type: 'General Enquiry',
+        subject: formData.subject || 'No Subject',
+        message: formData.message,
+      };
+
+      await emailjs.send(serviceId, adminTemplateId, adminEmailData, publicKey);
+      await emailjs.send(serviceId, customerTemplateId, customerEmailData, publicKey);
+
+      // 2. Save to Database
+      await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-      if (res.ok) {
-        setFormStatus('success');
-        setFormData({ firstName: '', lastName: '', email: '', company: '', message: '' });
-      } else {
-        setFormStatus('error');
-      }
-    } catch {
+      
+      setFormStatus('success');
+      setFormData({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Email send failed:', error);
       setFormStatus('error');
     }
   };
 
   return (
-    <div className="pt-32 pb-24 min-h-screen bg-white">
+    <div className="pt-32 md:pt-40 pb-24 min-h-screen bg-white">
       <div className="container mx-auto px-6 md:px-12">
         <SectionHeading 
           eyebrow="Get in Touch"
@@ -153,13 +188,32 @@ export default function ContactPage() {
                 </div>
                 
                 <div className="space-y-2 group">
+                  <label htmlFor="phone" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Phone Number</label>
+                  <div className="relative">
+                    <PhoneInput
+                      international
+                      defaultCountry="US"
+                      value={formData.phone || undefined}
+                      onChange={(value) => setFormData((prev: any) => ({...prev, phone: value}))}
+                      onKeyDown={(e: any) => {
+                        if (e.key === ' ') {
+                          e.preventDefault();
+                          setFormData((prev: any) => ({...prev, phone: '+1'}));
+                        }
+                      }}
+                      className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus-within:ring-4 focus-within:ring-black/5 focus-within:bg-white focus-within:border-black transition-all shadow-sm"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2 group">
                   <label htmlFor="email" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Email Address</label>
                   <input type="email" id="email" required value={formData.email} onChange={handleChange} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
                 </div>
                 
                 <div className="space-y-2 group">
-                  <label htmlFor="company" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Company / Brand Name</label>
-                  <input type="text" id="company" value={formData.company} onChange={handleChange} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
+                  <label htmlFor="subject" className="text-[10px] font-bold tracking-[2px] uppercase text-gray-500 group-focus-within:text-black transition-colors">Subject</label>
+                  <input type="text" id="subject" value={formData.subject} onChange={handleChange} className="w-full bg-[#F8F8F8] border border-gray-100 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-4 focus:ring-black/5 focus:bg-white focus:border-black transition-all shadow-sm" />
                 </div>
                 
                 <div className="space-y-2 group">

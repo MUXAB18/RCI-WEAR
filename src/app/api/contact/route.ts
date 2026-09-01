@@ -30,7 +30,9 @@ export async function POST(request: Request) {
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
-      company: body.company || null,
+      phone: body.phone || undefined,
+      company: body.company || undefined,
+      subject: body.subject || undefined,
       message: body.message,
     });
 

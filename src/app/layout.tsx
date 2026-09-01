@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter, Playfair_Display, DM_Serif_Display, Cormorant_Garamond } from 'next/font/google';
 import { ConditionalLayout } from '@/components/layout/ConditionalLayout';
 import Script from 'next/script';
+import { Toaster } from 'react-hot-toast';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' });
 const dmSerif = DM_Serif_Display({ weight: '400', subsets: ['latin'], variable: '--font-display' });
@@ -72,6 +73,7 @@ export default function RootLayout({
         />
 
         <ConditionalLayout>{children}</ConditionalLayout>
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

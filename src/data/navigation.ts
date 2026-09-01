@@ -11,8 +11,8 @@ export const navigation: {
   main: [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { 
-      name: 'Collections', 
+    {
+      name: 'Collections',
       href: '/collections'
     },
     { name: 'Portfolio', href: '/portfolio' },

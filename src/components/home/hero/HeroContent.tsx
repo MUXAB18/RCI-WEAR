@@ -22,7 +22,7 @@ const staggerContainer: Variants = {
 
 export function HeroContent() {
   return (
-    <motion.div 
+    <motion.div
       className="flex flex-col z-20 w-full h-full justify-center pt-8 lg:pt-0"
       variants={staggerContainer}
       initial="hidden"
@@ -46,15 +46,15 @@ export function HeroContent() {
 
       {/* CTAs */}
       <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-16">
-        <Button 
-          href="/request-quote" 
+        <Button
+          href="/request-quote"
           className="bg-near-black text-white hover:bg-[#2A2A28] rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold whitespace-nowrap transition-colors duration-300 border-none shadow-md"
         >
           START CREATING
         </Button>
-        <Button 
-          href="/manufacturing" 
-          variant="outline" 
+        <Button
+          href="/manufacturing"
+          variant="outline"
           className="border border-near-black/10 text-near-black hover:bg-black/5 rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold whitespace-nowrap transition-colors duration-300"
         >
           EXPLORE GALLERY
