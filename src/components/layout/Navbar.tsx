@@ -30,6 +30,18 @@ export function Navbar() {
     setHoveredMenu(null);
   }, [pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <>
       <motion.header
@@ -47,7 +59,7 @@ export function Navbar() {
           <div
             className={cn(
               "relative z-10 w-full flex items-center justify-between transition-all duration-500",
-              "bg-[#0f0f0f]/90 backdrop-blur-2xl border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] rounded-full p-2 pl-6"
+              "bg-[#0f0f0f]/80 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] rounded-full p-2 pl-6"
             )}
           >
             {/* Logo (White) */}
@@ -161,68 +173,141 @@ export function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu — Left Drawer Backdrop */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 bg-[#0f0f0f]/98 pt-32 pb-10 px-6 overflow-y-auto flex flex-col"
+            key="mobile-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[99] bg-black/60"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Menu — Left Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            key="mobile-drawer"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed top-0 right-0 h-[100dvh] z-[100] bg-[#0a0a0a] border-l border-white/[0.07] shadow-[-4px_0_40px_rgba(0,0,0,0.6)] flex flex-col"
+            style={{ width: "min(82vw, 380px)" }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
           >
-            {/* Ambient Background Glow */}
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] bg-white/[0.03] blur-[80px] rounded-full pointer-events-none" />
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between px-6 pt-[calc(env(safe-area-inset-top)+20px)] pb-5 border-b border-white/[0.07] shrink-0">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="relative flex items-center"
+                style={{ width: 88, height: 30 }}
+              >
+                <Image
+                  src="/logo-v2.png"
+                  alt="Rasheed Clothing International"
+                  fill
+                  className="object-contain object-left brightness-0 invert opacity-90"
+                  priority
+                />
+              </Link>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-white/[0.12] text-white/70 hover:text-white hover:border-white/25 hover:bg-white/[0.04] transition-all duration-200"
+                aria-label="Close navigation menu"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
+              >
+                <X className="w-[18px] h-[18px]" strokeWidth={1.2} />
+              </button>
+            </div>
 
-            <nav className="flex flex-col mt-4 relative z-10">
-              {navigation.main.map((item, i) => (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + (i * 0.05), duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex flex-col"
-                >
-                  <Link
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between py-6 border-b border-white/10 group"
+            {/* Navigation Links — evenly distributed */}
+            <div className="flex-1 overflow-y-auto overscroll-contain px-6 flex flex-col justify-center py-4">
+              <nav className="flex flex-col h-full justify-evenly" aria-label="Main navigation">
+                {navigation.main.map((item, i) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: 0.08 + i * 0.045,
+                      duration: 0.4,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="flex flex-col"
                   >
-                    <span className="text-3xl sm:text-4xl font-sans font-light tracking-tight text-white/80 group-hover:text-white transition-colors">
-                      {item.name}
-                    </span>
-                    <ArrowRight className="w-6 h-6 text-white/0 group-hover:text-white/40 -translate-x-4 group-hover:translate-x-0 transition-all duration-300" />
-                  </Link>
-                  {item.dropdown && (
-                    <div className="flex flex-col gap-4 pl-4 pt-4 pb-2 border-l-2 border-white/10 ml-2">
-                      {item.dropdown.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          href={subItem.href}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="text-xs font-bold text-white/50 hover:text-white uppercase tracking-[2px] transition-colors"
-                        >
-                          {subItem.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </nav>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={cn(
+                        "flex items-center justify-between py-5 group border-b border-white/[0.06] w-full",
+                      )}
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    >
+                      <span
+                        className={cn(
+                          "text-[26px] font-sans font-light tracking-[0.01em] leading-none transition-colors duration-200",
+                          pathname === item.href
+                            ? "text-white"
+                            : "text-white/60 group-hover:text-white/90 group-active:text-white"
+                        )}
+                      >
+                        {item.name}
+                      </span>
+                      <ArrowRight
+                        className="w-4 h-4 text-white/0 group-hover:text-white/35 -translate-x-2 group-hover:translate-x-0 transition-all duration-250 shrink-0"
+                        strokeWidth={1.5}
+                      />
+                    </Link>
 
+                    {/* Sub-items (e.g. Collections dropdown) */}
+                    {item.dropdown && (
+                      <div className="flex flex-col gap-1 pl-3 pt-3 pb-4 ml-1 border-l border-white/[0.08]">
+                        {item.dropdown.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            href={subItem.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="text-[14px] font-light tracking-wide text-white/40 hover:text-white/75 active:text-white py-1.5 transition-colors duration-200"
+                            style={{ WebkitTapHighlightColor: 'transparent' }}
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </nav>
+            </div>
+
+            {/* Bottom CTA — pinned to drawer bottom */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-auto pt-12 relative z-10"
+              transition={{ delay: 0.38, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="px-6 pt-5 pb-36 border-t border-white/[0.07] shrink-0"
             >
-              <Button 
-                href="/request-quote" 
-                onClick={() => setMobileMenuOpen(false)} 
-                className="w-full bg-white text-black py-4 rounded-full text-[13px] font-bold uppercase tracking-[2px] border-none hover:bg-gray-200 transition-colors shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              <Button
+                href="/request-quote"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full bg-[#efefef] text-[#0a0a0a] py-[15px] rounded-full text-[10px] font-semibold uppercase tracking-[0.22em] border-none hover:bg-white active:bg-white/90 transition-colors duration-200 flex items-center justify-center gap-2.5 group"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
                 Order Now
+                <ArrowRight
+                  className="w-3.5 h-3.5 transition-transform duration-250 group-hover:translate-x-0.5"
+                  strokeWidth={2}
+                />
               </Button>
             </motion.div>
           </motion.div>

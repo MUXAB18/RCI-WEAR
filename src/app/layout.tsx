@@ -9,7 +9,6 @@ const dmSerif = DM_Serif_Display({ weight: '400', subsets: ['latin'], variable: 
 const cormorant = Cormorant_Garamond({ weight: '500', subsets: ['latin'], style: 'italic', variable: '--font-italic' });
 
 export const viewport = {
-  themeColor: '#0B0B0B',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -53,7 +52,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-white text-near-black antialiased overflow-x-hidden flex flex-col min-h-screen">
+      <body className="bg-[#0a0a0a] text-near-black antialiased overflow-x-hidden flex flex-col min-h-screen">
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-425WFFBRLP"
