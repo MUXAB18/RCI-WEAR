@@ -11,7 +11,8 @@ const cormorant = Cormorant_Garamond({ weight: '500', subsets: ['latin'], style:
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export const metadata = {
