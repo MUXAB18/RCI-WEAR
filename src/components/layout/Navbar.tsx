@@ -16,6 +16,16 @@ export function Navbar() {
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const pathname = usePathname();
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -198,7 +208,7 @@ export function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed top-0 right-0 h-[100dvh] z-[100] bg-[#0a0a0a] border-l border-white/[0.07] shadow-[-4px_0_40px_rgba(0,0,0,0.6)] flex flex-col"
+            className="fixed top-0 bottom-0 right-0 z-[100] bg-[#0a0a0a] border-l border-white/[0.07] shadow-[-4px_0_40px_rgba(0,0,0,0.6)] flex flex-col"
             style={{ width: "min(82vw, 380px)" }}
             role="dialog"
             aria-modal="true"
