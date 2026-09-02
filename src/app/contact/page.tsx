@@ -65,6 +65,7 @@ export default function ContactPage() {
       });
       
       setFormStatus('success');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setFormData({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' });
     } catch (error) {
       console.error('Email send failed:', error);

@@ -138,6 +138,7 @@ export default function RequestQuotePage() {
         });
         if (res.ok) {
           setStep(5);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           console.error('Failed to submit order request');
         }
