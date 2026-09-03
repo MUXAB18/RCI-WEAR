@@ -16,8 +16,17 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: 'Rasheed Clothing International | Premium B2B Apparel Manufacturing',
-  description: 'Premium apparel manufacturing and private-label clothing solutions in Pakistan. Specializing in hoodies, tracksuits, gymwear, and corporate uniforms for international brands.',
+  title: 'Rasheed Clothing International | Premium Apparel Manufacturing Pakistan | Where Imagination Meets Fabrication',
+  description: 'Leading clothing manufacturer in Sialkot, Pakistan. Custom apparel manufacturing, private label, OEM services. Hoodies, activewear, corporate uniforms. Export to 15+ countries. MOQ 50 units.',
+  keywords: 'clothing manufacturer Pakistan, apparel manufacturing Sialkot, custom clothing manufacturer, private label clothing, OEM clothing Pakistan, wholesale apparel manufacturer, export clothing Pakistan, hoodie manufacturer, activewear manufacturer, corporate uniform manufacturer',
+  openGraph: {
+    title: 'Rasheed Clothing International - Where Imagination Meets Fabrication',
+    description: 'Premium B2B apparel manufacturing from Pakistan. Custom clothing solutions for international brands.',
+    url: 'https://rasheedclothingintl.me',
+    siteName: 'Rasheed Clothing International',
+    locale: 'en_US',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

@@ -105,7 +105,7 @@ export function PortfolioClient({ projects, categories }: PortfolioClientProps) 
       </div>
 
       {/* Product Grid */}
-      <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+      <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
         <AnimatePresence mode="popLayout">
           {filteredProjects.map((project) => {
             const badge = getBadge(project);

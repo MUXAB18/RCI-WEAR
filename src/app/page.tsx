@@ -1,10 +1,12 @@
 import React from 'react';
 
 import { Hero } from '@/components/home/hero/Hero';
+import { TrustBadgesSection } from '@/components/home/trust/TrustBadgesSection';
 import { CollectionsSection } from '@/components/home/collections/CollectionsSection';
 import { CapabilitiesSection } from '@/components/home/capabilities/CapabilitiesSection';
 import { ProcessTimelineSection } from '@/components/home/process/ProcessTimelineSection';
 import { PortfolioPreviewWrapper } from '@/components/home/portfolio/PortfolioPreviewWrapper';
+import { HomeFaqSection } from '@/components/home/faq/HomeFaqSection';
 import { HomeCtaSection } from '@/components/home/cta/HomeCtaSection';
 
 import { getPublishedCollections } from '@/lib/api/collection.service';
@@ -18,19 +20,25 @@ export default async function Home() {
       {/* 1. HERO SECTION - ULTRA PREMIUM */}
       <Hero />
 
-      {/* 2. OUR COLLECTIONS (New Premium Layout) */}
+      {/* 2. TRUST BADGES - Build immediate credibility */}
+      <TrustBadgesSection />
+
+      {/* 4. OUR COLLECTIONS (New Premium Layout) */}
       <CollectionsSection collections={collections} />
 
-      {/* 3. CAPABILITIES (Premium Sticky Editorial Layout) */}
+      {/* 6. CAPABILITIES (Premium Sticky Editorial Layout) */}
       <CapabilitiesSection />
 
-      {/* 4. PROCESS TIMELINE */}
+      {/* 7. PROCESS TIMELINE */}
       <ProcessTimelineSection />
 
-      {/* 5. PORTFOLIO HIGHLIGHTS */}
+      {/* 8. PORTFOLIO HIGHLIGHTS */}
       <PortfolioPreviewWrapper />
 
-      {/* 6. CTA SECTION */}
+      {/* 9. FAQs */}
+      <HomeFaqSection />
+
+      {/* 10. CTA SECTION */}
       <HomeCtaSection />
       
     </div>

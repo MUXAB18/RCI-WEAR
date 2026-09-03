@@ -32,14 +32,14 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
       initial="hidden"
       animate="visible"
     >
-      {/* Eyebrow label — mobile only */}
-      {mobile && (
-        <motion.div variants={fadeInUp} className="mb-5">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-white/50 font-medium">
-            Premium Apparel Manufacturing
-          </span>
-        </motion.div>
-      )}
+      {/* Eyebrow label */}
+      <motion.div variants={fadeInUp} className="mb-5">
+        <span className={`text-[10px] uppercase tracking-[0.3em] font-medium ${
+          mobile ? 'text-white/50' : 'text-gray-500'
+        }`}>
+          Where Imagination Meets Fabrication
+        </span>
+      </motion.div>
 
       {/* Main Headline */}
       <motion.div variants={fadeInUp} className="mb-6 lg:mb-8">
@@ -63,7 +63,7 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
             mobile ? 'text-white/85' : 'text-near-black/70'
           }`}
         >
-          Describe anything you imagine, and let our manufacturing precision bring it to life in breathtaking, high-quality garments.
+          Premium apparel manufacturing from Sialkot, Pakistan. We transform your creative vision into high-quality garments that brands worldwide trust.
         </p>
       </motion.div>
 

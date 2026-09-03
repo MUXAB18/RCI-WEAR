@@ -20,16 +20,19 @@ export const navigation: {
     { name: 'Quote', href: '/contact' },
   ],
   footer: {
-    company: [
+    quickLinks: [
+      { name: 'Home', href: '/' },
       { name: 'About Us', href: '/about' },
+      { name: 'Portfolio', href: '/portfolio' },
+      { name: 'Collections', href: '/collections' },
+      { name: 'Contact Us', href: '/contact' },
+    ],
+    explore: [
       { name: 'Manufacturing', href: '/manufacturing' },
       { name: 'Quality Control', href: '/quality' },
       { name: 'Sustainability', href: '/sustainability' },
       { name: 'Global Reach', href: '/global' },
-    ],
-    products: [
-      { name: 'Portfolio', href: '/portfolio' },
-      { name: 'Collections', href: '/collections' },
+      { name: 'Export Services', href: '/export-services' },
     ],
     services: [
       { name: 'Private Label', href: '/private-label' },
@@ -39,9 +42,8 @@ export const navigation: {
     ],
     resources: [
       { name: 'Design Studio', href: '/design-studio' },
-      { name: 'Case Studies', href: '/case-studies' },
       { name: 'Blog', href: '/blog' },
-      { name: 'Contact Us', href: '/contact' },
+      { name: 'FAQ', href: '/faq' },
     ]
   }
 };

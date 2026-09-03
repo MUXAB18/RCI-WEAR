@@ -23,13 +23,13 @@ const staggerContainer: Variants = {
 export function HeroVisual() {
   return (
     <motion.div 
-      className="w-full h-full flex gap-3 md:gap-4 py-4"
+      className="w-full h-full flex gap-3 md:gap-4 py-4 box-border"
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
     >
       {/* Left Column (Staggered down slightly) */}
-      <div className="flex flex-col gap-3 md:gap-4 w-1/2 mt-12 h-full">
+      <div className="flex flex-col gap-3 md:gap-4 w-1/2 pt-8 md:pt-12 h-full">
         {/* Top Left (Flex 1.2) */}
         <motion.div variants={itemVariants} className="relative w-full flex-[1.2] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
           <Image
@@ -66,7 +66,7 @@ export function HeroVisual() {
       </div>
 
       {/* Right Column (Starts at top) */}
-      <div className="flex flex-col gap-3 md:gap-4 w-1/2 h-full mb-12">
+      <div className="flex flex-col gap-3 md:gap-4 w-1/2 pb-8 md:pb-12 h-full">
         {/* Top Right (Flex 1.8 - Portrait) */}
         <motion.div variants={itemVariants} className="relative w-full flex-[1.8] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
           <Image

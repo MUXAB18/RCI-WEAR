@@ -1,0 +1,19 @@
+--- src/components/layout/Navbar.tsx
++++ src/components/layout/Navbar.tsx
+@@ -40,6 +40,16 @@
+ 
+   const pathname = usePathname();
+ 
++  // Lock body scroll when mobile menu is open
++  useEffect(() => {
++    if (mobileMenuOpen) {
++      document.body.style.overflow = 'hidden';
++    } else {
++      document.body.style.overflow = 'unset';
++    }
++    return () => { document.body.style.overflow = 'unset'; };
++  }, [mobileMenuOpen]);
++
+   useEffect(() => {
+     const handleScroll = () => {
+       const currentScrollY = window.scrollY;

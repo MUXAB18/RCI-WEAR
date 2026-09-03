@@ -117,17 +117,13 @@ export async function unpublishBlogPost(id: string) {
 }
 
 export async function incrementViews(id: string) {
-  const post = await prisma.blogPost.findUnique({
+  // Use atomic increment to avoid race conditions from concurrent requests
+  await prisma.blogPost.update({
     where: { id },
-    select: { views: true },
+    data: { views: { increment: 1 } },
   });
-  
-  if (post) {
-    await prisma.blogPost.update({
-      where: { id },
-      data: { views: post.views + 1 },
-    });
-  }
+  // Revalidate admin panel so views stay fresh
+  revalidatePath('/admin/blog');
 }
 
 // ─── DELETE ──────────────────────────────────────────────────────────────────

@@ -7,14 +7,17 @@ import {
   LayoutDashboard,
   ImageIcon,
   FolderOpen,
-  ShoppingBag,
   ShoppingCart,
   Mail,
   BookOpen,
   Settings,
   LogOut,
   Package,
-  Star
+  Star,
+  Newspaper,
+  Tags,
+  ClipboardList,
+  Boxes,
 } from 'lucide-react';
 
 const navSections = [
@@ -29,6 +32,7 @@ const navSections = [
     items: [
       { href: '/admin/portfolio', label: 'Portfolio', icon: ImageIcon },
       { href: '/admin/collections', label: 'Collections', icon: FolderOpen },
+      { href: '/admin/blog', label: 'Blog', icon: Newspaper },
     ]
   },
   {
@@ -42,7 +46,7 @@ const navSections = [
   {
     title: 'Communication',
     items: [
-      { href: '/admin/contacts', label: 'Quote', icon: Mail },
+      { href: '/admin/contacts', label: 'Contact Enquiries', icon: Mail },
     ]
   },
   {

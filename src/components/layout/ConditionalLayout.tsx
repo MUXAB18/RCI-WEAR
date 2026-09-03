@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,7 +16,7 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  // Regular routes: wrap with navbar and footer
+  // Regular routes: wrap with navbar, footer, and WhatsApp button
   return (
     <>
       <Navbar />
@@ -23,6 +24,7 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <Footer />
+      <WhatsAppButton />
     </>
   );
 }

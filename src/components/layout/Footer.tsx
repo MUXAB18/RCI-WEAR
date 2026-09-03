@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Twitter, Linkedin } from '@/components/icons/SocialIcons';
+import { Instagram, WhatsApp, Linkedin } from '@/components/icons/SocialIcons';
 import { Mail, Phone, ExternalLink } from 'lucide-react';
 import { navigation } from '@/data/navigation';
 import { companyData } from '@/data/company';
@@ -26,6 +26,9 @@ export function Footer() {
                 className="object-contain brightness-0 invert opacity-90"
               />
             </Link>
+            <p className="text-white/80 text-[11px] md:text-xs mb-2 leading-relaxed max-w-[280px] lg:max-w-none font-semibold tracking-wide">
+              {companyData.slogan}
+            </p>
             <p className="text-white/60 text-[13px] md:text-sm mb-6 leading-relaxed max-w-[280px] lg:max-w-none">
               Premium apparel manufacturing and private-label clothing solutions.
               Engineering every piece for comfort, durability, and standout style in {companyData.location}.
@@ -50,32 +53,26 @@ export function Footer() {
           </div>
 
           {/* Links Columns */}
-          <div className="col-span-1 lg:col-span-6 lg:col-start-7 grid grid-cols-2 gap-x-8 gap-y-8 w-full lg:pt-[116px]">
-            <div className="flex flex-col items-start text-left">
-              <h4 className="font-sans text-[10px] font-bold tracking-[2px] uppercase text-white mb-4">Quick Links</h4>
-              <ul className="flex flex-col gap-3">
-                {navigation.main.slice(0, 3).map(link => (
-                  <li key={link.name}>
-                    <Link href={link.href} className="text-[12px] md:text-[13px] text-white/70 hover:text-white transition-colors">
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div className="col-span-1 lg:col-span-7 lg:col-start-6 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 w-full lg:pt-[116px]">
+            {Object.entries(navigation.footer).map(([key, links]) => {
+              // Format category name (e.g. 'quickLinks' -> 'QUICK LINKS')
+              const title = key.replace(/([A-Z])/g, ' $1').trim().toUpperCase();
 
-            <div className="flex flex-col items-start text-left">
-              <h4 className="font-sans text-[10px] font-bold tracking-[2px] uppercase text-white mb-4">Explore</h4>
-              <ul className="flex flex-col gap-3">
-                {navigation.main.slice(3, 6).map(link => (
-                  <li key={link.name}>
-                    <Link href={link.href} className="text-[12px] md:text-[13px] text-white/70 hover:text-white transition-colors">
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              return (
+                <div key={key} className="flex flex-col items-start text-left">
+                  <h4 className="font-sans text-[10px] font-bold tracking-[2px] uppercase text-white mb-4">{title}</h4>
+                  <ul className="flex flex-col gap-3">
+                    {links.map(link => (
+                      <li key={link.name}>
+                        <Link href={link.href} className="text-[12px] md:text-[13px] text-white/60 hover:text-white transition-colors">
+                          {link.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -136,8 +133,8 @@ export function Footer() {
                 <a href={companyData.socials.instagram} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
                   <Instagram width={14} height={14} />
                 </a>
-                <a href={companyData.socials.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                  <Twitter width={14} height={14} />
+                <a href={companyData.socials.whatsapp} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                  <WhatsApp width={14} height={14} />
                 </a>
                 <a href={companyData.socials.linkedin} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300">
                   <Linkedin width={14} height={14} />
