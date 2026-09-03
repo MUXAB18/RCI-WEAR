@@ -223,27 +223,27 @@ export function PortfolioClient({ projects, categories }: PortfolioClientProps) 
               </div>
 
               {/* Details Side */}
-              <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center overflow-y-auto">
-                <span className="text-sm text-gray-500 font-sans uppercase tracking-[3px] mb-3">
+              <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col justify-center overflow-y-auto">
+                <span className="text-xs text-gray-500 font-sans uppercase tracking-[3px] mb-2">
                   {selectedProduct.category}
                 </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-sans font-black text-black tracking-tight leading-[1.1] mb-6">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-sans font-black text-black tracking-tight leading-[1.1] mb-4">
                   {selectedProduct.title}
                 </h2>
                 
-                <div className="w-12 h-1 bg-black mb-6" />
+                <div className="w-10 h-[3px] bg-black mb-4" />
                 
-                <p className="text-base font-sans text-gray-600 leading-relaxed mb-8">
+                <p className="text-sm font-sans text-gray-600 leading-relaxed mb-6">
                   {selectedProduct.description || `Premium ${selectedProduct.category.toLowerCase()} manufactured with attention to every detail. Crafted from high-quality materials and designed for durability and style.`}
                 </p>
 
                 {/* Client and Date Info */}
                 {(selectedProduct.clientName || selectedProduct.projectDate) && (
-                  <div className="bg-[#F8F8F8] rounded-2xl p-6 mb-6 border border-gray-100">
-                    <div className="grid grid-cols-1 gap-4">
+                  <div className="bg-[#F8F8F8] rounded-xl p-4 sm:p-5 mb-4 border border-gray-100">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {selectedProduct.clientName && (
                         <div>
-                          <span className="text-[10px] font-sans font-bold text-gray-400 uppercase tracking-wider mb-1.5 block">
+                          <span className="text-[10px] font-sans font-bold text-gray-400 uppercase tracking-wider mb-1 block">
                             Client
                           </span>
                           <span className="text-sm font-sans text-black font-semibold">
@@ -253,7 +253,7 @@ export function PortfolioClient({ projects, categories }: PortfolioClientProps) 
                       )}
                       {selectedProduct.projectDate && (
                         <div>
-                          <span className="text-[10px] font-sans font-bold text-gray-400 uppercase tracking-wider mb-1.5 block">
+                          <span className="text-[10px] font-sans font-bold text-gray-400 uppercase tracking-wider mb-1 block">
                             Project Date
                           </span>
                           <span className="text-sm font-sans text-black font-semibold">
@@ -269,8 +269,8 @@ export function PortfolioClient({ projects, categories }: PortfolioClientProps) 
                 )}
 
                 {/* Manufacturing Specifications */}
-                <div className="bg-[#F8F8F8] rounded-2xl p-6 mb-10 border border-gray-100">
-                  <div className="grid grid-cols-2 gap-y-6 gap-x-4">
+                <div className="bg-[#F8F8F8] rounded-xl p-4 sm:p-5 mb-6 border border-gray-100">
+                  <div className="grid grid-cols-2 gap-y-4 gap-x-4">
                     <div>
                       <span className="flex items-center gap-2 text-[10px] font-sans font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
@@ -302,16 +302,16 @@ export function PortfolioClient({ projects, categories }: PortfolioClientProps) 
                   </div>
                 </div>
 
-                <div className="mt-auto pt-8 border-t border-gray-100 flex flex-col sm:flex-row gap-4">
+                <div className="mt-auto pt-4 sm:pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
                   <a 
                     href="/contact"
-                    className="flex-1 bg-black text-white px-8 py-4 rounded-full font-sans text-sm font-bold tracking-wider uppercase hover:bg-gray-900 transition-colors text-center"
+                    className="flex-1 bg-black text-white px-6 py-3 sm:py-4 rounded-full font-sans text-xs sm:text-sm font-bold tracking-wider uppercase hover:bg-gray-900 transition-colors text-center"
                   >
                     Inquire About This Piece
                   </a>
                   <a 
                     href="/design-studio"
-                    className="flex-1 bg-transparent border border-black text-black px-8 py-4 rounded-full font-sans text-sm font-bold tracking-wider uppercase hover:bg-gray-50 transition-colors text-center"
+                    className="flex-1 bg-transparent border border-black text-black px-6 py-3 sm:py-4 rounded-full font-sans text-xs sm:text-sm font-bold tracking-wider uppercase hover:bg-gray-50 transition-colors text-center"
                   >
                     Design Similar
                   </a>
