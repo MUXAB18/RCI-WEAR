@@ -16,6 +16,22 @@ export default function ContactPage() {
     firstName: '', lastName: '', email: '', phone: '', subject: '', message: ''
   });
 
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const subject = params.get('subject');
+      const message = params.get('message');
+      
+      if (subject || message) {
+        setFormData(prev => ({ 
+          ...prev, 
+          subject: subject || prev.subject,
+          message: message || prev.message
+        }));
+      }
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
   };

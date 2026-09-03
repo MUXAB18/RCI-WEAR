@@ -304,7 +304,7 @@ export function PortfolioClient({ projects, categories }: PortfolioClientProps) 
 
                 <div className="mt-auto pt-4 sm:pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
                   <a 
-                    href="/contact"
+                    href={`/contact?subject=${encodeURIComponent(`Inquiry about ${selectedProduct.title}`)}&message=${encodeURIComponent(`Hi,\n\nI am interested in the piece "${selectedProduct.title}" from the ${selectedProduct.category} collection.\n\nProject Details:\nClient: ${selectedProduct.clientName || 'N/A'}\nProject Date: ${selectedProduct.projectDate ? new Date(selectedProduct.projectDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'N/A'}\n\nPlease let me know how we can proceed with a similar project.\n\nThank you.`)}`}
                     className="flex-1 bg-black text-white px-6 py-3 sm:py-4 rounded-full font-sans text-xs sm:text-sm font-bold tracking-wider uppercase hover:bg-gray-900 transition-colors text-center"
                   >
                     Inquire About This Piece
