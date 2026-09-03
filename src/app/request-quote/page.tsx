@@ -88,6 +88,29 @@ export default function RequestQuotePage() {
     attachments: [] as { name: string, content: string, type: string }[]
   });
 
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const categoryParam = params.get('category');
+      
+      if (categoryParam) {
+        const slugToCategory: Record<string, string> = {
+          'hoodies': 'Hoodies / Sweatshirts',
+          'tees': 'T-Shirts',
+          'tracksuits': 'Tracksuits / Joggers',
+          'outerwear': 'Outerwear / Jackets',
+          'gymwear': 'Activewear',
+          'corporate': 'Custom Uniforms',
+        };
+        
+        const matchedCategory = slugToCategory[categoryParam.toLowerCase()];
+        if (matchedCategory) {
+          setFormData(prev => ({ ...prev, category: matchedCategory }));
+        }
+      }
+    }
+  }, []);
+
   const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
 

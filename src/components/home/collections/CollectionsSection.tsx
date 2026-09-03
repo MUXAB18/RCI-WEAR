@@ -113,10 +113,10 @@ export function CollectionsSection({ collections = [] }: CollectionsSectionProps
                   </p>
                   <div className="flex justify-between items-end relative z-10">
                     <Link
-                      href={`/portfolio?category=${collection.name}`}
+                      href={`/request-quote?category=${collection.slug}`}
                       className="inline-flex items-center text-[11px] font-bold tracking-[2px] text-near-black uppercase border-b border-near-black/20 hover:border-near-black pb-1 w-max transition-colors"
                     >
-                      View Collection &rarr;
+                      Order Now &rarr;
                     </Link>
                   </div>
 
