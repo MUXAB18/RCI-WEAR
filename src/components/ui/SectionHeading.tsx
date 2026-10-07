@@ -1,32 +1,36 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
   eyebrow?: string;
   title: string | React.ReactNode;
   subtitle?: string;
-  align?: 'left' | 'center';
+  align?: "left" | "center";
   className?: string;
 }
 
-export function SectionHeading({ 
-  eyebrow, 
-  title, 
-  subtitle, 
-  align = 'center',
-  className 
+export function SectionHeading({
+  eyebrow,
+  title,
+  subtitle,
+  align = "center",
+  className,
 }: SectionHeadingProps) {
   return (
-    <div className={cn(
-      "flex flex-col mb-16",
-      align === 'center' ? 'items-center text-center' : 'items-start text-left',
-      className
-    )}>
+    <div
+      className={cn(
+        "flex flex-col mb-16",
+        align === "center"
+          ? "items-center text-center"
+          : "items-start text-left",
+        className,
+      )}
+    >
       {eyebrow && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -36,8 +40,8 @@ export function SectionHeading({
           {eyebrow}
         </motion.div>
       )}
-      
-      <motion.h2 
+
+      <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -48,7 +52,7 @@ export function SectionHeading({
       </motion.h2>
 
       {subtitle && (
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}

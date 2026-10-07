@@ -1,17 +1,25 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Plus, Briefcase, Edit, Trash2, Star, Calendar, User } from 'lucide-react';
-import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Button } from '@/components/admin/ui/Button';
-import { DataTable, Column } from '@/components/admin/ui/DataTable';
-import { Badge } from '@/components/admin/ui/Badge';
-import { Modal } from '@/components/admin/ui/Modal';
-import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
-import { Input } from '@/components/admin/ui/Input';
-import { Textarea } from '@/components/admin/ui/Textarea';
-import { ImageUpload } from '@/components/admin/ui/ImageUpload';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import {
+  Plus,
+  Briefcase,
+  Edit,
+  Trash2,
+  Star,
+  Calendar,
+  User,
+} from "lucide-react";
+import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { Button } from "@/components/admin/ui/Button";
+import { DataTable, Column } from "@/components/admin/ui/DataTable";
+import { Badge } from "@/components/admin/ui/Badge";
+import { Modal } from "@/components/admin/ui/Modal";
+import { ConfirmModal } from "@/components/admin/ui/ConfirmModal";
+import { Input } from "@/components/admin/ui/Input";
+import { Textarea } from "@/components/admin/ui/Textarea";
+import { ImageUpload } from "@/components/admin/ui/ImageUpload";
+import { useRouter } from "next/navigation";
 
 type PortfolioProject = {
   id: string;
@@ -36,32 +44,34 @@ export function PortfolioClient({ initialProjects }: Props) {
   const router = useRouter();
   const [projects, setProjects] = useState(initialProjects);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState<PortfolioProject | null>(null);
+  const [editingProject, setEditingProject] = useState<PortfolioProject | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  
+
   const [formData, setFormData] = useState({
-    title: '',
-    category: '',
-    description: '',
-    imageUrl: '',
-    images: '',
-    clientName: '',
-    projectDate: '',
-    tags: '',
+    title: "",
+    category: "",
+    description: "",
+    imageUrl: "",
+    images: "",
+    clientName: "",
+    projectDate: "",
+    tags: "",
     isFeatured: false,
     isPublished: true,
-    order: '' as string | number,
+    order: "" as string | number,
   });
 
   const columns: Column<PortfolioProject>[] = [
     {
-      key: 'title',
-      label: 'Project',
+      key: "title",
+      label: "Project",
       render: (item) => (
         <div className="flex items-center gap-3">
-          <img 
-            src={item.imageUrl} 
+          <img
+            src={item.imageUrl}
             alt={item.title}
             className="w-16 h-12 rounded-lg object-cover"
           />
@@ -80,52 +90,59 @@ export function PortfolioClient({ initialProjects }: Props) {
       ),
     },
     {
-      key: 'category',
-      label: 'Category',
+      key: "category",
+      label: "Category",
       render: (item) => <span className="text-white/60">{item.category}</span>,
     },
     {
-      key: 'tags',
-      label: 'Tags',
+      key: "tags",
+      label: "Tags",
       render: (item) => (
         <div className="flex gap-1 flex-wrap">
           {item.tags.slice(0, 2).map((tag, idx) => (
-            <span key={idx} className="text-xs bg-white/10 px-2 py-0.5 rounded text-white/60">
+            <span
+              key={idx}
+              className="text-xs bg-white/10 px-2 py-0.5 rounded text-white/60"
+            >
               {tag}
             </span>
           ))}
           {item.tags.length > 2 && (
-            <span className="text-xs text-white/40">+{item.tags.length - 2}</span>
+            <span className="text-xs text-white/40">
+              +{item.tags.length - 2}
+            </span>
           )}
         </div>
       ),
     },
     {
-      key: 'date',
-      label: 'Project Date',
+      key: "date",
+      label: "Project Date",
       render: (item) => (
         <span className="text-white/60 text-sm">
-          {item.projectDate ? new Date(item.projectDate).toLocaleDateString() : 'N/A'}
+          {item.projectDate
+            ? new Date(item.projectDate).toLocaleDateString()
+            : "N/A"}
         </span>
       ),
     },
     {
-      key: 'order',
-      label: 'Order',
+      key: "order",
+      label: "Order",
       render: (item) => <span className="text-white/60">#{item.order}</span>,
     },
     {
-      key: 'status',
-      label: 'Status',
+      key: "status",
+      label: "Status",
       render: (item) => (
-        <Badge variant={item.isPublished ? 'success' : 'default'}>
-          {item.isPublished ? 'Published' : 'Draft'}
+        <Badge variant={item.isPublished ? "success" : "default"}>
+          {item.isPublished ? "Published" : "Draft"}
         </Badge>
       ),
     },
     {
-      key: 'actions',
-      label: 'Actions',
+      key: "actions",
+      label: "Actions",
       render: (item) => (
         <div className="flex items-center gap-2">
           <Button
@@ -160,12 +177,14 @@ export function PortfolioClient({ initialProjects }: Props) {
     setFormData({
       title: project.title,
       category: project.category,
-      description: project.description || '',
+      description: project.description || "",
       imageUrl: project.imageUrl,
-      images: project.images.join('\n'),
-      clientName: project.clientName || '',
-      projectDate: project.projectDate ? new Date(project.projectDate).toISOString().split('T')[0] : '',
-      tags: project.tags.join(', '),
+      images: project.images.join("\n"),
+      clientName: project.clientName || "",
+      projectDate: project.projectDate
+        ? new Date(project.projectDate).toISOString().split("T")[0]
+        : "",
+      tags: project.tags.join(", "),
       isFeatured: project.isFeatured,
       isPublished: project.isPublished,
       order: project.order,
@@ -179,16 +198,17 @@ export function PortfolioClient({ initialProjects }: Props) {
 
   const executeDelete = async () => {
     if (!deleteId) return;
-    
-    
+
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/portfolio/${deleteId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/portfolio/${deleteId}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setProjects(projects.filter((p) => p.id !== deleteId));
       }
     } catch (error) {
-      console.error('Failed to delete project:', error);
+      console.error("Failed to delete project:", error);
     } finally {
       setLoading(false);
       setDeleteId(null);
@@ -202,22 +222,25 @@ export function PortfolioClient({ initialProjects }: Props) {
     try {
       const url = editingProject
         ? `/api/admin/portfolio/${editingProject.id}`
-        : '/api/admin/portfolio';
-      
-      const method = editingProject ? 'PUT' : 'POST';
+        : "/api/admin/portfolio";
+
+      const method = editingProject ? "PUT" : "POST";
 
       const payload = {
         ...formData,
         order: Number(formData.order) || 0,
-        images: formData.images.split('\n').filter(url => url.trim()),
-        tags: formData.tags.split(',').map(tag => tag.trim()).filter(Boolean),
+        images: formData.images.split("\n").filter((url) => url.trim()),
+        tags: formData.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
         projectDate: formData.projectDate || null,
         clientName: formData.clientName || null,
       };
 
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
@@ -227,7 +250,7 @@ export function PortfolioClient({ initialProjects }: Props) {
         resetForm();
       }
     } catch (error) {
-      console.error('Failed to save project:', error);
+      console.error("Failed to save project:", error);
     } finally {
       setLoading(false);
     }
@@ -235,17 +258,17 @@ export function PortfolioClient({ initialProjects }: Props) {
 
   const resetForm = () => {
     setFormData({
-      title: '',
-      category: '',
-      description: '',
-      imageUrl: '',
-      images: '',
-      clientName: '',
-      projectDate: '',
-      tags: '',
+      title: "",
+      category: "",
+      description: "",
+      imageUrl: "",
+      images: "",
+      clientName: "",
+      projectDate: "",
+      tags: "",
       isFeatured: false,
       isPublished: true,
-      order: '' as string | number,
+      order: "" as string | number,
     });
     setEditingProject(null);
   };
@@ -258,9 +281,9 @@ export function PortfolioClient({ initialProjects }: Props) {
   // Calculate statistics
   const stats = {
     total: projects.length,
-    published: projects.filter(p => p.isPublished).length,
-    featured: projects.filter(p => p.isFeatured).length,
-    draft: projects.filter(p => !p.isPublished).length,
+    published: projects.filter((p) => p.isPublished).length,
+    featured: projects.filter((p) => p.isFeatured).length,
+    draft: projects.filter((p) => !p.isPublished).length,
   };
 
   return (
@@ -269,10 +292,7 @@ export function PortfolioClient({ initialProjects }: Props) {
         title="Portfolio"
         description="Showcase your best work and completed projects"
         actions={
-          <Button
-            icon={<Plus className="w-4 h-4" />}
-            onClick={handleOpenModal}
-          >
+          <Button icon={<Plus className="w-4 h-4" />} onClick={handleOpenModal}>
             Add Project
           </Button>
         }
@@ -286,11 +306,15 @@ export function PortfolioClient({ initialProjects }: Props) {
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Published</p>
-          <p className="text-2xl font-semibold text-green-500">{stats.published}</p>
+          <p className="text-2xl font-semibold text-green-500">
+            {stats.published}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Featured</p>
-          <p className="text-2xl font-semibold text-yellow-500">{stats.featured}</p>
+          <p className="text-2xl font-semibold text-yellow-500">
+            {stats.featured}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Drafts</p>
@@ -310,23 +334,28 @@ export function PortfolioClient({ initialProjects }: Props) {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingProject ? 'Edit Project' : 'Add Project'}
+        title={editingProject ? "Edit Project" : "Add Project"}
         footer={
           <>
             <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleSubmit} loading={loading}>
-              {editingProject ? 'Update' : 'Create'}
+              {editingProject ? "Update" : "Create"}
             </Button>
           </>
         }
       >
-        <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 max-h-[70vh] overflow-y-auto pr-2"
+        >
           <Input
             label="Project Title"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
             required
             placeholder="e.g., Custom Uniform Collection"
           />
@@ -334,7 +363,9 @@ export function PortfolioClient({ initialProjects }: Props) {
           <Input
             label="Category"
             value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
             required
             placeholder="e.g., Corporate Wear, Sports Apparel"
           />
@@ -342,7 +373,9 @@ export function PortfolioClient({ initialProjects }: Props) {
           <Textarea
             label="Description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             placeholder="Detailed project description..."
             rows={3}
           />
@@ -357,7 +390,9 @@ export function PortfolioClient({ initialProjects }: Props) {
           <Textarea
             label="Additional Images"
             value={formData.images}
-            onChange={(e) => setFormData({ ...formData, images: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, images: e.target.value })
+            }
             placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg&#10;https://example.com/image3.jpg"
             helperText="One URL per line"
             rows={4}
@@ -367,7 +402,9 @@ export function PortfolioClient({ initialProjects }: Props) {
             <Input
               label="Client Name"
               value={formData.clientName}
-              onChange={(e) => setFormData({ ...formData, clientName: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, clientName: e.target.value })
+              }
               placeholder="Company XYZ"
             />
 
@@ -375,7 +412,9 @@ export function PortfolioClient({ initialProjects }: Props) {
               label="Project Date"
               type="date"
               value={formData.projectDate}
-              onChange={(e) => setFormData({ ...formData, projectDate: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, projectDate: e.target.value })
+              }
             />
           </div>
 
@@ -391,7 +430,9 @@ export function PortfolioClient({ initialProjects }: Props) {
             label="Display Order"
             type="number"
             value={formData.order}
-            onChange={(e) => setFormData({ ...formData, order: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, order: e.target.value })
+            }
             helperText="Lower numbers appear first"
           />
 
@@ -401,7 +442,9 @@ export function PortfolioClient({ initialProjects }: Props) {
                 type="checkbox"
                 id="isFeatured"
                 checked={formData.isFeatured}
-                onChange={(e) => setFormData({ ...formData, isFeatured: e.target.checked })}
+                onChange={(e) =>
+                  setFormData({ ...formData, isFeatured: e.target.checked })
+                }
                 className="w-4 h-4 rounded border-white/20 bg-white/10 text-white focus:ring-white/30"
               />
               <label htmlFor="isFeatured" className="text-sm text-white/80">
@@ -414,7 +457,9 @@ export function PortfolioClient({ initialProjects }: Props) {
                 type="checkbox"
                 id="isPublished"
                 checked={formData.isPublished}
-                onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
+                onChange={(e) =>
+                  setFormData({ ...formData, isPublished: e.target.checked })
+                }
                 className="w-4 h-4 rounded border-white/20 bg-white/10 text-white focus:ring-white/30"
               />
               <label htmlFor="isPublished" className="text-sm text-white/80">

@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 /**
  * Standard API response helpers
@@ -20,6 +20,6 @@ export function apiBadRequest(message: string) {
   return apiError(message, 400);
 }
 
-export function apiNotFound(message = 'Resource not found') {
+export function apiNotFound(message = "Resource not found") {
   return apiError(message, 404);
 }

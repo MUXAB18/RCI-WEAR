@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion, Variants } from 'framer-motion';
-import { Button } from '@/components/ui/Button';
+import React from "react";
+import { motion, Variants } from "framer-motion";
+import { Button } from "@/components/ui/Button";
 
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
 };
 
 const staggerContainer: Variants = {
@@ -15,9 +15,9 @@ const staggerContainer: Variants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.1
-    }
-  }
+      delayChildren: 0.1,
+    },
+  },
 };
 
 interface HeroContentProps {
@@ -34,9 +34,11 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
     >
       {/* Eyebrow label */}
       <motion.div variants={fadeInUp} className="mb-5">
-        <span className={`text-[10px] uppercase tracking-[0.3em] font-medium ${
-          mobile ? 'text-white/50' : 'text-gray-500'
-        }`}>
+        <span
+          className={`text-[10px] uppercase tracking-[0.3em] font-medium ${
+            mobile ? "text-white/50" : "text-gray-500"
+          }`}
+        >
           Where Imagination Meets Fabrication
         </span>
       </motion.div>
@@ -45,7 +47,7 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
       <motion.div variants={fadeInUp} className="mb-6 lg:mb-8">
         <h1
           className={`font-sans text-[clamp(3rem,5vw,5rem)] font-bold leading-[1.05] tracking-tight ${
-            mobile ? 'text-white' : 'text-near-black'
+            mobile ? "text-white" : "text-near-black"
           }`}
         >
           Turn Your Ideas
@@ -60,10 +62,12 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
       <motion.div variants={fadeInUp} className="mb-10 lg:mb-12">
         <p
           className={`text-base md:text-lg max-w-[90%] lg:max-w-md font-medium leading-relaxed ${
-            mobile ? 'text-white/85' : 'text-near-black/70'
+            mobile ? "text-white/85" : "text-near-black/70"
           }`}
         >
-          Premium apparel manufacturing from Sialkot, Pakistan. We transform your creative vision into high-quality garments that brands worldwide trust.
+          Premium apparel manufacturing from Sialkot, Pakistan. We transform
+          your creative vision into high-quality garments that brands worldwide
+          trust.
         </p>
       </motion.div>
 
@@ -76,8 +80,8 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
           href="/request-quote"
           className={`rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold whitespace-nowrap transition-colors duration-300 border-none shadow-md ${
             mobile
-              ? 'bg-white text-[#0a0a0a] hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.15)]'
-              : 'bg-near-black text-white hover:bg-[#2A2A28]'
+              ? "bg-white text-[#0a0a0a] hover:bg-white/90 shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+              : "bg-near-black text-white hover:bg-[#2A2A28]"
           }`}
         >
           START CREATING
@@ -87,8 +91,8 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
           variant="outline"
           className={`rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold whitespace-nowrap transition-colors duration-300 ${
             mobile
-              ? 'border border-white/40 text-white hover:bg-white/15'
-              : 'border border-near-black/10 text-near-black hover:bg-black/5'
+              ? "border border-white/40 text-white hover:bg-white/15"
+              : "border border-near-black/10 text-near-black hover:bg-black/5"
           }`}
         >
           EXPLORE GALLERY
@@ -97,7 +101,10 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
 
       {/* Social Proof — hidden on mobile */}
       {!mobile && (
-        <motion.div variants={fadeInUp} className="hidden lg:flex items-center gap-4">
+        <motion.div
+          variants={fadeInUp}
+          className="hidden lg:flex items-center gap-4"
+        >
           <div className="flex -space-x-3">
             {[1, 2, 3, 4].map((i) => (
               <div
@@ -113,8 +120,7 @@ export function HeroContent({ mobile = false }: HeroContentProps) {
             ))}
           </div>
           <p className="text-xs font-medium max-w-[140px] leading-snug text-near-black/60">
-            Join{' '}
-            <span className="font-bold text-near-black">100+ Brands</span>{' '}
+            Join <span className="font-bold text-near-black">100+ Brands</span>{" "}
             and start manufacturing now
           </p>
         </motion.div>

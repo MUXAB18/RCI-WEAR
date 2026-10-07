@@ -1,26 +1,27 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import { Button } from '@/components/ui/Button';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/Button";
+import Image from "next/image";
 
 export default function VerifyOtpPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  const [otp, setOtp] = useState('');
-  const [error, setError] = useState('');
+  const [otp, setOtp] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(true);
-  const [message, setMessage] = useState('');
-  
+  const [message, setMessage] = useState("");
+
   useEffect(() => {
     // Check if user is actually authenticated in Supabase first
     const checkAuth = async () => {
       const { data } = await supabase.auth.getUser();
       if (!data.user) {
-        router.push('/admin/login');
+        router.push("/admin/login");
       } else {
         // Just clear the sending state since the OTP was already dispatched by the login page
         setSending(false);
@@ -32,49 +33,49 @@ export default function VerifyOtpPage() {
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
     setLoading(true);
 
     try {
-      const res = await fetch('/api/admin/auth/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/admin/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ otp }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        router.push('/admin');
+        router.push("/admin");
         router.refresh();
       } else {
-        setError(data.error || 'Invalid OTP');
+        setError(data.error || "Invalid OTP");
         setLoading(false);
       }
     } catch (err) {
-      setError('An unexpected error occurred.');
+      setError("An unexpected error occurred.");
       setLoading(false);
     }
   };
 
   const handleResend = async () => {
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
     setSending(true);
-    
+
     try {
-      const res = await fetch('/api/admin/auth/send-otp', {
-        method: 'POST',
+      const res = await fetch("/api/admin/auth/send-otp", {
+        method: "POST",
       });
-      
+
       if (res.ok) {
-        setMessage('A new OTP has been sent.');
+        setMessage("A new OTP has been sent.");
       } else {
-        setError('Failed to resend OTP.');
+        setError("Failed to resend OTP.");
       }
     } catch (err) {
-      setError('An unexpected error occurred while sending OTP.');
+      setError("An unexpected error occurred while sending OTP.");
     } finally {
       setSending(false);
     }
@@ -90,22 +91,35 @@ export default function VerifyOtpPage() {
       <div className="w-full max-w-md relative">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-white/10 rounded-2xl border border-white/10 mb-5">
-            <span className="text-white font-black text-xl font-sans">R</span>
+          <div className="relative inline-flex items-center justify-center w-48 h-16 mb-5">
+            <Image
+              src="/rasheed-clothing-logo-transparent.png"
+              alt="RCI Logo"
+              fill
+              className="object-contain brightness-0 invert opacity-90"
+            />
           </div>
-          <h1 className="text-white text-2xl font-bold tracking-tight font-sans">2-Step Verification</h1>
-          <p className="text-white/40 text-sm mt-1 font-sans">Enter the 6-digit code sent to the admin email.</p>
+          <h1 className="text-white text-2xl font-bold tracking-tight font-sans">
+            2-Step Verification
+          </h1>
+          <p className="text-white/40 text-sm mt-1 font-sans">
+            Enter the 6-digit code sent to the admin email.
+          </p>
         </div>
 
         {/* Verification Card */}
         <div className="bg-white/[0.05] border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
           <form onSubmit={handleVerify} className="space-y-5">
             <div>
-              <label className="block text-white/60 text-sm font-medium mb-2 font-sans">One-Time Password</label>
+              <label className="block text-white/60 text-sm font-medium mb-2 font-sans">
+                One-Time Password
+              </label>
               <input
                 type="text"
                 value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                onChange={(e) =>
+                  setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
+                }
                 required
                 placeholder="000000"
                 className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-white/30 focus:ring-1 focus:ring-white/20 transition text-center tracking-widest text-2xl font-mono"
@@ -131,12 +145,12 @@ export default function VerifyOtpPage() {
               disabled={loading || sending || otp.length !== 6}
               loading={loading}
             >
-              {sending ? 'Sending OTP...' : 'Verify & Continue'}
+              {sending ? "Sending OTP..." : "Verify & Continue"}
             </Button>
-            
+
             <div className="text-center mt-4">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={handleResend}
                 disabled={sending || loading}
                 className="text-white/40 hover:text-white text-sm transition font-sans"

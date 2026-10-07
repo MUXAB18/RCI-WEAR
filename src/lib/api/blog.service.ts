@@ -3,8 +3,8 @@
  * CRUD operations for blog posts
  */
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type CreateBlogPostInput = {
   title: string;
@@ -25,25 +25,25 @@ export type UpdateBlogPostInput = Partial<CreateBlogPostInput>;
 
 export async function getAllBlogPosts() {
   return prisma.blogPost.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 
 export async function getPublishedBlogPosts() {
   return prisma.blogPost.findMany({
     where: { isPublished: true },
-    orderBy: { publishedAt: 'desc' },
+    orderBy: { publishedAt: "desc" },
   });
 }
 
 export async function getFeaturedBlogPosts(limit = 3) {
   return prisma.blogPost.findMany({
-    where: { 
+    where: {
       isPublished: true,
       isFeatured: true,
     },
     take: limit,
-    orderBy: { publishedAt: 'desc' },
+    orderBy: { publishedAt: "desc" },
   });
 }
 
@@ -61,13 +61,13 @@ export async function getBlogPostBySlug(slug: string) {
 
 export async function getBlogPostsByTag(tag: string) {
   return prisma.blogPost.findMany({
-    where: { 
+    where: {
       isPublished: true,
       tags: {
         has: tag,
       },
     },
-    orderBy: { publishedAt: 'desc' },
+    orderBy: { publishedAt: "desc" },
   });
 }
 
@@ -81,7 +81,7 @@ export async function createBlogPost(data: CreateBlogPostInput) {
       excerpt: data.excerpt,
       content: data.content,
       coverImage: data.coverImage,
-      author: data.author || 'Admin',
+      author: data.author || "Admin",
       isPublished: data.isPublished ?? false,
       isFeatured: data.isFeatured ?? false,
       tags: data.tags || [],
@@ -123,7 +123,7 @@ export async function incrementViews(id: string) {
     data: { views: { increment: 1 } },
   });
   // Revalidate admin panel so views stay fresh
-  revalidatePath('/admin/blog');
+  revalidatePath("/admin/blog");
 }
 
 // ─── DELETE ──────────────────────────────────────────────────────────────────
@@ -136,22 +136,23 @@ export async function deleteBlogPost(id: string) {
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function revalidatePaths() {
-  revalidatePath('/');
-  revalidatePath('/blog');
-  revalidatePath('/admin/blog');
+  revalidatePath("/");
+  revalidatePath("/blog");
+  revalidatePath("/admin/blog");
 }
 
 // ─── STATISTICS ──────────────────────────────────────────────────────────────
 
 export async function getBlogStats() {
-  const [totalPosts, publishedPosts, draftPosts, totalViews] = await Promise.all([
-    prisma.blogPost.count(),
-    prisma.blogPost.count({ where: { isPublished: true } }),
-    prisma.blogPost.count({ where: { isPublished: false } }),
-    prisma.blogPost.aggregate({
-      _sum: { views: true },
-    }),
-  ]);
+  const [totalPosts, publishedPosts, draftPosts, totalViews] =
+    await Promise.all([
+      prisma.blogPost.count(),
+      prisma.blogPost.count({ where: { isPublished: true } }),
+      prisma.blogPost.count({ where: { isPublished: false } }),
+      prisma.blogPost.aggregate({
+        _sum: { views: true },
+      }),
+    ]);
 
   return {
     totalPosts,

@@ -1,18 +1,27 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { FileText, Edit, Trash2, Send, CheckCircle, XCircle, Archive, Eye } from 'lucide-react';
-import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Button } from '@/components/admin/ui/Button';
-import { DataTable, Column } from '@/components/admin/ui/DataTable';
-import { Badge } from '@/components/admin/ui/Badge';
-import { Modal } from '@/components/admin/ui/Modal';
-import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
-import { Input } from '@/components/admin/ui/Input';
-import { Textarea } from '@/components/admin/ui/Textarea';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import {
+  FileText,
+  Edit,
+  Trash2,
+  Send,
+  CheckCircle,
+  XCircle,
+  Archive,
+  Eye,
+} from "lucide-react";
+import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { Button } from "@/components/admin/ui/Button";
+import { DataTable, Column } from "@/components/admin/ui/DataTable";
+import { Badge } from "@/components/admin/ui/Badge";
+import { Modal } from "@/components/admin/ui/Modal";
+import { ConfirmModal } from "@/components/admin/ui/ConfirmModal";
+import { Input } from "@/components/admin/ui/Input";
+import { Textarea } from "@/components/admin/ui/Textarea";
+import { useRouter } from "next/navigation";
 
-type QuoteStatus = 'pending' | 'sent' | 'accepted' | 'rejected' | 'expired';
+type QuoteStatus = "pending" | "sent" | "accepted" | "rejected" | "expired";
 
 type Quote = {
   id: string;
@@ -36,26 +45,28 @@ type Props = {
 };
 
 const statusOptions = [
-  { value: 'pending', label: 'Pending' },
-  { value: 'sent', label: 'Sent' },
-  { value: 'accepted', label: 'Accepted' },
-  { value: 'rejected', label: 'Rejected' },
-  { value: 'expired', label: 'Expired' },
+  { value: "pending", label: "Pending" },
+  { value: "sent", label: "Sent" },
+  { value: "accepted", label: "Accepted" },
+  { value: "rejected", label: "Rejected" },
+  { value: "expired", label: "Expired" },
 ];
 
-const getStatusVariant = (status: QuoteStatus): 'success' | 'warning' | 'danger' | 'info' | 'default' => {
+const getStatusVariant = (
+  status: QuoteStatus,
+): "success" | "warning" | "danger" | "info" | "default" => {
   switch (status) {
-    case 'accepted':
-      return 'success';
-    case 'pending':
-      return 'warning';
-    case 'rejected':
-    case 'expired':
-      return 'danger';
-    case 'sent':
-      return 'info';
+    case "accepted":
+      return "success";
+    case "pending":
+      return "warning";
+    case "rejected":
+    case "expired":
+      return "danger";
+    case "sent":
+      return "info";
     default:
-      return 'default';
+      return "default";
   }
 };
 
@@ -67,16 +78,16 @@ export function QuotesClient({ initialQuotes }: Props) {
   const [sendingQuote, setSendingQuote] = useState<Quote | null>(null);
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  
+
   const [sendFormData, setSendFormData] = useState({
-    quoteAmount: '',
-    validUntil: '',
+    quoteAmount: "",
+    validUntil: "",
   });
 
   const columns: Column<Quote>[] = [
     {
-      key: 'company',
-      label: 'Company',
+      key: "company",
+      label: "Company",
       render: (item) => (
         <div>
           <p className="font-medium text-white">{item.companyName}</p>
@@ -85,20 +96,18 @@ export function QuotesClient({ initialQuotes }: Props) {
       ),
     },
     {
-      key: 'contact',
-      label: 'Contact',
+      key: "contact",
+      label: "Contact",
       render: (item) => (
         <div>
           <p className="text-white/80 text-sm">{item.email}</p>
-          {item.phone && (
-            <p className="text-xs text-white/40">{item.phone}</p>
-          )}
+          {item.phone && <p className="text-xs text-white/40">{item.phone}</p>}
         </div>
       ),
     },
     {
-      key: 'product',
-      label: 'Product Type',
+      key: "product",
+      label: "Product Type",
       render: (item) => (
         <div>
           <p className="text-white/80">{item.productType}</p>
@@ -107,24 +116,26 @@ export function QuotesClient({ initialQuotes }: Props) {
       ),
     },
     {
-      key: 'budget',
-      label: 'Budget',
+      key: "budget",
+      label: "Budget",
       render: (item) => (
-        <span className="text-white/60">{item.budget || 'Not specified'}</span>
+        <span className="text-white/60">{item.budget || "Not specified"}</span>
       ),
     },
     {
-      key: 'deadline',
-      label: 'Deadline',
+      key: "deadline",
+      label: "Deadline",
       render: (item) => (
         <span className="text-white/60">
-          {item.deadline ? new Date(item.deadline).toLocaleDateString() : 'No deadline'}
+          {item.deadline
+            ? new Date(item.deadline).toLocaleDateString()
+            : "No deadline"}
         </span>
       ),
     },
     {
-      key: 'status',
-      label: 'Status',
+      key: "status",
+      label: "Status",
       render: (item) => (
         <Badge variant={getStatusVariant(item.status)}>
           {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
@@ -132,8 +143,8 @@ export function QuotesClient({ initialQuotes }: Props) {
       ),
     },
     {
-      key: 'actions',
-      label: 'Actions',
+      key: "actions",
+      label: "Actions",
       render: (item) => (
         <div className="flex items-center gap-2">
           <Button
@@ -147,7 +158,7 @@ export function QuotesClient({ initialQuotes }: Props) {
           >
             View
           </Button>
-          {item.status === 'pending' && (
+          {item.status === "pending" && (
             <Button
               size="sm"
               variant="ghost"
@@ -160,7 +171,7 @@ export function QuotesClient({ initialQuotes }: Props) {
               Send
             </Button>
           )}
-          {item.status === 'sent' && (
+          {item.status === "sent" && (
             <>
               <Button
                 size="sm"
@@ -168,7 +179,7 @@ export function QuotesClient({ initialQuotes }: Props) {
                 icon={<CheckCircle className="w-3.5 h-3.5" />}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleStatusChange(item.id, 'accepted');
+                  handleStatusChange(item.id, "accepted");
                 }}
               >
                 Accept
@@ -179,7 +190,7 @@ export function QuotesClient({ initialQuotes }: Props) {
                 icon={<XCircle className="w-3.5 h-3.5" />}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleStatusChange(item.id, 'rejected');
+                  handleStatusChange(item.id, "rejected");
                 }}
               >
                 Reject
@@ -210,8 +221,8 @@ export function QuotesClient({ initialQuotes }: Props) {
   const handleSendQuote = (quote: Quote) => {
     setSendingQuote(quote);
     setSendFormData({
-      quoteAmount: String(quote.quoteAmount || ''),
-      validUntil: quote.validUntil || '',
+      quoteAmount: String(quote.quoteAmount || ""),
+      validUntil: quote.validUntil || "",
     });
   };
 
@@ -219,8 +230,8 @@ export function QuotesClient({ initialQuotes }: Props) {
     setLoading(true);
     try {
       const res = await fetch(`/api/admin/quotes/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       });
 
@@ -228,7 +239,7 @@ export function QuotesClient({ initialQuotes }: Props) {
         router.refresh();
       }
     } catch (error) {
-      console.error('Failed to update quote status:', error);
+      console.error("Failed to update quote status:", error);
     } finally {
       setLoading(false);
     }
@@ -240,16 +251,17 @@ export function QuotesClient({ initialQuotes }: Props) {
 
   const executeDelete = async () => {
     if (!deleteId) return;
-    
-    
+
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/quotes/${deleteId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/quotes/${deleteId}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setQuotes(quotes.filter((q) => q.id !== deleteId));
       }
     } catch (error) {
-      console.error('Failed to delete quote:', error);
+      console.error("Failed to delete quote:", error);
     } finally {
       setLoading(false);
       setDeleteId(null);
@@ -264,10 +276,10 @@ export function QuotesClient({ initialQuotes }: Props) {
 
     try {
       const res = await fetch(`/api/admin/quotes/${sendingQuote.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          status: 'sent',
+          status: "sent",
           quoteAmount: Number(sendFormData.quoteAmount) || 0,
           validUntil: sendFormData.validUntil,
         }),
@@ -278,7 +290,7 @@ export function QuotesClient({ initialQuotes }: Props) {
         setSendingQuote(null);
       }
     } catch (error) {
-      console.error('Failed to send quote:', error);
+      console.error("Failed to send quote:", error);
     } finally {
       setLoading(false);
     }
@@ -287,10 +299,10 @@ export function QuotesClient({ initialQuotes }: Props) {
   // Calculate statistics
   const stats = {
     total: quotes.length,
-    pending: quotes.filter(q => q.status === 'pending').length,
-    sent: quotes.filter(q => q.status === 'sent').length,
-    accepted: quotes.filter(q => q.status === 'accepted').length,
-    rejected: quotes.filter(q => q.status === 'rejected').length,
+    pending: quotes.filter((q) => q.status === "pending").length,
+    sent: quotes.filter((q) => q.status === "sent").length,
+    accepted: quotes.filter((q) => q.status === "accepted").length,
+    rejected: quotes.filter((q) => q.status === "rejected").length,
   };
 
   return (
@@ -308,7 +320,9 @@ export function QuotesClient({ initialQuotes }: Props) {
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Pending</p>
-          <p className="text-2xl font-semibold text-yellow-500">{stats.pending}</p>
+          <p className="text-2xl font-semibold text-yellow-500">
+            {stats.pending}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Sent</p>
@@ -316,11 +330,15 @@ export function QuotesClient({ initialQuotes }: Props) {
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Accepted</p>
-          <p className="text-2xl font-semibold text-green-500">{stats.accepted}</p>
+          <p className="text-2xl font-semibold text-green-500">
+            {stats.accepted}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Rejected</p>
-          <p className="text-2xl font-semibold text-red-500">{stats.rejected}</p>
+          <p className="text-2xl font-semibold text-red-500">
+            {stats.rejected}
+          </p>
         </div>
       </div>
 
@@ -342,10 +360,12 @@ export function QuotesClient({ initialQuotes }: Props) {
         }}
         title="Quote Details"
         footer={
-          <Button onClick={() => {
-            setIsModalOpen(false);
-            setViewingQuote(null);
-          }}>
+          <Button
+            onClick={() => {
+              setIsModalOpen(false);
+              setViewingQuote(null);
+            }}
+          >
             Close
           </Button>
         }
@@ -355,11 +375,15 @@ export function QuotesClient({ initialQuotes }: Props) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-white/40 mb-1">Company</p>
-                <p className="text-white font-medium">{viewingQuote.companyName}</p>
+                <p className="text-white font-medium">
+                  {viewingQuote.companyName}
+                </p>
               </div>
               <div>
                 <p className="text-xs text-white/40 mb-1">Contact Person</p>
-                <p className="text-white font-medium">{viewingQuote.contactName}</p>
+                <p className="text-white font-medium">
+                  {viewingQuote.contactName}
+                </p>
               </div>
             </div>
 
@@ -370,13 +394,17 @@ export function QuotesClient({ initialQuotes }: Props) {
               </div>
               <div>
                 <p className="text-xs text-white/40 mb-1">Phone</p>
-                <p className="text-white/80">{viewingQuote.phone || 'Not provided'}</p>
+                <p className="text-white/80">
+                  {viewingQuote.phone || "Not provided"}
+                </p>
               </div>
             </div>
 
             <div>
               <p className="text-xs text-white/40 mb-1">Product Type</p>
-              <p className="text-white font-medium">{viewingQuote.productType}</p>
+              <p className="text-white font-medium">
+                {viewingQuote.productType}
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -386,26 +414,33 @@ export function QuotesClient({ initialQuotes }: Props) {
               </div>
               <div>
                 <p className="text-xs text-white/40 mb-1">Budget</p>
-                <p className="text-white">{viewingQuote.budget || 'Not specified'}</p>
+                <p className="text-white">
+                  {viewingQuote.budget || "Not specified"}
+                </p>
               </div>
             </div>
 
             <div>
               <p className="text-xs text-white/40 mb-1">Requirements</p>
-              <p className="text-white/80 whitespace-pre-line">{viewingQuote.requirements}</p>
+              <p className="text-white/80 whitespace-pre-line">
+                {viewingQuote.requirements}
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-xs text-white/40 mb-1">Deadline</p>
                 <p className="text-white">
-                  {viewingQuote.deadline ? new Date(viewingQuote.deadline).toLocaleDateString() : 'No deadline'}
+                  {viewingQuote.deadline
+                    ? new Date(viewingQuote.deadline).toLocaleDateString()
+                    : "No deadline"}
                 </p>
               </div>
               <div>
                 <p className="text-xs text-white/40 mb-1">Status</p>
                 <Badge variant={getStatusVariant(viewingQuote.status)}>
-                  {viewingQuote.status.charAt(0).toUpperCase() + viewingQuote.status.slice(1)}
+                  {viewingQuote.status.charAt(0).toUpperCase() +
+                    viewingQuote.status.slice(1)}
                 </Badge>
               </div>
             </div>
@@ -413,10 +448,13 @@ export function QuotesClient({ initialQuotes }: Props) {
             {viewingQuote.quoteAmount && (
               <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
                 <p className="text-xs text-white/40 mb-1">Quote Amount</p>
-                <p className="text-2xl font-semibold text-white">${viewingQuote.quoteAmount.toFixed(2)}</p>
+                <p className="text-2xl font-semibold text-white">
+                  ${viewingQuote.quoteAmount.toFixed(2)}
+                </p>
                 {viewingQuote.validUntil && (
                   <p className="text-xs text-white/60 mt-2">
-                    Valid until: {new Date(viewingQuote.validUntil).toLocaleDateString()}
+                    Valid until:{" "}
+                    {new Date(viewingQuote.validUntil).toLocaleDateString()}
                   </p>
                 )}
               </div>
@@ -424,7 +462,9 @@ export function QuotesClient({ initialQuotes }: Props) {
 
             <div>
               <p className="text-xs text-white/40 mb-1">Received</p>
-              <p className="text-white/60 text-sm">{new Date(viewingQuote.createdAt).toLocaleString()}</p>
+              <p className="text-white/60 text-sm">
+                {new Date(viewingQuote.createdAt).toLocaleString()}
+              </p>
             </div>
           </div>
         )}
@@ -450,9 +490,13 @@ export function QuotesClient({ initialQuotes }: Props) {
           <form onSubmit={handleSendSubmit} className="space-y-4">
             <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4 mb-4">
               <p className="text-xs text-white/40 mb-1">Company</p>
-              <p className="text-white font-medium">{sendingQuote.companyName}</p>
+              <p className="text-white font-medium">
+                {sendingQuote.companyName}
+              </p>
               <p className="text-xs text-white/40 mt-2">Product Type</p>
-              <p className="text-white">{sendingQuote.productType} ({sendingQuote.quantity} units)</p>
+              <p className="text-white">
+                {sendingQuote.productType} ({sendingQuote.quantity} units)
+              </p>
             </div>
 
             <Input
@@ -460,7 +504,12 @@ export function QuotesClient({ initialQuotes }: Props) {
               type="number"
               step="0.01"
               value={sendFormData.quoteAmount}
-              onChange={(e) => setSendFormData({ ...sendFormData, quoteAmount: e.target.value })}
+              onChange={(e) =>
+                setSendFormData({
+                  ...sendFormData,
+                  quoteAmount: e.target.value,
+                })
+              }
               required
               placeholder="5000.00"
             />
@@ -469,7 +518,9 @@ export function QuotesClient({ initialQuotes }: Props) {
               label="Valid Until"
               type="date"
               value={sendFormData.validUntil}
-              onChange={(e) => setSendFormData({ ...sendFormData, validUntil: e.target.value })}
+              onChange={(e) =>
+                setSendFormData({ ...sendFormData, validUntil: e.target.value })
+              }
               required
               helperText="When does this quote expire?"
             />

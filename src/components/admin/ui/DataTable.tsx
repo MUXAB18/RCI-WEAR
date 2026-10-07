@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ReactNode } from "react";
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 export type Column<T> = {
   key: string;
@@ -29,10 +29,10 @@ export function DataTable<T extends { id: string }>({
   columns,
   data,
   onRowClick,
-  emptyMessage = 'No data available',
+  emptyMessage = "No data available",
   emptyIcon,
   searchable = false,
-  searchPlaceholder = 'Search...',
+  searchPlaceholder = "Search...",
   onSearch,
   selectable = false,
   selectedIds = [],
@@ -40,14 +40,15 @@ export function DataTable<T extends { id: string }>({
   bulkActions,
 }: DataTableProps<T>) {
   const allSelected = data.length > 0 && selectedIds.length === data.length;
-  const someSelected = selectedIds.length > 0 && selectedIds.length < data.length;
+  const someSelected =
+    selectedIds.length > 0 && selectedIds.length < data.length;
 
   const handleSelectAll = () => {
     if (onSelectionChange) {
       if (allSelected) {
         onSelectionChange([]);
       } else {
-        onSelectionChange(data.map(item => item.id));
+        onSelectionChange(data.map((item) => item.id));
       }
     }
   };
@@ -57,7 +58,9 @@ export function DataTable<T extends { id: string }>({
       if (checked) {
         onSelectionChange([...selectedIds, id]);
       } else {
-        onSelectionChange(selectedIds.filter(selectedId => selectedId !== id));
+        onSelectionChange(
+          selectedIds.filter((selectedId) => selectedId !== id),
+        );
       }
     }
   };
@@ -69,20 +72,22 @@ export function DataTable<T extends { id: string }>({
         <div className="p-4 border-b border-white/[0.08] flex items-center justify-between gap-4">
           <div className="flex-1">
             {searchable && (
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-            <input
-              type="text"
-              placeholder={searchPlaceholder}
-              onChange={(e) => onSearch?.(e.target.value)}
-              className="w-full max-w-md bg-white/[0.05] border border-white/[0.1] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/[0.2] focus:bg-white/[0.08] transition"
-            />
-          </div>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                <input
+                  type="text"
+                  placeholder={searchPlaceholder}
+                  onChange={(e) => onSearch?.(e.target.value)}
+                  className="w-full max-w-md bg-white/[0.05] border border-white/[0.1] rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-white/[0.2] focus:bg-white/[0.08] transition"
+                />
+              </div>
             )}
           </div>
           {bulkActions && selectedIds.length > 0 && (
             <div className="flex items-center gap-2">
-              <span className="text-sm text-white/60 mr-2">{selectedIds.length} selected</span>
+              <span className="text-sm text-white/60 mr-2">
+                {selectedIds.length} selected
+              </span>
               {bulkActions}
             </div>
           )}
@@ -96,10 +101,10 @@ export function DataTable<T extends { id: string }>({
             <tr>
               {selectable && (
                 <th className="px-6 py-4 text-left w-12">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     checked={allSelected}
-                    ref={input => {
+                    ref={(input) => {
                       if (input) input.indeterminate = someSelected;
                     }}
                     onChange={handleSelectAll}
@@ -120,9 +125,14 @@ export function DataTable<T extends { id: string }>({
           <tbody className="divide-y divide-white/[0.06]">
             {data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length + (selectable ? 1 : 0)} className="px-6 py-12 text-center">
+                <td
+                  colSpan={columns.length + (selectable ? 1 : 0)}
+                  className="px-6 py-12 text-center"
+                >
                   <div className="flex flex-col items-center justify-center">
-                    {emptyIcon && <div className="mb-3 text-white/10">{emptyIcon}</div>}
+                    {emptyIcon && (
+                      <div className="mb-3 text-white/10">{emptyIcon}</div>
+                    )}
                     <p className="text-white/40 text-sm">{emptyMessage}</p>
                   </div>
                 </td>
@@ -135,26 +145,34 @@ export function DataTable<T extends { id: string }>({
                     key={item.id}
                     onClick={() => onRowClick?.(item)}
                     className={`hover:bg-white/[0.03] transition-colors ${
-                      onRowClick ? 'cursor-pointer' : ''
-                    } ${isSelected ? 'bg-blue-500/5 hover:bg-blue-500/10' : ''}`}
+                      onRowClick ? "cursor-pointer" : ""
+                    } ${isSelected ? "bg-blue-500/5 hover:bg-blue-500/10" : ""}`}
                   >
                     {selectable && (
-                      <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                        <input 
-                          type="checkbox" 
+                      <td
+                        className="px-6 py-4"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <input
+                          type="checkbox"
                           checked={isSelected}
-                          onChange={(e) => handleSelectRow(item.id, e.target.checked)}
+                          onChange={(e) =>
+                            handleSelectRow(item.id, e.target.checked)
+                          }
                           className="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900 cursor-pointer"
                         />
                       </td>
                     )}
                     {columns.map((column) => (
-                    <td key={column.key} className="px-6 py-4 text-sm text-white/80">
-                      {column.render
-                        ? column.render(item)
-                        : (item as any)[column.key]?.toString() || '-'}
-                    </td>
-                  ))}
+                      <td
+                        key={column.key}
+                        className="px-6 py-4 text-sm text-white/80"
+                      >
+                        {column.render
+                          ? column.render(item)
+                          : (item as any)[column.key]?.toString() || "-"}
+                      </td>
+                    ))}
                   </tr>
                 );
               })

@@ -1,6 +1,6 @@
-import { AdminShell } from '@/app/admin/layout';
-import { TrackingClient } from './TrackingClient';
-import { getOrdersForTracking } from '@/lib/api/order.service';
+import { AdminShell } from "@/app/admin/layout";
+import { TrackingClient } from "./TrackingClient";
+import { getOrdersForTracking } from "@/lib/api/order.service";
 
 export default async function TrackingPage() {
   const orders = await getOrdersForTracking();

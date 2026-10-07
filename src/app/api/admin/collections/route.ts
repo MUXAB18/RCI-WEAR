@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createCollection } from '@/lib/api/collection.service';
+import { NextRequest, NextResponse } from "next/server";
+import { createCollection } from "@/lib/api/collection.service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,10 +7,10 @@ export async function POST(request: NextRequest) {
     const collection = await createCollection(body);
     return NextResponse.json(collection, { status: 201 });
   } catch (error) {
-    console.error('Failed to create collection:', error);
+    console.error("Failed to create collection:", error);
     return NextResponse.json(
-      { error: 'Failed to create collection' },
-      { status: 500 }
+      { error: "Failed to create collection" },
+      { status: 500 },
     );
   }
 }

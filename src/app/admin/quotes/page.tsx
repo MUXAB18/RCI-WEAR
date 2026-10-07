@@ -1,6 +1,6 @@
-import { AdminShell } from '@/app/admin/layout';
-import { QuotesClient } from './QuotesClient';
-import { getAllQuotes } from '@/lib/api/quote.service';
+import { AdminShell } from "@/app/admin/layout";
+import { QuotesClient } from "./QuotesClient";
+import { getAllQuotes } from "@/lib/api/quote.service";
 
 export default async function QuotesPage() {
   const quotes = await getAllQuotes();

@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { products } from '@/data/products';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { products } from "@/data/products";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export default function ProductsPage() {
   return (
     <div className="pt-32 pb-24 min-h-screen bg-white">
       <div className="container mx-auto px-6 md:px-12">
-        <SectionHeading 
+        <SectionHeading
           eyebrow="Our Catalog"
           title="Manufacturing Capabilities"
           subtitle="Explore our core product categories, engineered for premium brands worldwide."
@@ -34,15 +34,17 @@ export default function ProductsPage() {
                 className="object-cover transition-transform duration-1000 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-              
+
               <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
                 <h3 className="text-3xl font-display mb-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   {product.title}
                 </h3>
                 <p className="text-white/80 text-sm mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100 line-clamp-3">
-                  <p className="text-gray-600 mb-4 line-clamp-2">{product.desc}</p>
+                  <p className="text-gray-600 mb-4 line-clamp-2">
+                    {product.desc}
+                  </p>
                 </p>
-                <Link 
+                <Link
                   href={`/products/${product.id}`}
                   className="inline-block mt-2 font-medium text-black hover:underline underline-offset-4"
                 >

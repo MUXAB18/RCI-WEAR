@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Plus, LayoutGrid, Edit, Trash2 } from 'lucide-react';
-import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Button } from '@/components/admin/ui/Button';
-import { DataTable, Column } from '@/components/admin/ui/DataTable';
-import { Badge } from '@/components/admin/ui/Badge';
-import { Modal } from '@/components/admin/ui/Modal';
-import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
-import { Input } from '@/components/admin/ui/Input';
-import { Textarea } from '@/components/admin/ui/Textarea';
-import { ImageUpload } from '@/components/admin/ui/ImageUpload';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { Plus, LayoutGrid, Edit, Trash2 } from "lucide-react";
+import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { Button } from "@/components/admin/ui/Button";
+import { DataTable, Column } from "@/components/admin/ui/DataTable";
+import { Badge } from "@/components/admin/ui/Badge";
+import { Modal } from "@/components/admin/ui/Modal";
+import { ConfirmModal } from "@/components/admin/ui/ConfirmModal";
+import { Input } from "@/components/admin/ui/Input";
+import { Textarea } from "@/components/admin/ui/Textarea";
+import { ImageUpload } from "@/components/admin/ui/ImageUpload";
+import { useRouter } from "next/navigation";
 
 type Category = {
   id: string;
@@ -34,24 +34,24 @@ export function CategoriesClient({ initialCategories }: Props) {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  
+
   const [formData, setFormData] = useState({
-    name: '',
-    slug: '',
-    description: '',
-    imageUrl: '',
+    name: "",
+    slug: "",
+    description: "",
+    imageUrl: "",
     isPublished: true,
   });
 
   const columns: Column<Category>[] = [
     {
-      key: 'name',
-      label: 'Category',
+      key: "name",
+      label: "Category",
       render: (item) => (
         <div className="flex items-center gap-3">
           {item.imageUrl ? (
-            <img 
-              src={item.imageUrl} 
+            <img
+              src={item.imageUrl}
               alt={item.name}
               className="w-12 h-12 rounded-lg object-cover"
             />
@@ -68,24 +68,26 @@ export function CategoriesClient({ initialCategories }: Props) {
       ),
     },
     {
-      key: 'products',
-      label: 'Products',
+      key: "products",
+      label: "Products",
       render: (item) => (
-        <span className="text-white/60">{item._count?.products || 0} products</span>
+        <span className="text-white/60">
+          {item._count?.products || 0} products
+        </span>
       ),
     },
     {
-      key: 'status',
-      label: 'Status',
+      key: "status",
+      label: "Status",
       render: (item) => (
-        <Badge variant={item.isPublished ? 'success' : 'default'}>
-          {item.isPublished ? 'Published' : 'Draft'}
+        <Badge variant={item.isPublished ? "success" : "default"}>
+          {item.isPublished ? "Published" : "Draft"}
         </Badge>
       ),
     },
     {
-      key: 'actions',
-      label: 'Actions',
+      key: "actions",
+      label: "Actions",
       render: (item) => (
         <div className="flex items-center gap-2">
           <Button
@@ -120,8 +122,8 @@ export function CategoriesClient({ initialCategories }: Props) {
     setFormData({
       name: category.name,
       slug: category.slug,
-      description: category.description || '',
-      imageUrl: category.imageUrl || '',
+      description: category.description || "",
+      imageUrl: category.imageUrl || "",
       isPublished: category.isPublished,
     });
     setIsModalOpen(true);
@@ -133,15 +135,17 @@ export function CategoriesClient({ initialCategories }: Props) {
 
   const executeDelete = async () => {
     if (!deleteId) return;
-    
+
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/categories/${deleteId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/categories/${deleteId}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setCategories(categories.filter((c) => c.id !== deleteId));
       }
     } catch (error) {
-      console.error('Failed to delete category:', error);
+      console.error("Failed to delete category:", error);
     } finally {
       setLoading(false);
       setDeleteId(null);
@@ -155,13 +159,13 @@ export function CategoriesClient({ initialCategories }: Props) {
     try {
       const url = editingCategory
         ? `/api/admin/categories/${editingCategory.id}`
-        : '/api/admin/categories';
-      
-      const method = editingCategory ? 'PUT' : 'POST';
+        : "/api/admin/categories";
+
+      const method = editingCategory ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -171,7 +175,7 @@ export function CategoriesClient({ initialCategories }: Props) {
         resetForm();
       }
     } catch (error) {
-      console.error('Failed to save category:', error);
+      console.error("Failed to save category:", error);
     } finally {
       setLoading(false);
     }
@@ -179,10 +183,10 @@ export function CategoriesClient({ initialCategories }: Props) {
 
   const resetForm = () => {
     setFormData({
-      name: '',
-      slug: '',
-      description: '',
-      imageUrl: '',
+      name: "",
+      slug: "",
+      description: "",
+      imageUrl: "",
       isPublished: true,
     });
     setEditingCategory(null);
@@ -199,10 +203,7 @@ export function CategoriesClient({ initialCategories }: Props) {
         title="Categories"
         description="Organize and manage your product categories"
         actions={
-          <Button
-            icon={<Plus className="w-4 h-4" />}
-            onClick={handleOpenModal}
-          >
+          <Button icon={<Plus className="w-4 h-4" />} onClick={handleOpenModal}>
             Add Category
           </Button>
         }
@@ -220,14 +221,14 @@ export function CategoriesClient({ initialCategories }: Props) {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingCategory ? 'Edit Category' : 'Add Category'}
+        title={editingCategory ? "Edit Category" : "Add Category"}
         footer={
           <>
             <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleSubmit} loading={loading}>
-              {editingCategory ? 'Update' : 'Create'}
+              {editingCategory ? "Update" : "Create"}
             </Button>
           </>
         }
@@ -239,10 +240,10 @@ export function CategoriesClient({ initialCategories }: Props) {
             onChange={(e) => {
               setFormData({ ...formData, name: e.target.value });
               if (!editingCategory) {
-                setFormData({ 
-                  ...formData, 
+                setFormData({
+                  ...formData,
                   name: e.target.value,
-                  slug: e.target.value.toLowerCase().replace(/\s+/g, '-')
+                  slug: e.target.value.toLowerCase().replace(/\s+/g, "-"),
                 });
               }
             }}
@@ -262,7 +263,9 @@ export function CategoriesClient({ initialCategories }: Props) {
           <Textarea
             label="Description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             placeholder="Brief description of the category..."
           />
 
@@ -277,7 +280,9 @@ export function CategoriesClient({ initialCategories }: Props) {
               type="checkbox"
               id="isPublished"
               checked={formData.isPublished}
-              onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
+              onChange={(e) =>
+                setFormData({ ...formData, isPublished: e.target.checked })
+              }
               className="w-4 h-4 rounded border-white/20 bg-white/10 text-white focus:ring-white/30"
             />
             <label htmlFor="isPublished" className="text-sm text-white/80">

@@ -1,114 +1,169 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Check, Shirt, Sparkles, Users, Globe, Award, Package, Zap, Heart, BadgeCheck, TrendingUp, Shield } from 'lucide-react';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Check,
+  Shirt,
+  Sparkles,
+  Users,
+  Globe,
+  Award,
+  Package,
+  Zap,
+  Heart,
+  BadgeCheck,
+  TrendingUp,
+  Shield,
+} from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export default function CustomManufacturingPage() {
   const productCategories = [
     {
       icon: Shirt,
-      title: 'Streetwear & Casual',
-      products: ['T-Shirts', 'Hoodies', 'Sweatshirts', 'Joggers', 'Shorts', 'Tank Tops']
+      title: "Streetwear & Casual",
+      products: [
+        "T-Shirts",
+        "Hoodies",
+        "Sweatshirts",
+        "Joggers",
+        "Shorts",
+        "Tank Tops",
+      ],
     },
     {
       icon: Users,
-      title: 'Corporate & Uniforms',
-      products: ['Polo Shirts', 'Button-Downs', 'Work Shirts', 'Aprons', 'Chef Coats', 'Scrubs']
+      title: "Corporate & Uniforms",
+      products: [
+        "Polo Shirts",
+        "Button-Downs",
+        "Work Shirts",
+        "Aprons",
+        "Chef Coats",
+        "Scrubs",
+      ],
     },
     {
       icon: Zap,
-      title: 'Activewear & Sports',
-      products: ['Leggings', 'Sports Bras', 'Tracksuits', 'Jerseys', 'Compression Wear', 'Gym Wear']
+      title: "Activewear & Sports",
+      products: [
+        "Leggings",
+        "Sports Bras",
+        "Tracksuits",
+        "Jerseys",
+        "Compression Wear",
+        "Gym Wear",
+      ],
     },
     {
       icon: Sparkles,
-      title: 'Fashion & Premium',
-      products: ['Dresses', 'Jackets', 'Blazers', 'Skirts', 'Pants', 'Outerwear']
+      title: "Fashion & Premium",
+      products: [
+        "Dresses",
+        "Jackets",
+        "Blazers",
+        "Skirts",
+        "Pants",
+        "Outerwear",
+      ],
     },
     {
       icon: Heart,
-      title: 'Kids & Baby',
-      products: ['Kids T-Shirts', 'Baby Onesies', 'Kids Hoodies', 'Kids Shorts', 'Rompers', 'Sleepwear']
+      title: "Kids & Baby",
+      products: [
+        "Kids T-Shirts",
+        "Baby Onesies",
+        "Kids Hoodies",
+        "Kids Shorts",
+        "Rompers",
+        "Sleepwear",
+      ],
     },
     {
       icon: Package,
-      title: 'Accessories & More',
-      products: ['Bags', 'Caps', 'Beanies', 'Scarves', 'Gloves', 'Face Masks']
-    }
+      title: "Accessories & More",
+      products: ["Bags", "Caps", "Beanies", "Scarves", "Gloves", "Face Masks"],
+    },
   ];
 
   const capabilities = [
     {
       icon: BadgeCheck,
-      title: 'Any Design, Any Style',
-      description: 'From tech packs to sketches, we bring your vision to life'
+      title: "Any Design, Any Style",
+      description: "From tech packs to sketches, we bring your vision to life",
     },
     {
       icon: Package,
-      title: 'Full Package Service',
-      description: 'Fabric sourcing, sampling, production, quality control, shipping'
+      title: "Full Package Service",
+      description:
+        "Fabric sourcing, sampling, production, quality control, shipping",
     },
     {
       icon: TrendingUp,
-      title: 'Scalable Production',
-      description: 'MOQ 50 units per style - scale up to 50,000+ pieces'
+      title: "Scalable Production",
+      description: "MOQ 50 units per style - scale up to 50,000+ pieces",
     },
     {
       icon: Sparkles,
-      title: 'Premium Quality',
-      description: 'Expert craftsmen with 8+ years of manufacturing experience'
+      title: "Premium Quality",
+      description: "Expert craftsmen with 8+ years of manufacturing experience",
     },
     {
       icon: Globe,
-      title: 'Global Shipping',
-      description: 'Export to 15+ countries with full logistics support'
+      title: "Global Shipping",
+      description: "Export to 15+ countries with full logistics support",
     },
     {
       icon: Shield,
-      title: 'Quality Guarantee',
-      description: '98% client satisfaction with strict quality control standards'
-    }
+      title: "Quality Guarantee",
+      description:
+        "98% client satisfaction with strict quality control standards",
+    },
   ];
 
   const processSteps = [
     {
-      number: '01',
-      title: 'Share Your Design',
-      description: 'Send us your tech pack, sketches, or samples. We review and provide feasibility analysis.'
+      number: "01",
+      title: "Share Your Design",
+      description:
+        "Send us your tech pack, sketches, or samples. We review and provide feasibility analysis.",
     },
     {
-      number: '02',
-      title: 'Fabric & Material Selection',
-      description: 'Choose from our fabric library or we source exactly what you need.'
+      number: "02",
+      title: "Fabric & Material Selection",
+      description:
+        "Choose from our fabric library or we source exactly what you need.",
     },
     {
-      number: '03',
-      title: 'Sample Development',
-      description: 'We create prototypes for your approval before bulk production.'
+      number: "03",
+      title: "Sample Development",
+      description:
+        "We create prototypes for your approval before bulk production.",
     },
     {
-      number: '04',
-      title: 'Bulk Production',
-      description: 'Manufacturing with quality checks at every stage of production.'
+      number: "04",
+      title: "Bulk Production",
+      description:
+        "Manufacturing with quality checks at every stage of production.",
     },
     {
-      number: '05',
-      title: 'Final Inspection & Shipping',
-      description: 'Complete QC inspection and worldwide shipping to your destination.'
-    }
+      number: "05",
+      title: "Final Inspection & Shipping",
+      description:
+        "Complete QC inspection and worldwide shipping to your destination.",
+    },
   ];
 
   const whyChooseUs = [
-    'Expert pattern makers and skilled tailors',
-    'State-of-the-art manufacturing facility in Pakistan',
-    'Competitive pricing with premium quality',
-    'Fast turnaround: 15-25 days production',
-    'Strict quality control at every stage',
-    'Full transparency and regular updates',
-    'Eco-friendly and sustainable practices',
-    'Dedicated account manager for your brand'
+    "Expert pattern makers and skilled tailors",
+    "State-of-the-art manufacturing facility in Pakistan",
+    "Competitive pricing with premium quality",
+    "Fast turnaround: 15-25 days production",
+    "Strict quality control at every stage",
+    "Full transparency and regular updates",
+    "Eco-friendly and sustainable practices",
+    "Dedicated account manager for your brand",
   ];
 
   return (
@@ -129,12 +184,15 @@ export default function CustomManufacturingPage() {
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
         >
           {[
-            { label: 'Product Types', value: '100+' },
-            { label: 'Min Order Qty', value: '50 Units' },
-            { label: 'Production Time', value: '15-25 Days' },
-            { label: 'Countries Served', value: '15+' }
+            { label: "Product Types", value: "100+" },
+            { label: "Min Order Qty", value: "50 Units" },
+            { label: "Production Time", value: "15-25 Days" },
+            { label: "Countries Served", value: "15+" },
           ].map((stat, index) => (
-            <div key={index} className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <div
+              key={index}
+              className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200"
+            >
               <div className="text-3xl md:text-4xl font-sans font-bold text-black mb-2">
                 {stat.value}
               </div>
@@ -310,7 +368,9 @@ export default function CustomManufacturingPage() {
                   className="flex items-start gap-3"
                 >
                   <Check className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 font-sans font-medium">{reason}</span>
+                  <span className="text-gray-700 font-sans font-medium">
+                    {reason}
+                  </span>
                 </motion.div>
               ))}
             </div>
@@ -337,8 +397,18 @@ export default function CustomManufacturingPage() {
               className="inline-flex items-center gap-2 bg-white text-near-black px-8 py-3 rounded-full font-sans font-bold text-sm uppercase tracking-wider hover:bg-gray-100 transition-all duration-300 hover:scale-105"
             >
               Get Quote
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </a>
             <a

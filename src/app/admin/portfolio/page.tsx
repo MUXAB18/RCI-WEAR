@@ -1,6 +1,6 @@
-import { AdminShell } from '@/app/admin/layout';
-import { PortfolioClient } from './PortfolioClient';
-import { getAllProjects } from '@/lib/api/portfolio.service';
+import { AdminShell } from "@/app/admin/layout";
+import { PortfolioClient } from "./PortfolioClient";
+import { getAllProjects } from "@/lib/api/portfolio.service";
 
 export default async function PortfolioPage() {
   const projects = await getAllProjects();

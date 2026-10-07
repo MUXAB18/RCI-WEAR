@@ -3,8 +3,8 @@
  * CRUD operations for quote requests
  */
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type CreateQuoteInput = {
   customerName: string;
@@ -31,7 +31,7 @@ export type UpdateQuoteInput = {
 
 export async function getAllQuotes() {
   return prisma.quote.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 
@@ -50,14 +50,14 @@ export async function getQuoteByNumber(quoteNumber: string) {
 export async function getQuotesByStatus(status: string) {
   return prisma.quote.findMany({
     where: { status },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 
 export async function getQuotesByCustomer(email: string) {
   return prisma.quote.findMany({
     where: { customerEmail: email },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 
@@ -66,7 +66,7 @@ export async function getQuotesByCustomer(email: string) {
 export async function createQuote(data: CreateQuoteInput) {
   // Generate quote number
   const quoteNumber = `QT-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-  
+
   const quote = await prisma.quote.create({
     data: {
       quoteNumber,
@@ -82,8 +82,8 @@ export async function createQuote(data: CreateQuoteInput) {
       notes: data.notes,
     },
   });
-  
-  revalidatePath('/admin/quotes');
+
+  revalidatePath("/admin/quotes");
   return quote;
 }
 
@@ -94,17 +94,21 @@ export async function updateQuote(id: string, data: UpdateQuoteInput) {
     where: { id },
     data,
   });
-  revalidatePath('/admin/quotes');
+  revalidatePath("/admin/quotes");
   return quote;
 }
 
-export async function sendQuote(id: string, amount: number, expiresInDays: number = 30) {
+export async function sendQuote(
+  id: string,
+  amount: number,
+  expiresInDays: number = 30,
+) {
   const sentAt = new Date();
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + expiresInDays);
 
   return updateQuote(id, {
-    status: 'sent',
+    status: "sent",
     amount,
     sentAt,
     expiresAt,
@@ -112,33 +116,34 @@ export async function sendQuote(id: string, amount: number, expiresInDays: numbe
 }
 
 export async function acceptQuote(id: string) {
-  return updateQuote(id, { status: 'accepted' });
+  return updateQuote(id, { status: "accepted" });
 }
 
 export async function rejectQuote(id: string) {
-  return updateQuote(id, { status: 'rejected' });
+  return updateQuote(id, { status: "rejected" });
 }
 
 // ─── DELETE ──────────────────────────────────────────────────────────────────
 
 export async function deleteQuote(id: string) {
   await prisma.quote.delete({ where: { id } });
-  revalidatePath('/admin/quotes');
+  revalidatePath("/admin/quotes");
 }
 
 // ─── STATISTICS ──────────────────────────────────────────────────────────────
 
 export async function getQuoteStats() {
-  const [totalQuotes, pendingQuotes, sentQuotes, acceptedQuotes, totalValue] = await Promise.all([
-    prisma.quote.count(),
-    prisma.quote.count({ where: { status: 'pending' } }),
-    prisma.quote.count({ where: { status: 'sent' } }),
-    prisma.quote.count({ where: { status: 'accepted' } }),
-    prisma.quote.aggregate({
-      where: { status: 'accepted' },
-      _sum: { amount: true },
-    }),
-  ]);
+  const [totalQuotes, pendingQuotes, sentQuotes, acceptedQuotes, totalValue] =
+    await Promise.all([
+      prisma.quote.count(),
+      prisma.quote.count({ where: { status: "pending" } }),
+      prisma.quote.count({ where: { status: "sent" } }),
+      prisma.quote.count({ where: { status: "accepted" } }),
+      prisma.quote.aggregate({
+        where: { status: "accepted" },
+        _sum: { amount: true },
+      }),
+    ]);
 
   return {
     totalQuotes,

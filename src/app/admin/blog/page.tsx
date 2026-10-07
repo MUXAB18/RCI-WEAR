@@ -1,6 +1,6 @@
-import { AdminShell } from '@/app/admin/layout';
-import { BlogClient } from './BlogClient';
-import { getAllBlogPosts } from '@/lib/api/blog.service';
+import { AdminShell } from "@/app/admin/layout";
+import { BlogClient } from "./BlogClient";
+import { getAllBlogPosts } from "@/lib/api/blog.service";
 
 export default async function BlogPage() {
   const posts = await getAllBlogPosts();

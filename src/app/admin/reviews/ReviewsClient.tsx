@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Star, Eye, Edit, MessageSquare, ExternalLink } from 'lucide-react';
-import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Button } from '@/components/admin/ui/Button';
-import { DataTable, Column } from '@/components/admin/ui/DataTable';
-import { Badge } from '@/components/admin/ui/Badge';
-import { Modal } from '@/components/admin/ui/Modal';
-import { Select } from '@/components/admin/ui/Select';
-import { Textarea } from '@/components/admin/ui/Textarea';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState } from "react";
+import { Star, Eye, Edit, MessageSquare, ExternalLink } from "lucide-react";
+import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { Button } from "@/components/admin/ui/Button";
+import { DataTable, Column } from "@/components/admin/ui/DataTable";
+import { Badge } from "@/components/admin/ui/Badge";
+import { Modal } from "@/components/admin/ui/Modal";
+import { Select } from "@/components/admin/ui/Select";
+import { Textarea } from "@/components/admin/ui/Textarea";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Review = {
   id: string;
@@ -48,19 +48,22 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     isPublic: false,
-    adminNotes: '',
+    adminNotes: "",
   });
 
   const columns: Column<Review>[] = [
     {
-      key: 'orderNumber',
-      label: 'Order',
+      key: "orderNumber",
+      label: "Order",
       render: (item) => (
         <div>
-          <Link href={`/admin/orders/${item.order.id}`} className="text-white hover:underline flex items-center gap-1 font-medium">
+          <Link
+            href={`/admin/orders/${item.order.id}`}
+            className="text-white hover:underline flex items-center gap-1 font-medium"
+          >
             #{item.order.orderNumber} <ExternalLink className="w-3 h-3" />
           </Link>
           <p className="text-xs text-white/40 mt-1">
@@ -70,8 +73,8 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
       ),
     },
     {
-      key: 'customer',
-      label: 'Customer',
+      key: "customer",
+      label: "Customer",
       render: (item) => (
         <div>
           <p className="text-white">{item.order.customerName}</p>
@@ -80,8 +83,8 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
       ),
     },
     {
-      key: 'rating',
-      label: 'Rating',
+      key: "rating",
+      label: "Rating",
       render: (item) => (
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
@@ -89,46 +92,52 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
               <Star
                 key={i}
                 className={`w-4 h-4 ${
-                  i < item.rating 
-                    ? 'fill-yellow-400 text-yellow-400' 
-                    : 'fill-transparent text-white/20'
+                  i < item.rating
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "fill-transparent text-white/20"
                 }`}
               />
             ))}
           </div>
-          <span className="text-sm text-white font-medium">{item.rating}/5</span>
+          <span className="text-sm text-white font-medium">
+            {item.rating}/5
+          </span>
         </div>
       ),
     },
     {
-      key: 'comment',
-      label: 'Comment',
+      key: "comment",
+      label: "Comment",
       render: (item) => (
         <div className="max-w-[300px]">
           {item.comment ? (
-            <p className="text-sm text-white/80 line-clamp-2" >"{item.comment}"</p>
+            <p className="text-sm text-white/80 line-clamp-2">
+              "{item.comment}"
+            </p>
           ) : (
-            <span className="text-sm text-white/40 italic">No comment provided</span>
+            <span className="text-sm text-white/40 italic">
+              No comment provided
+            </span>
           )}
         </div>
       ),
     },
     {
-      key: 'visibility',
-      label: 'Visibility',
+      key: "visibility",
+      label: "Visibility",
       render: (item) => (
-        <Badge variant={item.isPublic ? 'success' : 'default'}>
-          {item.isPublic ? 'Public' : 'Private'}
+        <Badge variant={item.isPublic ? "success" : "default"}>
+          {item.isPublic ? "Public" : "Private"}
         </Badge>
       ),
     },
     {
-      key: 'notes',
-      label: 'Internal Notes',
+      key: "notes",
+      label: "Internal Notes",
       render: (item) => (
         <div>
           {item.adminNotes ? (
-            <MessageSquare className="w-4 h-4 text-blue-400"  />
+            <MessageSquare className="w-4 h-4 text-blue-400" />
           ) : (
             <span className="text-white/20">-</span>
           )}
@@ -136,8 +145,8 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
       ),
     },
     {
-      key: 'actions',
-      label: 'Actions',
+      key: "actions",
+      label: "Actions",
       render: (item) => (
         <div className="flex items-center gap-2">
           <Button
@@ -157,7 +166,7 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
     setEditingReview(review);
     setFormData({
       isPublic: review.isPublic,
-      adminNotes: review.adminNotes || '',
+      adminNotes: review.adminNotes || "",
     });
     setIsModalOpen(true);
   };
@@ -170,19 +179,19 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
 
     try {
       const res = await fetch(`/api/admin/reviews/${editingReview.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       if (res.ok) {
         const updated = await res.json();
-        setReviews(reviews.map(r => r.id === updated.id ? updated : r));
+        setReviews(reviews.map((r) => (r.id === updated.id ? updated : r)));
         router.refresh();
         setIsModalOpen(false);
       }
     } catch (error) {
-      console.error('Failed to update review:', error);
+      console.error("Failed to update review:", error);
     } finally {
       setLoading(false);
     }
@@ -201,7 +210,9 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
           <p className="text-white/60 text-sm mb-1">Average Rating</p>
           <div className="flex items-center gap-2">
             <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-            <p className="text-2xl font-semibold text-white">{stats.averageRating.toFixed(1)}</p>
+            <p className="text-2xl font-semibold text-white">
+              {stats.averageRating.toFixed(1)}
+            </p>
           </div>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
@@ -210,11 +221,15 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Public (Visible)</p>
-          <p className="text-2xl font-semibold text-green-500">{stats.public}</p>
+          <p className="text-2xl font-semibold text-green-500">
+            {stats.public}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Private (Hidden)</p>
-          <p className="text-2xl font-semibold text-white/60">{stats.private}</p>
+          <p className="text-2xl font-semibold text-white/60">
+            {stats.private}
+          </p>
         </div>
       </div>
 
@@ -248,26 +263,30 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <p className="text-xs text-white/40 mb-1">Customer</p>
-                  <p className="text-white text-sm font-medium">{editingReview.order.customerName}</p>
+                  <p className="text-white text-sm font-medium">
+                    {editingReview.order.customerName}
+                  </p>
                 </div>
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
                       className={`w-4 h-4 ${
-                        i < editingReview.rating 
-                          ? 'fill-yellow-400 text-yellow-400' 
-                          : 'fill-transparent text-white/20'
+                        i < editingReview.rating
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "fill-transparent text-white/20"
                       }`}
                     />
                   ))}
                 </div>
               </div>
-              
+
               {editingReview.comment && (
                 <div className="mt-3 pt-3 border-t border-white/[0.08]">
                   <p className="text-xs text-white/40 mb-1">Review Comment</p>
-                  <p className="text-white/80 italic text-sm">"{editingReview.comment}"</p>
+                  <p className="text-white/80 italic text-sm">
+                    "{editingReview.comment}"
+                  </p>
                 </div>
               )}
             </div>
@@ -275,18 +294,25 @@ export function ReviewsClient({ initialReviews, stats }: Props) {
 
           <Select
             label="Visibility Status"
-            value={formData.isPublic ? 'public' : 'private'}
-            onChange={(e) => setFormData({ ...formData, isPublic: e.target.value === 'public' })}
+            value={formData.isPublic ? "public" : "private"}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                isPublic: e.target.value === "public",
+              })
+            }
             options={[
-              { value: 'private', label: 'Private (Hidden from public site)' },
-              { value: 'public', label: 'Public (Visible on public site)' },
+              { value: "private", label: "Private (Hidden from public site)" },
+              { value: "public", label: "Public (Visible on public site)" },
             ]}
           />
 
           <Textarea
             label="Admin Notes (Internal only)"
             value={formData.adminNotes}
-            onChange={(e) => setFormData({ ...formData, adminNotes: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, adminNotes: e.target.value })
+            }
             placeholder="Add internal notes about this review..."
             rows={3}
           />

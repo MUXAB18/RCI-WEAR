@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import {
   LayoutDashboard,
   ImageIcon,
@@ -19,42 +19,38 @@ import {
   Tags,
   ClipboardList,
   Boxes,
-} from 'lucide-react';
+} from "lucide-react";
 
 const navSections = [
   {
-    title: 'Overview',
-    items: [
-      { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-    ]
+    title: "Overview",
+    items: [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }],
   },
   {
-    title: 'Content',
+    title: "Content",
     items: [
-      { href: '/admin/portfolio', label: 'Portfolio', icon: ImageIcon },
-      { href: '/admin/collections', label: 'Collections', icon: FolderOpen },
-      { href: '/admin/blog', label: 'Blog', icon: Newspaper },
-    ]
+      { href: "/admin/portfolio", label: "Portfolio", icon: ImageIcon },
+      { href: "/admin/collections", label: "Collections", icon: FolderOpen },
+      { href: "/admin/blog", label: "Blog", icon: Newspaper },
+    ],
   },
   {
-    title: 'Manufacturing & Sales',
+    title: "Manufacturing & Sales",
     items: [
-      { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
-      { href: '/admin/tracking', label: 'Tracking Board', icon: Package },
-      { href: '/admin/reviews', label: 'Reviews', icon: Star },
-    ]
+      { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+      { href: "/admin/tracking", label: "Tracking Board", icon: Package },
+      { href: "/admin/reviews", label: "Reviews", icon: Star },
+    ],
   },
   {
-    title: 'Communication',
+    title: "Communication",
     items: [
-      { href: '/admin/contacts', label: 'Contact Enquiries', icon: Mail },
-    ]
+      { href: "/admin/contacts", label: "Contact Enquiries", icon: Mail },
+    ],
   },
   {
-    title: 'System',
-    items: [
-      { href: '/admin/settings', label: 'Settings', icon: Settings },
-    ]
+    title: "System",
+    items: [{ href: "/admin/settings", label: "Settings", icon: Settings }],
   },
 ];
 
@@ -65,7 +61,7 @@ export function AdminSidebar() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    router.push('/admin/login');
+    router.push("/admin/login");
     router.refresh();
   };
 
@@ -76,15 +72,19 @@ export function AdminSidebar() {
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
             <Image
-              src="/browserlogo.png"
+              src="/newlogo.png"
               alt="RCI Logo"
               fill
-              className="object-contain"
+              className="object-contain brightness-0 invert opacity-90"
             />
           </div>
           <div>
-            <p className="text-white text-sm font-bold leading-tight">RCI Admin</p>
-            <p className="text-white/40 text-[10px] leading-tight uppercase tracking-wider">Management Portal</p>
+            <p className="text-white text-sm font-bold leading-tight">
+              RCI Admin
+            </p>
+            <p className="text-white/40 text-[10px] leading-tight uppercase tracking-wider">
+              Management Portal
+            </p>
           </div>
         </div>
       </div>
@@ -98,9 +98,10 @@ export function AdminSidebar() {
             </p>
             <div className="space-y-1">
               {section.items.map((item) => {
-                const isActive = item.href === '/admin'
-                  ? pathname === '/admin'
-                  : pathname.startsWith(item.href);
+                const isActive =
+                  item.href === "/admin"
+                    ? pathname === "/admin"
+                    : pathname.startsWith(item.href);
 
                 const Icon = item.icon;
 
@@ -108,10 +109,11 @@ export function AdminSidebar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
-                      ? 'bg-white text-black shadow-lg shadow-white/10'
-                      : 'text-white/60 hover:text-white hover:bg-white/[0.06]'
-                      }`}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-white text-black shadow-lg shadow-white/10"
+                        : "text-white/60 hover:text-white hover:bg-white/[0.06]"
+                    }`}
                   >
                     <Icon className="w-4 h-4" />
                     {item.label}

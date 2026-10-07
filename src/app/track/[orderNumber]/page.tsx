@@ -1,8 +1,12 @@
-import { notFound } from 'next/navigation';
-import prisma from '@/lib/prisma';
-import { PublicTrackingClient } from './PublicTrackingClient';
+import { notFound } from "next/navigation";
+import prisma from "@/lib/prisma";
+import { PublicTrackingClient } from "./PublicTrackingClient";
 
-export default async function TrackingPage({ params }: { params: Promise<{ orderNumber: string }> }) {
+export default async function TrackingPage({
+  params,
+}: {
+  params: Promise<{ orderNumber: string }>;
+}) {
   const { orderNumber } = await params;
   const order = await prisma.order.findFirst({
     where: { orderNumber },
@@ -13,12 +17,12 @@ export default async function TrackingPage({ params }: { params: Promise<{ order
             select: {
               name: true,
               images: true,
-            }
-          }
-        }
+            },
+          },
+        },
       },
       review: true,
-    }
+    },
   });
 
   if (!order) {
@@ -33,7 +37,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ order
     trackingNumber: order.trackingNumber,
     estimatedDelivery: order.estimatedDelivery,
     createdAt: order.createdAt.toISOString(),
-    items: order.items.map(item => ({
+    items: order.items.map((item) => ({
       productName: item.name,
       image: item.product?.images?.[0] || null,
       quantity: item.quantity,

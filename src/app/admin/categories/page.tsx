@@ -1,6 +1,6 @@
-import { AdminShell } from '@/app/admin/layout';
-import { CategoriesClient } from './CategoriesClient';
-import { getAllCategories } from '@/lib/api/category.service';
+import { AdminShell } from "@/app/admin/layout";
+import { CategoriesClient } from "./CategoriesClient";
+import { getAllCategories } from "@/lib/api/category.service";
 
 export default async function CategoriesPage() {
   const categories = await getAllCategories();

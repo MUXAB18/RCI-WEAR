@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Plus, FolderOpen, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
-import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Button } from '@/components/admin/ui/Button';
-import { DataTable, Column } from '@/components/admin/ui/DataTable';
-import { Badge } from '@/components/admin/ui/Badge';
-import { Modal } from '@/components/admin/ui/Modal';
-import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
-import { Input } from '@/components/admin/ui/Input';
-import { Textarea } from '@/components/admin/ui/Textarea';
-import { ImageUpload } from '@/components/admin/ui/ImageUpload';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { Plus, FolderOpen, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { Button } from "@/components/admin/ui/Button";
+import { DataTable, Column } from "@/components/admin/ui/DataTable";
+import { Badge } from "@/components/admin/ui/Badge";
+import { Modal } from "@/components/admin/ui/Modal";
+import { ConfirmModal } from "@/components/admin/ui/ConfirmModal";
+import { Input } from "@/components/admin/ui/Input";
+import { Textarea } from "@/components/admin/ui/Textarea";
+import { ImageUpload } from "@/components/admin/ui/ImageUpload";
+import { useRouter } from "next/navigation";
 
 type Collection = {
   id: string;
@@ -32,28 +32,30 @@ export function CollectionsClient({ initialCollections }: Props) {
   const router = useRouter();
   const [collections, setCollections] = useState(initialCollections);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingCollection, setEditingCollection] = useState<Collection | null>(null);
+  const [editingCollection, setEditingCollection] = useState<Collection | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  
+
   const [formData, setFormData] = useState({
-    name: '',
-    slug: '',
-    description: '',
-    imageUrl: '',
+    name: "",
+    slug: "",
+    description: "",
+    imageUrl: "",
     isPublished: true,
-    order: '',
+    order: "",
   });
 
   const columns: Column<Collection>[] = [
     {
-      key: 'name',
-      label: 'Collection',
+      key: "name",
+      label: "Collection",
       render: (item) => (
         <div className="flex items-center gap-3">
           {item.imageUrl ? (
-            <img 
-              src={item.imageUrl} 
+            <img
+              src={item.imageUrl}
               alt={item.name}
               className="w-12 h-12 rounded-lg object-cover"
             />
@@ -70,29 +72,29 @@ export function CollectionsClient({ initialCollections }: Props) {
       ),
     },
     {
-      key: 'products',
-      label: 'Products',
+      key: "products",
+      label: "Products",
       render: (item) => (
         <span className="text-white/60">{item.products.length} products</span>
       ),
     },
     {
-      key: 'order',
-      label: 'Order',
+      key: "order",
+      label: "Order",
       render: (item) => <span className="text-white/60">#{item.order}</span>,
     },
     {
-      key: 'status',
-      label: 'Status',
+      key: "status",
+      label: "Status",
       render: (item) => (
-        <Badge variant={item.isPublished ? 'success' : 'default'}>
-          {item.isPublished ? 'Published' : 'Draft'}
+        <Badge variant={item.isPublished ? "success" : "default"}>
+          {item.isPublished ? "Published" : "Draft"}
         </Badge>
       ),
     },
     {
-      key: 'actions',
-      label: 'Actions',
+      key: "actions",
+      label: "Actions",
       render: (item) => (
         <div className="flex items-center gap-2">
           <Button
@@ -127,10 +129,10 @@ export function CollectionsClient({ initialCollections }: Props) {
     setFormData({
       name: collection.name,
       slug: collection.slug,
-      description: collection.description || '',
-      imageUrl: collection.imageUrl || '',
+      description: collection.description || "",
+      imageUrl: collection.imageUrl || "",
       isPublished: collection.isPublished,
-      order: collection.order?.toString() || '',
+      order: collection.order?.toString() || "",
     });
     setIsModalOpen(true);
   };
@@ -141,16 +143,17 @@ export function CollectionsClient({ initialCollections }: Props) {
 
   const executeDelete = async () => {
     if (!deleteId) return;
-    
-    
+
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/collections/${deleteId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/collections/${deleteId}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setCollections(collections.filter((c) => c.id !== deleteId));
       }
     } catch (error) {
-      console.error('Failed to delete collection:', error);
+      console.error("Failed to delete collection:", error);
     } finally {
       setLoading(false);
       setDeleteId(null);
@@ -164,9 +167,9 @@ export function CollectionsClient({ initialCollections }: Props) {
     try {
       const url = editingCollection
         ? `/api/admin/collections/${editingCollection.id}`
-        : '/api/admin/collections';
-      
-      const method = editingCollection ? 'PUT' : 'POST';
+        : "/api/admin/collections";
+
+      const method = editingCollection ? "PUT" : "POST";
 
       const payload = {
         ...formData,
@@ -175,7 +178,7 @@ export function CollectionsClient({ initialCollections }: Props) {
 
       const res = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
@@ -185,7 +188,7 @@ export function CollectionsClient({ initialCollections }: Props) {
         resetForm();
       }
     } catch (error) {
-      console.error('Failed to save collection:', error);
+      console.error("Failed to save collection:", error);
     } finally {
       setLoading(false);
     }
@@ -193,12 +196,12 @@ export function CollectionsClient({ initialCollections }: Props) {
 
   const resetForm = () => {
     setFormData({
-      name: '',
-      slug: '',
-    description: '',
-    imageUrl: '',
-    isPublished: true,
-    order: '',
+      name: "",
+      slug: "",
+      description: "",
+      imageUrl: "",
+      isPublished: true,
+      order: "",
     });
     setEditingCollection(null);
   };
@@ -214,10 +217,7 @@ export function CollectionsClient({ initialCollections }: Props) {
         title="Collections"
         description="Organize and manage your product collections"
         actions={
-          <Button
-            icon={<Plus className="w-4 h-4" />}
-            onClick={handleOpenModal}
-          >
+          <Button icon={<Plus className="w-4 h-4" />} onClick={handleOpenModal}>
             Add Collection
           </Button>
         }
@@ -235,14 +235,14 @@ export function CollectionsClient({ initialCollections }: Props) {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingCollection ? 'Edit Collection' : 'Add Collection'}
+        title={editingCollection ? "Edit Collection" : "Add Collection"}
         footer={
           <>
             <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleSubmit} loading={loading}>
-              {editingCollection ? 'Update' : 'Create'}
+              {editingCollection ? "Update" : "Create"}
             </Button>
           </>
         }
@@ -254,10 +254,10 @@ export function CollectionsClient({ initialCollections }: Props) {
             onChange={(e) => {
               setFormData({ ...formData, name: e.target.value });
               if (!editingCollection) {
-                setFormData({ 
-                  ...formData, 
+                setFormData({
+                  ...formData,
                   name: e.target.value,
-                  slug: e.target.value.toLowerCase().replace(/\s+/g, '-')
+                  slug: e.target.value.toLowerCase().replace(/\s+/g, "-"),
                 });
               }
             }}
@@ -277,7 +277,9 @@ export function CollectionsClient({ initialCollections }: Props) {
           <Textarea
             label="Description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             placeholder="Brief description of the collection..."
           />
 
@@ -291,7 +293,9 @@ export function CollectionsClient({ initialCollections }: Props) {
             label="Display Order"
             type="number"
             value={formData.order}
-            onChange={(e) => setFormData({ ...formData, order: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, order: e.target.value })
+            }
             helperText="Lower numbers appear first"
           />
 
@@ -300,7 +304,9 @@ export function CollectionsClient({ initialCollections }: Props) {
               type="checkbox"
               id="isPublished"
               checked={formData.isPublished}
-              onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
+              onChange={(e) =>
+                setFormData({ ...formData, isPublished: e.target.checked })
+              }
               className="w-4 h-4 rounded border-white/20 bg-white/10 text-white focus:ring-white/30"
             />
             <label htmlFor="isPublished" className="text-sm text-white/80">

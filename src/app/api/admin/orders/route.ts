@@ -1,18 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createOrder, getAllOrders } from '@/lib/api/order.service';
-import { Resend } from 'resend';
+import { NextRequest, NextResponse } from "next/server";
+import { createOrder, getAllOrders } from "@/lib/api/order.service";
+import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_for_build');
+const resend = new Resend(
+  process.env.RESEND_API_KEY || "re_dummy_key_for_build",
+);
 
 export async function GET() {
   try {
     const orders = await getAllOrders();
     return NextResponse.json(orders);
   } catch (error) {
-    console.error('Failed to fetch orders:', error);
+    console.error("Failed to fetch orders:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch orders' },
-      { status: 500 }
+      { error: "Failed to fetch orders" },
+      { status: 500 },
     );
   }
 }
@@ -52,25 +54,25 @@ export async function POST(request: NextRequest) {
       const sharedDetailsHtml = `
           <div class="section-title">Client Information</div>
           <table class="details-table">
-            <tr><td class="label">Client Name</td><td class="value">${body.customerName || 'Not provided'}</td></tr>
-            <tr><td class="label">Company / Brand</td><td class="value">${body.company || 'Not provided'}</td></tr>
+            <tr><td class="label">Client Name</td><td class="value">${body.customerName || "Not provided"}</td></tr>
+            <tr><td class="label">Company / Brand</td><td class="value">${body.company || "Not provided"}</td></tr>
             <tr><td class="label">Email Address</td><td class="value"><a href="mailto:${body.customerEmail}" style="color: #09090b; text-decoration: none; border-bottom: 1px solid #0B0B0B;">${body.customerEmail}</a></td></tr>
-            <tr><td class="label">Phone Number</td><td class="value">${body.customerPhone || 'Not provided'}</td></tr>
-            <tr><td class="label">Location / Country</td><td class="value">${body.country || 'Not provided'}</td></tr>
-            <tr><td class="label">Website / Instagram</td><td class="value">${body.website ? `<a href="${body.website.startsWith('http') ? body.website : 'https://' + body.website}" style="color: #09090b; text-decoration: underline;">${body.website}</a>` : 'Not provided'}</td></tr>
+            <tr><td class="label">Phone Number</td><td class="value">${body.customerPhone || "Not provided"}</td></tr>
+            <tr><td class="label">Location / Country</td><td class="value">${body.country || "Not provided"}</td></tr>
+            <tr><td class="label">Website / Instagram</td><td class="value">${body.website ? `<a href="${body.website.startsWith("http") ? body.website : "https://" + body.website}" style="color: #09090b; text-decoration: underline;">${body.website}</a>` : "Not provided"}</td></tr>
           </table>
 
           <div class="section-title">Product Specifications</div>
           <table class="details-table">
-            <tr><td class="label">Category</td><td class="value">${body.category || 'Not specified'}</td></tr>
-            <tr><td class="label">Fabric Details</td><td class="value">${body.fabric || 'Not specified'}</td></tr>
-            <tr><td class="label">Fabric Weight</td><td class="value">${body.gsm || 'Not specified'}</td></tr>
-            <tr><td class="label">Estimated Quantity</td><td class="value"><span style="color: #0B0B0B; font-weight: 800; font-size: 16px;">${body.quantity || 'Not specified'}</span></td></tr>
-            <tr><td class="label">Color Requirements</td><td class="value">${body.colors || 'Not specified'}</td></tr>
+            <tr><td class="label">Category</td><td class="value">${body.category || "Not specified"}</td></tr>
+            <tr><td class="label">Fabric Details</td><td class="value">${body.fabric || "Not specified"}</td></tr>
+            <tr><td class="label">Fabric Weight</td><td class="value">${body.gsm || "Not specified"}</td></tr>
+            <tr><td class="label">Estimated Quantity</td><td class="value"><span style="color: #0B0B0B; font-weight: 800; font-size: 16px;">${body.quantity || "Not specified"}</span></td></tr>
+            <tr><td class="label">Color Requirements</td><td class="value">${body.colors || "Not specified"}</td></tr>
             <tr>
               <td class="label">Size Breakdown</td>
               <td class="value">
-                ${(body.sizes || []).length > 0 ? body.sizes.map((s: string) => `<span class="badge">${s}</span>`).join('') : 'Not specified'}
+                ${(body.sizes || []).length > 0 ? body.sizes.map((s: string) => `<span class="badge">${s}</span>`).join("") : "Not specified"}
               </td>
             </tr>
           </table>
@@ -80,46 +82,51 @@ export async function POST(request: NextRequest) {
             <tr>
               <td class="label">Decoration Methods</td>
               <td class="value">
-                ${(body.decoration || []).length > 0 ? body.decoration.map((d: string) => `<span class="badge">${d}</span>`).join('') : 'None'}
+                ${(body.decoration || []).length > 0 ? body.decoration.map((d: string) => `<span class="badge">${d}</span>`).join("") : "None"}
               </td>
             </tr>
             <tr>
               <td class="label">Branding Extras</td>
               <td class="value">
-                ${(body.extras || []).length > 0 ? body.extras.map((e: string) => `<span class="badge">${e}</span>`).join('') : 'None'}
+                ${(body.extras || []).length > 0 ? body.extras.map((e: string) => `<span class="badge">${e}</span>`).join("") : "None"}
               </td>
             </tr>
           </table>
 
           <div class="section-title">Logistics & Targets</div>
           <table class="details-table">
-            <tr><td class="label">Target Delivery Date</td><td class="value">${body.timeline || 'Flexible'}</td></tr>
-            <tr><td class="label">Target Budget (Per Unit)</td><td class="value">${body.budget || 'To be discussed'}</td></tr>
+            <tr><td class="label">Target Delivery Date</td><td class="value">${body.timeline || "Flexible"}</td></tr>
+            <tr><td class="label">Target Budget (Per Unit)</td><td class="value">${body.budget || "To be discussed"}</td></tr>
           </table>
 
-          ${body.comments ? `
+          ${
+            body.comments
+              ? `
           <div class="section-title">Additional Comments</div>
           <div class="comments-box">
             <p>${body.comments}</p>
           </div>
-          ` : ''}
+          `
+              : ""
+          }
       `;
 
-      const fromEmail = process.env.RESEND_FROM_EMAIL || 'Acme <onboarding@resend.dev>';
+      const fromEmail =
+        process.env.RESEND_FROM_EMAIL || "Acme <onboarding@resend.dev>";
 
       let attachmentsData: any[] = [];
       if (body.attachments && Array.isArray(body.attachments)) {
         attachmentsData = body.attachments.map((file: any) => ({
           filename: file.name,
-          content: file.content
+          content: file.content,
         }));
       }
 
       // 1. Send Email to Admin
       const adminEmailPromise = resend.emails.send({
         from: fromEmail,
-        to: [process.env.NOTIFICATION_EMAIL || 'your-email@example.com'],
-        subject: `New Order Request: ${body.customerName || 'Customer'} - ${body.company || 'Private Client'}`,
+        to: [process.env.NOTIFICATION_EMAIL || "your-email@example.com"],
+        subject: `New Order Request: ${body.customerName || "Customer"} - ${body.company || "Private Client"}`,
         attachments: attachmentsData.length > 0 ? attachmentsData : undefined,
         html: `
           <!DOCTYPE html>
@@ -142,7 +149,7 @@ export async function POST(request: NextRequest) {
                   <td class="body-content">
                     <div class="intro">
                       <h2>New Order Request</h2>
-                      <p>You have received a new manufacturing request from <strong>${body.customerName || 'a client'}</strong>${body.company ? ` representing <strong>${body.company}</strong>` : ''}. Please review the comprehensive details below.</p>
+                      <p>You have received a new manufacturing request from <strong>${body.customerName || "a client"}</strong>${body.company ? ` representing <strong>${body.company}</strong>` : ""}. Please review the comprehensive details below.</p>
                     </div>
                     ${sharedDetailsHtml}
                   </td>
@@ -157,7 +164,7 @@ export async function POST(request: NextRequest) {
             </div>
           </body>
           </html>
-        `
+        `,
       });
 
       // 2. Send Auto-Responder Email to Customer
@@ -188,7 +195,7 @@ export async function POST(request: NextRequest) {
                   <tr>
                     <td class="body-content">
                       <div class="intro">
-                        <h2>Thank you, ${body.customerName || 'Customer'}!</h2>
+                        <h2>Thank you, ${body.customerName || "Customer"}!</h2>
                         <p>We have successfully received your manufacturing request. Our team will review your specifications and get back to you shortly with a personalized quote and timeline.</p>
                         <p style="margin-top: 10px;">For your records, here is a copy of the details you submitted:</p>
                       </div>
@@ -205,23 +212,25 @@ export async function POST(request: NextRequest) {
               </div>
             </body>
             </html>
-          `
+          `,
         });
       }
 
       // Execute both email sends in parallel
-      await Promise.all([adminEmailPromise, customerEmailPromise].filter(Boolean));
+      await Promise.all(
+        [adminEmailPromise, customerEmailPromise].filter(Boolean),
+      );
     } catch (emailError) {
-      console.error('[Resend Error]', emailError);
+      console.error("[Resend Error]", emailError);
       // Email failure shouldn't fail the whole request since order is saved in DB
     }
 
     return NextResponse.json(order, { status: 201 });
   } catch (error) {
-    console.error('Failed to create order:', error);
+    console.error("Failed to create order:", error);
     return NextResponse.json(
-      { error: 'Failed to create order' },
-      { status: 500 }
+      { error: "Failed to create order" },
+      { status: 500 },
     );
   }
 }

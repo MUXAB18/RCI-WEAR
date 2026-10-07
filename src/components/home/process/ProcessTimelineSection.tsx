@@ -1,46 +1,50 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 
 const processSteps = [
   {
-    number: '01',
-    title: 'The Blueprint',
-    description: 'Every masterpiece begins with absolute clarity. We decode your vision—analyzing technical requirements, aesthetic goals, and precise measurements to establish an uncompromising blueprint for production.',
-    position: 'bottom'
+    number: "01",
+    title: "The Blueprint",
+    description:
+      "Every masterpiece begins with absolute clarity. We decode your vision—analyzing technical requirements, aesthetic goals, and precise measurements to establish an uncompromising blueprint for production.",
+    position: "bottom",
   },
   {
-    number: '02',
-    title: 'Material Curation',
-    description: 'We meticulously curate premium textiles and bespoke trims from trusted global mills. Only materials that meet our rigorous standards for drape, durability, and texture are selected for your garments.',
-    position: 'top'
+    number: "02",
+    title: "Material Curation",
+    description:
+      "We meticulously curate premium textiles and bespoke trims from trusted global mills. Only materials that meet our rigorous standards for drape, durability, and texture are selected for your garments.",
+    position: "top",
   },
   {
-    number: '03',
-    title: 'The Prototype',
-    description: 'Before full-scale production, our master pattern-makers construct a pristine sample. This physical prototype undergoes exhaustive fittings to ensure the silhouette and construction are flawless.',
-    position: 'bottom'
+    number: "03",
+    title: "The Prototype",
+    description:
+      "Before full-scale production, our master pattern-makers construct a pristine sample. This physical prototype undergoes exhaustive fittings to ensure the silhouette and construction are flawless.",
+    position: "bottom",
   },
   {
-    number: '04',
-    title: 'Precision Assembly',
-    description: 'Our artisans bring the blueprint to life. Utilizing advanced machinery and time-honored tailoring techniques, each panel is cut, embroidered, and stitched with exacting precision in our Sialkot facility.',
-    position: 'top'
+    number: "04",
+    title: "Precision Assembly",
+    description:
+      "Our artisans bring the blueprint to life. Utilizing advanced machinery and time-honored tailoring techniques, each panel is cut, embroidered, and stitched with exacting precision in our Sialkot facility.",
+    position: "top",
   },
   {
-    number: '05',
-    title: 'Final Audit',
-    description: 'Excellence is never left to chance. Every single garment is subjected to a rigorous quality audit—inspecting seams, finishes, and dimensions—before being elegantly packaged for global dispatch.',
-    position: 'bottom'
-  }
+    number: "05",
+    title: "Final Audit",
+    description:
+      "Excellence is never left to chance. Every single garment is subjected to a rigorous quality audit—inspecting seams, finishes, and dimensions—before being elegantly packaged for global dispatch.",
+    position: "bottom",
+  },
 ];
 
 export function ProcessTimelineSection() {
   return (
     <section className="bg-[#F5F5F0] py-24 md:py-32 overflow-hidden w-full">
       <div className="container mx-auto px-6 md:px-12 max-w-[1400px]">
-
         {/* Header (Optional, but good for context if needed, though screenshot doesn't show one. I'll add a minimal one just in case, or leave it out if they just want the timeline. I'll add a subtle header.) */}
         <div className="mb-24 flex flex-col items-center text-center">
           <motion.div
@@ -73,10 +77,14 @@ export function ProcessTimelineSection() {
 
           <div className="grid grid-cols-5 gap-4 relative z-10">
             {processSteps.map((step, index) => (
-              <div key={index} className="relative flex flex-col items-center h-[350px]">
-
+              <div
+                key={index}
+                className="relative flex flex-col items-center h-[350px]"
+              >
                 {/* Top Content */}
-                <div className={`w-full px-4 flex flex-col justify-end h-1/2 pb-12 ${step.position === 'top' ? 'opacity-100' : 'opacity-0 invisible'}`}>
+                <div
+                  className={`w-full px-4 flex flex-col justify-end h-1/2 pb-12 ${step.position === "top" ? "opacity-100" : "opacity-0 invisible"}`}
+                >
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -84,8 +92,12 @@ export function ProcessTimelineSection() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="flex items-baseline gap-2 mb-3">
-                      <span className="text-[#C1A67B] font-sans italic text-sm">{step.number}</span>
-                      <h3 className="text-xl font-sans font-bold text-black">{step.title}</h3>
+                      <span className="text-[#C1A67B] font-sans italic text-sm">
+                        {step.number}
+                      </span>
+                      <h3 className="text-xl font-sans font-bold text-black">
+                        {step.title}
+                      </h3>
                     </div>
                     <p className="text-xs text-gray-500 leading-relaxed font-sans">
                       {step.description}
@@ -99,7 +111,9 @@ export function ProcessTimelineSection() {
                 </div>
 
                 {/* Bottom Content */}
-                <div className={`w-full px-4 flex flex-col justify-start h-1/2 pt-12 ${step.position === 'bottom' ? 'opacity-100' : 'opacity-0 invisible'}`}>
+                <div
+                  className={`w-full px-4 flex flex-col justify-start h-1/2 pt-12 ${step.position === "bottom" ? "opacity-100" : "opacity-0 invisible"}`}
+                >
                   <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -107,15 +121,18 @@ export function ProcessTimelineSection() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="flex items-baseline gap-2 mb-3">
-                      <span className="text-[#C1A67B] font-sans italic text-sm">{step.number}</span>
-                      <h3 className="text-xl font-sans font-bold text-black">{step.title}</h3>
+                      <span className="text-[#C1A67B] font-sans italic text-sm">
+                        {step.number}
+                      </span>
+                      <h3 className="text-xl font-sans font-bold text-black">
+                        {step.title}
+                      </h3>
                     </div>
                     <p className="text-xs text-gray-500 leading-relaxed font-sans">
                       {step.description}
                     </p>
                   </motion.div>
                 </div>
-
               </div>
             ))}
           </div>
@@ -141,8 +158,12 @@ export function ProcessTimelineSection() {
               </div>
 
               <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-[#C1A67B] font-sans italic text-sm">{step.number}</span>
-                <h3 className="text-lg font-sans font-bold text-black">{step.title}</h3>
+                <span className="text-[#C1A67B] font-sans italic text-sm">
+                  {step.number}
+                </span>
+                <h3 className="text-lg font-sans font-bold text-black">
+                  {step.title}
+                </h3>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed font-sans">
                 {step.description}
@@ -150,7 +171,6 @@ export function ProcessTimelineSection() {
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );

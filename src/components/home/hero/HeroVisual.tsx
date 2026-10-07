@@ -1,12 +1,17 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { motion, Variants } from 'framer-motion';
+import React from "react";
+import Image from "next/image";
+import { motion, Variants } from "framer-motion";
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
 };
 
 const staggerContainer: Variants = {
@@ -15,14 +20,14 @@ const staggerContainer: Variants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.15,
-      delayChildren: 0.3
-    }
-  }
+      delayChildren: 0.3,
+    },
+  },
 };
 
 export function HeroVisual() {
   return (
-    <motion.div 
+    <motion.div
       className="w-full h-full flex gap-3 md:gap-4 py-4 box-border"
       variants={staggerContainer}
       initial="hidden"
@@ -31,7 +36,10 @@ export function HeroVisual() {
       {/* Left Column (Staggered down slightly) */}
       <div className="flex flex-col gap-3 md:gap-4 w-1/2 pt-8 md:pt-12 h-full">
         {/* Top Left (Flex 1.2) */}
-        <motion.div variants={itemVariants} className="relative w-full flex-[1.2] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
+        <motion.div
+          variants={itemVariants}
+          className="relative w-full flex-[1.2] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100"
+        >
           <Image
             src="/media__1775818866466.webp"
             alt="Custom apparel design"
@@ -41,9 +49,12 @@ export function HeroVisual() {
             priority
           />
         </motion.div>
-        
+
         {/* Middle Left (Flex 1.5 - Square-ish) */}
-        <motion.div variants={itemVariants} className="relative w-full flex-[1.5] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-[#223B65]">
+        <motion.div
+          variants={itemVariants}
+          className="relative w-full flex-[1.5] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-[#223B65]"
+        >
           <Image
             src="/media__1775818869472.webp"
             alt="Clothing manufacturing process"
@@ -54,7 +65,10 @@ export function HeroVisual() {
         </motion.div>
 
         {/* Bottom Left (Flex 1 - Landscape) */}
-        <motion.div variants={itemVariants} className="relative w-full flex-1 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
+        <motion.div
+          variants={itemVariants}
+          className="relative w-full flex-1 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100"
+        >
           <Image
             src="/IMG_5464.webp"
             alt="Premium fabric details"
@@ -68,7 +82,10 @@ export function HeroVisual() {
       {/* Right Column (Starts at top) */}
       <div className="flex flex-col gap-3 md:gap-4 w-1/2 pb-8 md:pb-12 h-full">
         {/* Top Right (Flex 1.8 - Portrait) */}
-        <motion.div variants={itemVariants} className="relative w-full flex-[1.8] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100">
+        <motion.div
+          variants={itemVariants}
+          className="relative w-full flex-[1.8] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-gray-100"
+        >
           <Image
             src="/custom_hoodie_1.webp"
             alt="Custom hoodie modeled"
@@ -78,9 +95,12 @@ export function HeroVisual() {
             priority
           />
         </motion.div>
-        
+
         {/* Bottom Right (Flex 1.2 - Landscape to match bottom alignment) */}
-        <motion.div variants={itemVariants} className="relative w-full flex-[1.2] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-[#90B79B]">
+        <motion.div
+          variants={itemVariants}
+          className="relative w-full flex-[1.2] rounded-2xl md:rounded-3xl overflow-hidden shadow-sm bg-[#90B79B]"
+        >
           <Image
             src="/media__1775817925946.webp"
             alt="Detailed product stitching"

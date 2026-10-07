@@ -1,63 +1,119 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { companyData } from '@/data/company';
-import { Check, Globe, FileText, Package, Shield, TrendingUp, Truck } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { companyData } from "@/data/company";
+import {
+  Check,
+  Globe,
+  FileText,
+  Package,
+  Shield,
+  TrendingUp,
+  Truck,
+} from "lucide-react";
 
 export function ExportServicesClient() {
   const services = [
     {
       icon: Globe,
-      title: 'Global Shipping',
+      title: "Global Shipping",
       description: `Ship to ${companyData.statistics.countriesServed} countries with express, air, and sea freight options`,
-      features: ['Express (3-5 days)', 'Air freight (7-10 days)', 'Sea freight (4-6 weeks)']
+      features: [
+        "Express (3-5 days)",
+        "Air freight (7-10 days)",
+        "Sea freight (4-6 weeks)",
+      ],
     },
     {
       icon: FileText,
-      title: 'Documentation',
-      description: 'Complete export paperwork and documentation handled',
-      features: ['Commercial invoices', 'Packing lists', 'Certificate of origin']
+      title: "Documentation",
+      description: "Complete export paperwork and documentation handled",
+      features: [
+        "Commercial invoices",
+        "Packing lists",
+        "Certificate of origin",
+      ],
     },
     {
       icon: Shield,
-      title: 'Customs Support',
-      description: 'Expert guidance through customs procedures and compliance',
-      features: ['HS code classification', 'Duty calculations', 'Compliance verification']
+      title: "Customs Support",
+      description: "Expert guidance through customs procedures and compliance",
+      features: [
+        "HS code classification",
+        "Duty calculations",
+        "Compliance verification",
+      ],
     },
     {
       icon: Package,
-      title: 'Secure Packaging',
-      description: 'Professional packaging for safe product delivery',
-      features: ['Poly bags', 'Reinforced cartons', 'Waterproof wrapping']
+      title: "Secure Packaging",
+      description: "Professional packaging for safe product delivery",
+      features: ["Poly bags", "Reinforced cartons", "Waterproof wrapping"],
     },
     {
       icon: TrendingUp,
-      title: 'Shipment Tracking',
-      description: 'Real-time tracking and updates throughout shipping',
-      features: ['Track & trace', 'Status updates', 'Delivery confirmation']
+      title: "Shipment Tracking",
+      description: "Real-time tracking and updates throughout shipping",
+      features: ["Track & trace", "Status updates", "Delivery confirmation"],
     },
     {
       icon: Truck,
-      title: 'Insurance',
-      description: 'Comprehensive cargo insurance and protection options',
-      features: ['Cargo insurance', 'Damage protection', 'Claims assistance']
+      title: "Insurance",
+      description: "Comprehensive cargo insurance and protection options",
+      features: ["Cargo insurance", "Damage protection", "Claims assistance"],
     },
   ];
 
   const exportMarkets = [
-    { region: 'Europe', countries: ['UK', 'Germany', 'France', 'Netherlands', 'Italy'], icon: '🇪🇺' },
-    { region: 'North America', countries: ['USA', 'Canada', 'Mexico'], icon: '🌎' },
-    { region: 'Middle East', countries: ['UAE', 'Saudi Arabia', 'Qatar', 'Kuwait'], icon: '🕌' },
-    { region: 'Asia Pacific', countries: ['Australia', 'Japan', 'Singapore', 'Hong Kong'], icon: '🌏' },
+    {
+      region: "Europe",
+      countries: ["UK", "Germany", "France", "Netherlands", "Italy"],
+      icon: "🇪🇺",
+    },
+    {
+      region: "North America",
+      countries: ["USA", "Canada", "Mexico"],
+      icon: "🌎",
+    },
+    {
+      region: "Middle East",
+      countries: ["UAE", "Saudi Arabia", "Qatar", "Kuwait"],
+      icon: "🕌",
+    },
+    {
+      region: "Asia Pacific",
+      countries: ["Australia", "Japan", "Singapore", "Hong Kong"],
+      icon: "🌏",
+    },
   ];
 
   const processSteps = [
-    { number: '01', title: 'Production Complete', description: 'Quality inspection and approval' },
-    { number: '02', title: 'Documentation', description: 'Export documents prepared' },
-    { number: '03', title: 'Packaging', description: 'Secure packaging with branding' },
-    { number: '04', title: 'Customs Clearance', description: 'Export clearance from Pakistan' },
-    { number: '05', title: 'Delivery', description: 'Safe arrival at your destination' }
+    {
+      number: "01",
+      title: "Production Complete",
+      description: "Quality inspection and approval",
+    },
+    {
+      number: "02",
+      title: "Documentation",
+      description: "Export documents prepared",
+    },
+    {
+      number: "03",
+      title: "Packaging",
+      description: "Secure packaging with branding",
+    },
+    {
+      number: "04",
+      title: "Customs Clearance",
+      description: "Export clearance from Pakistan",
+    },
+    {
+      number: "05",
+      title: "Delivery",
+      description: "Safe arrival at your destination",
+    },
   ];
 
   const shippingPartners = companyData.exportInfo.shippingPartners;
@@ -72,18 +128,19 @@ export function ExportServicesClient() {
         className="grid grid-cols-2 md:grid-cols-4 gap-6"
       >
         {[
-          { label: 'Countries Served', value: '15+' },
-          { label: 'Shipping Partners', value: '5+' },
-          { label: 'Express Delivery', value: '3-5 Days' },
-          { label: 'Sea Freight', value: '4-6 Weeks' }
+          { label: "Countries Served", value: "15+" },
+          { label: "Shipping Partners", value: "5+" },
+          { label: "Express Delivery", value: "3-5 Days" },
+          { label: "Sea Freight", value: "4-6 Weeks" },
         ].map((stat, index) => (
-          <div key={index} className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200">
+          <div
+            key={index}
+            className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200"
+          >
             <div className="text-3xl md:text-4xl font-sans font-bold text-black mb-2">
               {stat.value}
             </div>
-            <div className="text-sm text-gray-600 font-sans">
-              {stat.label}
-            </div>
+            <div className="text-sm text-gray-600 font-sans">{stat.label}</div>
           </div>
         ))}
       </motion.div>
@@ -122,7 +179,9 @@ export function ExportServicesClient() {
                 {service.features.map((feature, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                    <span className="text-sm text-gray-700 font-sans">{feature}</span>
+                    <span className="text-sm text-gray-700 font-sans">
+                      {feature}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -199,7 +258,9 @@ export function ExportServicesClient() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 hover:shadow-lg transition-all duration-300"
             >
-              <span className="text-xl font-bold text-gray-800 font-sans">{partner}</span>
+              <span className="text-xl font-bold text-gray-800 font-sans">
+                {partner}
+              </span>
             </motion.div>
           ))}
         </div>
@@ -269,8 +330,18 @@ export function ExportServicesClient() {
             className="inline-flex items-center gap-2 bg-white text-near-black px-8 py-3 rounded-full font-sans font-bold text-sm uppercase tracking-wider hover:bg-gray-100 transition-all duration-300 hover:scale-105"
           >
             Request Quote
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
           </a>
           <a

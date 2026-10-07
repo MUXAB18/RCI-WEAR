@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 type PageHeaderProps = {
   title: string;
@@ -10,7 +10,9 @@ export function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
     <div className="flex items-start justify-between mb-8">
       <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">{title}</h1>
+        <h1 className="text-3xl font-bold text-white tracking-tight">
+          {title}
+        </h1>
         {description && (
           <p className="text-white/40 mt-1 text-sm">{description}</p>
         )}

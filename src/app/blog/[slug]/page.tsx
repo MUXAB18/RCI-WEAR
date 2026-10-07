@@ -1,13 +1,17 @@
-import React from 'react';
-import Link from 'next/link';
-import { ArrowLeft, Calendar, Clock, User, Share2 } from 'lucide-react';
-import Image from 'next/image';
-import { getBlogPostBySlug } from '@/lib/api/blog.service';
-import { notFound } from 'next/navigation';
-import { BlogViewTracker } from '@/components/blog/BlogViewTracker';
-import { SocialShare } from '@/components/blog/SocialShare';
+import React from "react";
+import Link from "next/link";
+import { ArrowLeft, Calendar, Clock, User, Share2 } from "lucide-react";
+import Image from "next/image";
+import { getBlogPostBySlug } from "@/lib/api/blog.service";
+import { notFound } from "next/navigation";
+import { BlogViewTracker } from "@/components/blog/BlogViewTracker";
+import { SocialShare } from "@/components/blog/SocialShare";
 
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
 
@@ -16,17 +20,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   // Construct the full URL for sharing
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rasheedclothingintl.me';
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://rasheedclothingintl.me";
   const postUrl = `${baseUrl}/blog/${slug}`;
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <BlogViewTracker slug={slug} />
-      
+
       {/* Back Button & Breadcrumb */}
       <div className="container mx-auto px-6 md:px-12 max-w-5xl mb-8">
-        <Link 
-          href="/blog" 
+        <Link
+          href="/blog"
           className="inline-flex items-center gap-2 text-sm font-sans font-semibold text-gray-600 hover:text-black transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -40,8 +45,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           {/* Tags */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
             {post.tags.map((tag, idx) => (
-              <span 
-                key={idx} 
+              <span
+                key={idx}
                 className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-black bg-yellow-100 px-4 py-2 rounded-full"
               >
                 {tag}
@@ -63,15 +68,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 pb-8 border-b border-gray-200">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4" />
-              <span className="font-semibold">By {post.author || 'RCI Team'}</span>
+              <span className="font-semibold">
+                By {post.author || "RCI Team"}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span>
-                {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric'
+                {new Date(
+                  post.publishedAt || post.createdAt,
+                ).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
                 })}
               </span>
             </div>
@@ -86,7 +95,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {post.coverImage && (
           <div className="mb-12 -mx-6 md:-mx-12 lg:mx-0">
             <div className="aspect-[21/9] relative overflow-hidden rounded-none lg:rounded-3xl bg-gray-100">
-              <Image 
+              <Image
                 src={post.coverImage}
                 alt={post.title}
                 fill
@@ -134,7 +143,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </h3>
               <div className="flex flex-wrap gap-3">
                 {post.tags.map((tag, idx) => (
-                  <span 
+                  <span
                     key={idx}
                     className="text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full transition-colors cursor-pointer"
                   >
@@ -156,7 +165,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     Share Article
                   </h3>
                 </div>
-                <SocialShare 
+                <SocialShare
                   url={postUrl}
                   title={post.title}
                   description={post.excerpt || post.title}
@@ -167,17 +176,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <div className="bg-gradient-to-br from-near-black to-gray-900 rounded-2xl p-6 text-white">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">
-                    {(post.author || 'RCI Team').charAt(0)}
+                    {(post.author || "RCI Team").charAt(0)}
                   </div>
                   <div>
                     <h3 className="font-sans font-bold text-lg">
-                      {post.author || 'RCI Team'}
+                      {post.author || "RCI Team"}
                     </h3>
                     <p className="text-white/70 text-sm">Author</p>
                   </div>
                 </div>
                 <p className="text-white/80 text-sm leading-relaxed">
-                  Expert insights from Rasheed Clothing International's manufacturing team, sharing industry knowledge and best practices.
+                  Expert insights from Rasheed Clothing International's
+                  manufacturing team, sharing industry knowledge and best
+                  practices.
                 </p>
               </div>
 
@@ -190,10 +201,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Published</span>
                     <span className="font-semibold text-gray-900">
-                      {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric'
+                      {new Date(
+                        post.publishedAt || post.createdAt,
+                      ).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
                       })}
                     </span>
                   </div>
@@ -204,7 +217,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Category</span>
                     <span className="font-semibold text-gray-900">
-                      {post.tags[0] || 'General'}
+                      {post.tags[0] || "General"}
                     </span>
                   </div>
                 </div>
@@ -235,7 +248,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             Found This Helpful?
           </h2>
           <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
-            Explore more insights about apparel manufacturing, industry trends, and best practices
+            Explore more insights about apparel manufacturing, industry trends,
+            and best practices
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

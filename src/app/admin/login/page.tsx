@@ -1,24 +1,28 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import Image from "next/image";
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (error) {
       setError(error.message);
@@ -26,11 +30,11 @@ export default function AdminLoginPage() {
     } else {
       // Trigger the OTP email right after successful initial login
       try {
-        await fetch('/api/admin/auth/send-otp', { method: 'POST' });
-        router.push('/admin/login/verify');
+        await fetch("/api/admin/auth/send-otp", { method: "POST" });
+        router.push("/admin/login/verify");
         router.refresh();
       } catch (err) {
-        setError('Failed to initiate 2FA. Please try again.');
+        setError("Failed to initiate 2FA. Please try again.");
         setLoading(false);
       }
     }
@@ -46,18 +50,29 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md relative">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-white/10 rounded-2xl border border-white/10 mb-5">
-            <span className="text-white font-black text-xl">R</span>
+          <div className="relative inline-flex items-center justify-center w-48 h-16 mb-5">
+            <Image
+              src="/rasheed-clothing-logo-transparent.png"
+              alt="RCI Logo"
+              fill
+              className="object-contain brightness-0 invert opacity-90"
+            />
           </div>
-          <h1 className="text-white text-2xl font-bold tracking-tight font-sans">Admin Portal</h1>
-          <p className="text-white/40 text-sm mt-1 font-sans">Rasheed Clothing International</p>
+          <h1 className="text-white text-2xl font-bold tracking-tight font-sans">
+            Admin Portal
+          </h1>
+          <p className="text-white/40 text-sm mt-1 font-sans">
+            Rasheed Clothing International
+          </p>
         </div>
 
         {/* Login Card */}
         <div className="bg-white/[0.05] border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-white/60 text-sm font-medium mb-2">Email</label>
+              <label className="block text-white/60 text-sm font-medium mb-2">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
@@ -69,7 +84,9 @@ export default function AdminLoginPage() {
             </div>
 
             <div>
-              <label className="block text-white/60 text-sm font-medium mb-2">Password</label>
+              <label className="block text-white/60 text-sm font-medium mb-2">
+                Password
+              </label>
               <input
                 type="password"
                 value={password}
@@ -91,7 +108,7 @@ export default function AdminLoginPage() {
               disabled={loading}
               className="w-full bg-white text-black font-semibold py-3 rounded-xl hover:bg-white/90 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-2"
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
         </div>

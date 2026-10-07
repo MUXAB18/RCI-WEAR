@@ -3,8 +3,8 @@
  * CRUD operations for orders and order items
  */
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type CreateOrderInput = {
   customerName: string;
@@ -82,7 +82,7 @@ export type UpdateOrderInput = {
 
 export async function getAllOrders() {
   return prisma.order.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       items: {
         include: {
@@ -106,7 +106,7 @@ export async function getAllOrders() {
 export async function getOrdersForTracking() {
   return prisma.order.findMany({
     where: { isTrackingArchived: false },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     select: {
       id: true,
       orderNumber: true,
@@ -132,7 +132,7 @@ export async function getOrdersForTracking() {
 
 export async function getOrdersForAdminList() {
   return prisma.order.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     select: {
       id: true,
       orderNumber: true,
@@ -222,7 +222,7 @@ export async function getOrderByNumber(orderNumber: string) {
 export async function getOrdersByStatus(status: string) {
   return prisma.order.findMany({
     where: { status },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       items: true,
     },
@@ -232,7 +232,7 @@ export async function getOrdersByStatus(status: string) {
 export async function getOrdersByCustomer(email: string) {
   return prisma.order.findMany({
     where: { customerEmail: email },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       items: true,
     },
@@ -244,17 +244,21 @@ export async function getOrdersByCustomer(email: string) {
 export async function createOrder(data: CreateOrderInput) {
   // Generate order number
   const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-  
+
   // Calculate totals
-  const subtotal = data.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const tax = data.tax ?? (subtotal * 0.0); // Use provided tax or default 0
+  const subtotal = data.items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+  const tax = data.tax ?? subtotal * 0.0; // Use provided tax or default 0
   const shipping = data.shipping ?? 0; // Use provided shipping or default 0
   const total = subtotal + tax + shipping;
 
   const productionCost = data.productionCost ?? 0;
   const shippingCost = data.shippingCost ?? 0;
   const otherCosts = data.otherCosts ?? 0;
-  const profit = (subtotal + shipping) - (productionCost + shippingCost + otherCosts);
+  const profit =
+    subtotal + shipping - (productionCost + shippingCost + otherCosts);
 
   const order = await prisma.order.create({
     data: {
@@ -270,8 +274,10 @@ export async function createOrder(data: CreateOrderInput) {
       shipping,
       total,
       notes: data.notes,
-      estimatedDelivery: data.estimatedDelivery ? new Date(data.estimatedDelivery) : null,
-      status: data.status || 'pending',
+      estimatedDelivery: data.estimatedDelivery
+        ? new Date(data.estimatedDelivery)
+        : null,
+      status: data.status || "pending",
       productionCost,
       shippingCost,
       otherCosts,
@@ -290,7 +296,7 @@ export async function createOrder(data: CreateOrderInput) {
       budget: data.budget,
       comments: data.comments,
       items: {
-        create: data.items.map(item => ({
+        create: data.items.map((item) => ({
           productId: item.productId,
           name: item.name,
           quantity: item.quantity,
@@ -303,8 +309,8 @@ export async function createOrder(data: CreateOrderInput) {
       items: true,
     },
   });
-  
-  revalidatePath('/admin/orders');
+
+  revalidatePath("/admin/orders");
   return order;
 }
 
@@ -312,26 +318,30 @@ export async function createOrder(data: CreateOrderInput) {
 
 export async function updateOrder(id: string, data: UpdateOrderInput) {
   const existingOrder = await prisma.order.findUnique({ where: { id } });
-  if (!existingOrder) throw new Error('Order not found');
+  if (!existingOrder) throw new Error("Order not found");
 
   const { items, ...orderData } = data;
 
   const mergedData = { ...existingOrder, ...orderData };
-  const profit = (mergedData.subtotal + mergedData.shipping) - 
-                 (mergedData.productionCost + mergedData.shippingCost + mergedData.otherCosts);
+  const profit =
+    mergedData.subtotal +
+    mergedData.shipping -
+    (mergedData.productionCost +
+      mergedData.shippingCost +
+      mergedData.otherCosts);
 
   if (items && items.length > 0) {
     await prisma.$transaction(
-      items.map(item => 
+      items.map((item) =>
         prisma.orderItem.update({
           where: { id: item.id },
-          data: { 
-            price: item.price, 
+          data: {
+            price: item.price,
             subtotal: item.subtotal,
-            ...(item.quantity !== undefined && { quantity: item.quantity })
-          }
-        })
-      )
+            ...(item.quantity !== undefined && { quantity: item.quantity }),
+          },
+        }),
+      ),
     );
   }
 
@@ -349,7 +359,7 @@ export async function updateOrder(id: string, data: UpdateOrderInput) {
       },
     },
   });
-  revalidatePath('/admin/orders');
+  revalidatePath("/admin/orders");
   return order;
 }
 
@@ -366,21 +376,22 @@ export async function updatePaymentStatus(id: string, paymentStatus: string) {
 export async function deleteOrder(id: string) {
   // Order items will be deleted automatically due to Cascade
   await prisma.order.delete({ where: { id } });
-  revalidatePath('/admin/orders');
+  revalidatePath("/admin/orders");
 }
 
 // ─── STATISTICS ──────────────────────────────────────────────────────────────
 
 export async function getOrderStats() {
-  const [totalOrders, pendingOrders, completedOrders, totalRevenue] = await Promise.all([
-    prisma.order.count(),
-    prisma.order.count({ where: { status: 'pending' } }),
-    prisma.order.count({ where: { status: 'delivered' } }),
-    prisma.order.aggregate({
-      where: { paymentStatus: 'paid' },
-      _sum: { total: true },
-    }),
-  ]);
+  const [totalOrders, pendingOrders, completedOrders, totalRevenue] =
+    await Promise.all([
+      prisma.order.count(),
+      prisma.order.count({ where: { status: "pending" } }),
+      prisma.order.count({ where: { status: "delivered" } }),
+      prisma.order.aggregate({
+        where: { paymentStatus: "paid" },
+        _sum: { total: true },
+      }),
+    ]);
 
   return {
     totalOrders,
@@ -398,28 +409,43 @@ export async function getDashboardChartData() {
       createdAt: true,
       paymentStatus: true,
     },
-    orderBy: { createdAt: 'asc' }
+    orderBy: { createdAt: "asc" },
   });
 
   // Calculate orders by status
-  const ordersByStatus = orders.reduce((acc, order) => {
-    acc[order.status] = (acc[order.status] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const ordersByStatus = orders.reduce(
+    (acc, order) => {
+      acc[order.status] = (acc[order.status] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
-  const pieData = Object.entries(ordersByStatus).map(([name, value]) => ({ name, value }));
+  const pieData = Object.entries(ordersByStatus).map(([name, value]) => ({
+    name,
+    value,
+  }));
 
   // Calculate revenue over time (group by month/year for simplicity, or just last 30 days)
   // We'll group by month and year
-  const revenueByMonth = orders.reduce((acc, order) => {
-    // Show total expected revenue to populate the chart even if unpaid
-    const date = new Date(order.createdAt);
-    const monthYear = date.toLocaleString('default', { month: 'short', year: '2-digit' });
-    acc[monthYear] = (acc[monthYear] || 0) + order.total;
-    return acc;
-  }, {} as Record<string, number>);
+  const revenueByMonth = orders.reduce(
+    (acc, order) => {
+      // Show total expected revenue to populate the chart even if unpaid
+      const date = new Date(order.createdAt);
+      const monthYear = date.toLocaleString("default", {
+        month: "short",
+        year: "2-digit",
+      });
+      acc[monthYear] = (acc[monthYear] || 0) + order.total;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
-  const areaData = Object.entries(revenueByMonth).map(([date, revenue]) => ({ date, revenue }));
+  const areaData = Object.entries(revenueByMonth).map(([date, revenue]) => ({
+    date,
+    revenue,
+  }));
 
   return { pieData, areaData };
 }

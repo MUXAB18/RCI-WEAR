@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import { Button } from '@/components/admin/ui/Button';
-import { Input } from '@/components/admin/ui/Input';
-import { ShieldAlert, Save } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/admin/ui/Button";
+import { Input } from "@/components/admin/ui/Input";
+import { ShieldAlert, Save } from "lucide-react";
 
 export function AdminAccountSettings() {
   const supabase = createClient();
-  const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        setEmail(data.user.email || '');
+        setEmail(data.user.email || "");
       }
     };
     fetchUser();
@@ -27,8 +27,8 @@ export function AdminAccountSettings() {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
-    setError('');
+    setMessage("");
+    setError("");
 
     try {
       const updates: { email?: string; password?: string } = {};
@@ -40,20 +40,23 @@ export function AdminAccountSettings() {
         return;
       }
 
-      const { data, error: updateError } = await supabase.auth.updateUser(updates);
+      const { data, error: updateError } =
+        await supabase.auth.updateUser(updates);
 
       if (updateError) throw updateError;
 
       if (updates.email && data.user?.email !== updates.email) {
-        setMessage('Check both your old and new email inboxes for confirmation links to finalize the email change.');
+        setMessage(
+          "Check both your old and new email inboxes for confirmation links to finalize the email change.",
+        );
       } else {
-        setMessage('Admin account credentials updated successfully!');
+        setMessage("Admin account credentials updated successfully!");
       }
-      
-      setNewPassword(''); // Clear password field after update
+
+      setNewPassword(""); // Clear password field after update
     } catch (err: any) {
-      console.error('Error updating admin account:', err);
-      setError(err.message || 'Failed to update credentials.');
+      console.error("Error updating admin account:", err);
+      setError(err.message || "Failed to update credentials.");
     } finally {
       setLoading(false);
     }
@@ -66,9 +69,12 @@ export function AdminAccountSettings() {
           <ShieldAlert className="w-5 h-5 text-red-500" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-white mb-1">Admin Account Security</h2>
+          <h2 className="text-lg font-semibold text-white mb-1">
+            Admin Account Security
+          </h2>
           <p className="text-sm text-white/60">
-            Update your admin login email or password. Be careful—these are your master credentials.
+            Update your admin login email or password. Be careful—these are your
+            master credentials.
           </p>
         </div>
       </div>
@@ -81,7 +87,7 @@ export function AdminAccountSettings() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        
+
         <Input
           label="New Password"
           type="password"

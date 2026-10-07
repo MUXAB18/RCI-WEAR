@@ -1,22 +1,21 @@
-import React from 'react';
+import React from "react";
 
-import { Hero } from '@/components/home/hero/Hero';
-import { TrustBadgesSection } from '@/components/home/trust/TrustBadgesSection';
-import { CollectionsSection } from '@/components/home/collections/CollectionsSection';
-import { CapabilitiesSection } from '@/components/home/capabilities/CapabilitiesSection';
-import { ProcessTimelineSection } from '@/components/home/process/ProcessTimelineSection';
-import { PortfolioPreviewWrapper } from '@/components/home/portfolio/PortfolioPreviewWrapper';
-import { HomeFaqSection } from '@/components/home/faq/HomeFaqSection';
-import { HomeCtaSection } from '@/components/home/cta/HomeCtaSection';
+import { Hero } from "@/components/home/hero/Hero";
+import { TrustBadgesSection } from "@/components/home/trust/TrustBadgesSection";
+import { CollectionsSection } from "@/components/home/collections/CollectionsSection";
+import { CapabilitiesSection } from "@/components/home/capabilities/CapabilitiesSection";
+import { ProcessTimelineSection } from "@/components/home/process/ProcessTimelineSection";
+import { PortfolioPreviewWrapper } from "@/components/home/portfolio/PortfolioPreviewWrapper";
+import { HomeFaqSection } from "@/components/home/faq/HomeFaqSection";
+import { HomeCtaSection } from "@/components/home/cta/HomeCtaSection";
 
-import { getPublishedCollections } from '@/lib/api/collection.service';
+import { getPublishedCollections } from "@/lib/api/collection.service";
 
 export default async function Home() {
   const collections = await getPublishedCollections();
 
   return (
     <div className="flex flex-col min-h-screen">
-      
       {/* 1. HERO SECTION - ULTRA PREMIUM */}
       <Hero />
 
@@ -40,7 +39,6 @@ export default async function Home() {
 
       {/* 10. CTA SECTION */}
       <HomeCtaSection />
-      
     </div>
   );
 }

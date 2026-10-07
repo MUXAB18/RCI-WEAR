@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 type PortfolioProject = any;
 
 type PortfolioModalProps = {
@@ -8,11 +8,16 @@ type PortfolioModalProps = {
   project?: PortfolioProject | null;
 };
 
-export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioModalProps) {
+export function PortfolioModal({
+  isOpen,
+  onClose,
+  onSave,
+  project,
+}: PortfolioModalProps) {
   const [formData, setFormData] = useState({
-    title: '',
-    category: '',
-    imageUrl: '',
+    title: "",
+    category: "",
+    imageUrl: "",
     isFeatured: false,
     order: 0,
   });
@@ -29,9 +34,9 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
       });
     } else {
       setFormData({
-        title: '',
-        category: '',
-        imageUrl: '',
+        title: "",
+        category: "",
+        imageUrl: "",
         isFeatured: false,
         order: 0,
       });
@@ -44,7 +49,12 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : type === 'number' ? Number(value) : value,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : type === "number"
+            ? Number(value)
+            : value,
     }));
   };
 
@@ -60,15 +70,19 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="px-6 py-4 border-b flex justify-between items-center">
-          <h2 className="text-xl font-bold">{project ? 'Edit Project' : 'Add New Project'}</h2>
+          <h2 className="text-xl font-bold">
+            {project ? "Edit Project" : "Add New Project"}
+          </h2>
           <button onClick={onClose} className="text-gray-500 hover:text-black">
             ✕
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Title
+            </label>
             <input
               type="text"
               name="title"
@@ -79,9 +93,11 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
               placeholder="e.g. Dead Snake Custom"
             />
           </div>
-          
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Category
+            </label>
             <input
               type="text"
               name="category"
@@ -94,7 +110,9 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Image URL
+            </label>
             <input
               type="text"
               name="imageUrl"
@@ -106,15 +124,21 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
             />
             {formData.imageUrl && (
               <div className="mt-2 text-sm text-gray-500 flex items-center gap-2">
-                Preview: 
-                <img src={formData.imageUrl} alt="Preview" className="w-10 h-10 object-cover rounded" />
+                Preview:
+                <img
+                  src={formData.imageUrl}
+                  alt="Preview"
+                  className="w-10 h-10 object-cover rounded"
+                />
               </div>
             )}
           </div>
 
           <div className="flex gap-4">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Display Order
+              </label>
               <input
                 type="number"
                 name="order"
@@ -123,7 +147,7 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
                 className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-black outline-none transition"
               />
             </div>
-            
+
             <div className="flex items-end pb-2">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -133,7 +157,9 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
                   onChange={handleChange}
                   className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
                 />
-                <span className="text-sm font-medium text-gray-700">Feature on Home</span>
+                <span className="text-sm font-medium text-gray-700">
+                  Feature on Home
+                </span>
               </label>
             </div>
           </div>
@@ -152,7 +178,7 @@ export function PortfolioModal({ isOpen, onClose, onSave, project }: PortfolioMo
               className="px-4 py-2 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded-md transition disabled:opacity-50"
               disabled={loading}
             >
-              {loading ? 'Saving...' : 'Save Project'}
+              {loading ? "Saving..." : "Save Project"}
             </button>
           </div>
         </form>

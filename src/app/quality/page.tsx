@@ -1,104 +1,158 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { SectionHeading } from '@/components/ui/SectionHeading';
-import { ShieldCheck, Search, Ruler, BadgeCheck, Award, Target, CheckCircle2, Eye, Scissors, Droplets, Zap, Package, FileCheck } from 'lucide-react';
-import { companyData } from '@/data/company';
+import React from "react";
+import { motion } from "framer-motion";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import {
+  ShieldCheck,
+  Search,
+  Ruler,
+  BadgeCheck,
+  Award,
+  Target,
+  CheckCircle2,
+  Eye,
+  Scissors,
+  Droplets,
+  Zap,
+  Package,
+  FileCheck,
+} from "lucide-react";
+import { companyData } from "@/data/company";
 
 const QA_PROCESS = [
   {
     icon: Search,
-    title: 'Fabric Inspection',
-    stage: 'Pre-Production',
-    checks: ['GSM weight verification', 'Colorfastness testing', 'Shrinkage testing', 'Defect identification']
+    title: "Fabric Inspection",
+    stage: "Pre-Production",
+    checks: [
+      "GSM weight verification",
+      "Colorfastness testing",
+      "Shrinkage testing",
+      "Defect identification",
+    ],
   },
   {
     icon: Ruler,
-    title: 'Pattern & Cutting',
-    stage: 'Production Start',
-    checks: ['Pattern accuracy check', 'Cutting precision audit', 'Measurement verification', 'Fabric alignment']
+    title: "Pattern & Cutting",
+    stage: "Production Start",
+    checks: [
+      "Pattern accuracy check",
+      "Cutting precision audit",
+      "Measurement verification",
+      "Fabric alignment",
+    ],
   },
   {
     icon: Scissors,
-    title: 'In-Line Inspection',
-    stage: 'During Production',
-    checks: ['Stitch quality check', 'Seam allowance audit', 'Construction accuracy', 'Real-time monitoring']
+    title: "In-Line Inspection",
+    stage: "During Production",
+    checks: [
+      "Stitch quality check",
+      "Seam allowance audit",
+      "Construction accuracy",
+      "Real-time monitoring",
+    ],
   },
   {
     icon: Eye,
-    title: 'End-of-Line Check',
-    stage: 'Post-Production',
-    checks: ['360° garment inspection', 'Measurement verification', 'Symmetry check', 'Loose thread removal']
+    title: "End-of-Line Check",
+    stage: "Post-Production",
+    checks: [
+      "360° garment inspection",
+      "Measurement verification",
+      "Symmetry check",
+      "Loose thread removal",
+    ],
   },
   {
     icon: Droplets,
-    title: 'Washing Test',
-    stage: 'Quality Testing',
-    checks: ['Color bleeding test', 'Shrinkage measurement', 'Pilling resistance', 'Durability check']
+    title: "Washing Test",
+    stage: "Quality Testing",
+    checks: [
+      "Color bleeding test",
+      "Shrinkage measurement",
+      "Pilling resistance",
+      "Durability check",
+    ],
   },
   {
     icon: Package,
-    title: 'Final AQL Audit',
-    stage: 'Pre-Shipment',
-    checks: ['Random sampling', 'Packaging inspection', 'Label verification', 'Carton labeling']
-  }
+    title: "Final AQL Audit",
+    stage: "Pre-Shipment",
+    checks: [
+      "Random sampling",
+      "Packaging inspection",
+      "Label verification",
+      "Carton labeling",
+    ],
+  },
 ];
 
 const TESTING_STANDARDS = [
   {
     icon: Droplets,
-    title: 'Wash Testing',
-    description: 'Multiple wash cycles to test colorfastness, shrinkage, and durability',
-    standards: ['ISO 105', 'AATCC 61', 'BS EN 20105']
+    title: "Wash Testing",
+    description:
+      "Multiple wash cycles to test colorfastness, shrinkage, and durability",
+    standards: ["ISO 105", "AATCC 61", "BS EN 20105"],
   },
   {
     icon: Zap,
-    title: 'Seam Strength',
-    description: 'Load testing to ensure seams can withstand stress and wear',
-    standards: ['ASTM D1683', 'ISO 13935', 'BS EN ISO 13935']
+    title: "Seam Strength",
+    description: "Load testing to ensure seams can withstand stress and wear",
+    standards: ["ASTM D1683", "ISO 13935", "BS EN ISO 13935"],
   },
   {
     icon: Eye,
-    title: 'Color Matching',
-    description: 'Spectrophotometer testing for consistent color across batches',
-    standards: ['Delta E < 1.0', 'Pantone matching', 'Visual assessment']
+    title: "Color Matching",
+    description:
+      "Spectrophotometer testing for consistent color across batches",
+    standards: ["Delta E < 1.0", "Pantone matching", "Visual assessment"],
   },
   {
     icon: Target,
-    title: 'Dimensional Stability',
-    description: 'Ensuring garments maintain size specifications after washing',
-    standards: ['AATCC 135', 'ISO 5077', 'BS 4931']
-  }
+    title: "Dimensional Stability",
+    description: "Ensuring garments maintain size specifications after washing",
+    standards: ["AATCC 135", "ISO 5077", "BS 4931"],
+  },
 ];
 
 const INSPECTION_POINTS = [
-  'Stitch density (SPI verification)',
-  'Seam puckering check',
-  'Button & hardware attachment',
-  'Zipper functionality test',
-  'Print alignment accuracy',
-  'Embroidery quality check',
-  'Label placement verification',
-  'Thread color matching',
-  'Hem & cuff uniformity',
-  'Collar & pocket symmetry',
-  'Care label legibility',
-  'Overall garment appearance'
+  "Stitch density (SPI verification)",
+  "Seam puckering check",
+  "Button & hardware attachment",
+  "Zipper functionality test",
+  "Print alignment accuracy",
+  "Embroidery quality check",
+  "Label placement verification",
+  "Thread color matching",
+  "Hem & cuff uniformity",
+  "Collar & pocket symmetry",
+  "Care label legibility",
+  "Overall garment appearance",
 ];
 
 const QUALITY_METRICS = [
-  { label: 'Quality Rate', value: companyData.statistics.qualityRate, icon: Award },
-  { label: 'Client Satisfaction', value: companyData.statistics.clientSatisfaction, icon: Target },
-  { label: 'AQL Standard', value: '2.5', icon: CheckCircle2 },
-  { label: 'Defect Rate', value: '<0.5%', icon: ShieldCheck }
+  {
+    label: "Quality Rate",
+    value: companyData.statistics.qualityRate,
+    icon: Award,
+  },
+  {
+    label: "Client Satisfaction",
+    value: companyData.statistics.clientSatisfaction,
+    icon: Target,
+  },
+  { label: "AQL Standard", value: "2.5", icon: CheckCircle2 },
+  { label: "Defect Rate", value: "<0.5%", icon: ShieldCheck },
 ];
 
 const STATS = [
-  { value: '98%', label: 'Pass Rate First Time' },
-  { value: '100%', label: 'Batch Inspection' },
-  { value: '6', label: 'Quality Checkpoints' },
-  { value: 'AQL 2.5', label: 'Industry Standard' }
+  { value: "98%", label: "Pass Rate First Time" },
+  { value: "100%", label: "Batch Inspection" },
+  { value: "6", label: "Quality Checkpoints" },
+  { value: "AQL 2.5", label: "Industry Standard" },
 ];
 
 export default function QualityPage() {
@@ -106,7 +160,7 @@ export default function QualityPage() {
     <div className="pt-32 pb-24 min-h-screen bg-white">
       <div className="container mx-auto px-6 md:px-12">
         {/* Header */}
-        <SectionHeading 
+        <SectionHeading
           eyebrow="Quality Assurance"
           title="Zero-Defect Manufacturing"
           subtitle="Rigorous quality control at every stage from fabric to finished product"
@@ -120,7 +174,10 @@ export default function QualityPage() {
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
         >
           {STATS.map((stat, index) => (
-            <div key={index} className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <div
+              key={index}
+              className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200"
+            >
               <div className="text-3xl md:text-4xl font-sans font-bold text-black mb-2">
                 {stat.value}
               </div>
@@ -149,9 +206,16 @@ export default function QualityPage() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="bg-white border-2 border-gray-200 rounded-2xl p-6 text-center hover:border-black hover:shadow-xl transition-all duration-300"
               >
-                <metric.icon className="w-10 h-10 mx-auto mb-4 text-black" strokeWidth={1.5} />
-                <div className="text-4xl font-sans font-bold text-black mb-2">{metric.value}</div>
-                <div className="text-sm text-gray-600 font-sans font-semibold">{metric.label}</div>
+                <metric.icon
+                  className="w-10 h-10 mx-auto mb-4 text-black"
+                  strokeWidth={1.5}
+                />
+                <div className="text-4xl font-sans font-bold text-black mb-2">
+                  {metric.value}
+                </div>
+                <div className="text-sm text-gray-600 font-sans font-semibold">
+                  {metric.label}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -195,7 +259,10 @@ export default function QualityPage() {
                 </h3>
                 <ul className="space-y-2">
                   {step.checks.map((check, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-gray-700">
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2 text-sm text-gray-700"
+                    >
                       <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
                       {check}
                     </li>
@@ -290,7 +357,9 @@ export default function QualityPage() {
                   className="flex items-center gap-3 bg-white p-4 rounded-xl border border-gray-200"
                 >
                   <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-sm text-gray-700 font-sans font-medium">{point}</span>
+                  <span className="text-sm text-gray-700 font-sans font-medium">
+                    {point}
+                  </span>
                 </motion.div>
               ))}
             </div>
@@ -314,8 +383,13 @@ export default function QualityPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               {companyData.accreditations.map((cert, index) => (
-                <div key={index} className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
-                  <span className="text-white font-sans text-sm font-semibold">✓ {cert}</span>
+                <div
+                  key={index}
+                  className="bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20"
+                >
+                  <span className="text-white font-sans text-sm font-semibold">
+                    ✓ {cert}
+                  </span>
                 </div>
               ))}
             </div>
@@ -342,8 +416,18 @@ export default function QualityPage() {
               className="inline-flex items-center gap-2 bg-white text-near-black px-8 py-3 rounded-full font-sans font-bold text-sm uppercase tracking-wider hover:bg-gray-100 transition-all duration-300 hover:scale-105"
             >
               Request Quote
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </a>
             <a

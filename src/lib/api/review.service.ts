@@ -1,5 +1,5 @@
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type ReviewFilters = {
   rating?: number;
@@ -8,8 +8,8 @@ export type ReviewFilters = {
 };
 
 export type ReviewSortOptions = {
-  sortBy?: 'createdAt' | 'rating' | 'customerName';
-  sortOrder?: 'asc' | 'desc';
+  sortBy?: "createdAt" | "rating" | "customerName";
+  sortOrder?: "asc" | "desc";
 };
 
 export type PaginationOptions = {
@@ -19,20 +19,23 @@ export type PaginationOptions = {
 
 // ─── PUBLIC CUSTOMER FUNCTIONS ──────────────────────────────────────────────
 
-export async function createReview(orderId: string, data: { rating: number; comment?: string }) {
+export async function createReview(
+  orderId: string,
+  data: { rating: number; comment?: string },
+) {
   // Ensure review doesn't already exist for this order
   const existingReview = await prisma.review.findUnique({
-    where: { orderId }
+    where: { orderId },
   });
 
   if (existingReview) {
-    throw new Error('A review already exists for this order.');
+    throw new Error("A review already exists for this order.");
   }
 
   // Ensure order is actually delivered
   const order = await prisma.order.findUnique({ where: { id: orderId } });
-  if (!order || order.status !== 'delivered') {
-    throw new Error('Order must be delivered before leaving a review.');
+  if (!order || order.status !== "delivered") {
+    throw new Error("Order must be delivered before leaving a review.");
   }
 
   const review = await prisma.review.create({
@@ -40,7 +43,7 @@ export async function createReview(orderId: string, data: { rating: number; comm
       orderId,
       rating: data.rating,
       comment: data.comment,
-    }
+    },
   });
 
   revalidatePaths();
@@ -50,50 +53,53 @@ export async function createReview(orderId: string, data: { rating: number; comm
 export async function getPublicReviews() {
   return prisma.review.findMany({
     where: { isPublic: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       order: {
-        select: { customerName: true, company: true }
-      }
-    }
+        select: { customerName: true, company: true },
+      },
+    },
   });
 }
 
 // ─── ADMIN FUNCTIONS ─────────────────────────────────────────────────────────
 
-export async function getAllReviews(options: PaginationOptions & ReviewSortOptions & { filters?: ReviewFilters } = {}) {
-  const { 
-    page = 1, 
-    limit = 10, 
-    sortBy = 'createdAt', 
-    sortOrder = 'desc', 
-    filters = {} 
+export async function getAllReviews(
+  options: PaginationOptions &
+    ReviewSortOptions & { filters?: ReviewFilters } = {},
+) {
+  const {
+    page = 1,
+    limit = 10,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+    filters = {},
   } = options;
 
   const skip = (page - 1) * limit;
 
   // Build where clause
   const where: any = {};
-  
+
   if (filters.rating !== undefined) {
     where.rating = filters.rating;
   }
-  
+
   if (filters.isPublic !== undefined) {
     where.isPublic = filters.isPublic;
   }
-  
+
   if (filters.orderId) {
     where.orderId = filters.orderId;
   }
 
   // Build orderBy clause
   let orderBy: any;
-  if (sortBy === 'customerName') {
+  if (sortBy === "customerName") {
     orderBy = {
       order: {
-        customerName: sortOrder
-      }
+        customerName: sortOrder,
+      },
     };
   } else {
     orderBy = { [sortBy]: sortOrder };
@@ -115,11 +121,11 @@ export async function getAllReviews(options: PaginationOptions & ReviewSortOptio
             company: true,
             total: true,
             createdAt: true,
-          }
-        }
-      }
+          },
+        },
+      },
     }),
-    prisma.review.count({ where })
+    prisma.review.count({ where }),
   ]);
 
   return {
@@ -131,7 +137,7 @@ export async function getAllReviews(options: PaginationOptions & ReviewSortOptio
       pages: Math.ceil(totalCount / limit),
       hasNext: page * limit < totalCount,
       hasPrev: page > 1,
-    }
+    },
   };
 }
 
@@ -154,18 +160,21 @@ export async function getReviewById(id: string) {
               name: true,
               quantity: true,
               price: true,
-            }
-          }
-        }
-      }
-    }
+            },
+          },
+        },
+      },
+    },
   });
 }
 
-export async function updateReview(id: string, data: { 
-  isPublic?: boolean; 
-  adminNotes?: string;
-}) {
+export async function updateReview(
+  id: string,
+  data: {
+    isPublic?: boolean;
+    adminNotes?: string;
+  },
+) {
   const review = await prisma.review.update({
     where: { id },
     data,
@@ -176,9 +185,9 @@ export async function updateReview(id: string, data: {
           orderNumber: true,
           customerName: true,
           customerEmail: true,
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
   revalidatePaths();
@@ -187,23 +196,26 @@ export async function updateReview(id: string, data: {
 
 export async function deleteReview(id: string) {
   await prisma.review.delete({
-    where: { id }
+    where: { id },
   });
 
   revalidatePaths();
 }
 
-export async function bulkUpdateReviews(reviewIds: string[], data: { 
-  isPublic?: boolean; 
-  adminNotes?: string;
-}) {
+export async function bulkUpdateReviews(
+  reviewIds: string[],
+  data: {
+    isPublic?: boolean;
+    adminNotes?: string;
+  },
+) {
   const result = await prisma.review.updateMany({
     where: {
       id: {
-        in: reviewIds
-      }
+        in: reviewIds,
+      },
     },
-    data
+    data,
   });
 
   revalidatePaths();
@@ -214,9 +226,9 @@ export async function bulkDeleteReviews(reviewIds: string[]) {
   const result = await prisma.review.deleteMany({
     where: {
       id: {
-        in: reviewIds
-      }
-    }
+        in: reviewIds,
+      },
+    },
   });
 
   revalidatePaths();
@@ -224,36 +236,40 @@ export async function bulkDeleteReviews(reviewIds: string[]) {
 }
 
 export async function getReviewStats() {
-  const [totalReviews, publicReviews, averageRating, ratingDistribution] = await Promise.all([
-    prisma.review.count(),
-    prisma.review.count({ where: { isPublic: true } }),
-    prisma.review.aggregate({
-      _avg: { rating: true }
-    }),
-    prisma.review.groupBy({
-      by: ['rating'],
-      _count: { rating: true },
-      orderBy: { rating: 'asc' }
-    })
-  ]);
+  const [totalReviews, publicReviews, averageRating, ratingDistribution] =
+    await Promise.all([
+      prisma.review.count(),
+      prisma.review.count({ where: { isPublic: true } }),
+      prisma.review.aggregate({
+        _avg: { rating: true },
+      }),
+      prisma.review.groupBy({
+        by: ["rating"],
+        _count: { rating: true },
+        orderBy: { rating: "asc" },
+      }),
+    ]);
 
   return {
     total: totalReviews,
     public: publicReviews,
     private: totalReviews - publicReviews,
     averageRating: averageRating._avg.rating || 0,
-    ratingDistribution: ratingDistribution.reduce((acc, item) => {
-      acc[item.rating] = item._count.rating;
-      return acc;
-    }, {} as Record<number, number>)
+    ratingDistribution: ratingDistribution.reduce(
+      (acc, item) => {
+        acc[item.rating] = item._count.rating;
+        return acc;
+      },
+      {} as Record<number, number>,
+    ),
   };
 }
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function revalidatePaths() {
-  revalidatePath('/admin/reviews');
-  revalidatePath('/admin/orders');
-  revalidatePath('/admin/tracking');
-  revalidatePath('/');
+  revalidatePath("/admin/reviews");
+  revalidatePath("/admin/orders");
+  revalidatePath("/admin/tracking");
+  revalidatePath("/");
 }

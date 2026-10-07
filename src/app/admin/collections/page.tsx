@@ -1,6 +1,6 @@
-import { AdminShell } from '@/app/admin/layout';
-import { CollectionsClient } from './CollectionsClient';
-import { getAllCollections } from '@/lib/api/collection.service';
+import { AdminShell } from "@/app/admin/layout";
+import { CollectionsClient } from "./CollectionsClient";
+import { getAllCollections } from "@/lib/api/collection.service";
 
 export default async function CollectionsPage() {
   const collections = await getAllCollections();

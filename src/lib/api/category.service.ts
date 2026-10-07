@@ -3,8 +3,8 @@
  * CRUD operations for categories
  */
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type CreateCategoryInput = {
   name: string;
@@ -18,19 +18,19 @@ export type UpdateCategoryInput = Partial<CreateCategoryInput>;
 
 export async function getAllCategories() {
   return prisma.category.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       _count: {
-        select: { products: true }
-      }
-    }
+        select: { products: true },
+      },
+    },
   });
 }
 
 export async function getPublishedCategories() {
   return prisma.category.findMany({
     where: { isPublished: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 
@@ -69,7 +69,7 @@ export async function deleteCategory(id: string) {
 }
 
 function revalidatePaths() {
-  revalidatePath('/');
-  revalidatePath('/products');
-  revalidatePath('/admin/categories');
+  revalidatePath("/");
+  revalidatePath("/products");
+  revalidatePath("/admin/categories");
 }

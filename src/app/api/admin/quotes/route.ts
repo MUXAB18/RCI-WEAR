@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createQuote } from '@/lib/api/quote.service';
+import { NextRequest, NextResponse } from "next/server";
+import { createQuote } from "@/lib/api/quote.service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,10 +7,10 @@ export async function POST(request: NextRequest) {
     const quote = await createQuote(body);
     return NextResponse.json(quote, { status: 201 });
   } catch (error) {
-    console.error('Failed to create quote:', error);
+    console.error("Failed to create quote:", error);
     return NextResponse.json(
-      { error: 'Failed to create quote' },
-      { status: 500 }
+      { error: "Failed to create quote" },
+      { status: 500 },
     );
   }
 }

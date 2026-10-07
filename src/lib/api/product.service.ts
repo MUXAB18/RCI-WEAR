@@ -3,8 +3,8 @@
  * CRUD operations for products
  */
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type CreateProductInput = {
   name: string;
@@ -37,7 +37,7 @@ export type UpdateProductInput = Partial<CreateProductInput>;
 
 export async function getAllProducts() {
   return prisma.product.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       collection: {
         select: { id: true, name: true },
@@ -50,7 +50,7 @@ export async function getAllProducts() {
 export async function getPublishedProducts() {
   return prisma.product.findMany({
     where: { isPublished: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       collection: true,
       variants: true,
@@ -60,12 +60,12 @@ export async function getPublishedProducts() {
 
 export async function getFeaturedProducts(limit = 8) {
   return prisma.product.findMany({
-    where: { 
+    where: {
       isPublished: true,
       isFeatured: true,
     },
     take: limit,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 
@@ -91,11 +91,11 @@ export async function getProductBySlug(slug: string) {
 
 export async function getProductsByCollection(collectionId: string) {
   return prisma.product.findMany({
-    where: { 
+    where: {
       collectionId,
       isPublished: true,
     },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 
@@ -119,21 +119,22 @@ export async function createProduct(data: CreateProductInput) {
       minOrder: productData.minOrder ?? 1,
       tags: productData.tags || [],
       collectionId: productData.collectionId,
-      ...(variants && variants.length > 0 && {
-        variants: {
-          create: variants.map(v => ({
-            size: v.size,
-            color: v.color,
-            sku: v.sku,
-            price: v.price,
-            stock: v.stock ?? 0,
-          })),
-        },
-      }),
+      ...(variants &&
+        variants.length > 0 && {
+          variants: {
+            create: variants.map((v) => ({
+              size: v.size,
+              color: v.color,
+              sku: v.sku,
+              price: v.price,
+              stock: v.stock ?? 0,
+            })),
+          },
+        }),
     },
     include: {
       variants: true,
-    }
+    },
   });
   revalidatePaths();
   return product;
@@ -143,11 +144,11 @@ export async function createProduct(data: CreateProductInput) {
 
 export async function updateProduct(id: string, data: UpdateProductInput) {
   const { variants, ...productData } = data;
-  
+
   if (variants) {
     // Delete existing variants and recreate them to simplify sync
     await prisma.productVariant.deleteMany({
-      where: { productId: id }
+      where: { productId: id },
     });
   }
 
@@ -155,21 +156,22 @@ export async function updateProduct(id: string, data: UpdateProductInput) {
     where: { id },
     data: {
       ...productData,
-      ...(variants && variants.length > 0 && {
-        variants: {
-          create: variants.map(v => ({
-            size: v.size,
-            color: v.color,
-            sku: v.sku,
-            price: v.price,
-            stock: v.stock ?? 0,
-          })),
-        },
-      }),
+      ...(variants &&
+        variants.length > 0 && {
+          variants: {
+            create: variants.map((v) => ({
+              size: v.size,
+              color: v.color,
+              sku: v.sku,
+              price: v.price,
+              stock: v.stock ?? 0,
+            })),
+          },
+        }),
     },
     include: {
       variants: true,
-    }
+    },
   });
   revalidatePaths();
   return product;
@@ -185,8 +187,8 @@ export async function deleteProduct(id: string) {
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function revalidatePaths() {
-  revalidatePath('/');
-  revalidatePath('/products');
-  revalidatePath('/collections');
-  revalidatePath('/admin/products');
+  revalidatePath("/");
+  revalidatePath("/products");
+  revalidatePath("/collections");
+  revalidatePath("/admin/products");
 }

@@ -1,90 +1,141 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { SectionHeading } from '@/components/ui/SectionHeading';
-import { Leaf, Recycle, Droplets, Sun, Users, Shield, Award, CheckCircle, Heart, Zap, Trees, Wind } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import {
+  Leaf,
+  Recycle,
+  Droplets,
+  Sun,
+  Users,
+  Shield,
+  Award,
+  CheckCircle,
+  Heart,
+  Zap,
+  Trees,
+  Wind,
+} from "lucide-react";
 
 const PILLARS = [
   {
     icon: Users,
-    title: 'Ethical Labor',
-    description: 'Fair wages, safe working conditions, and reasonable hours - our people are our strength',
-    features: ['Living wages above minimum', 'Safe working environment', 'No child labor', 'Regular health checkups']
+    title: "Ethical Labor",
+    description:
+      "Fair wages, safe working conditions, and reasonable hours - our people are our strength",
+    features: [
+      "Living wages above minimum",
+      "Safe working environment",
+      "No child labor",
+      "Regular health checkups",
+    ],
   },
   {
     icon: Droplets,
-    title: 'Water Conservation',
-    description: 'Closed-loop dyeing and water recycling systems reducing consumption by 60%',
-    features: ['Recycled water systems', 'OEKO-TEX certified dyes', 'Low-impact washing', 'Zero toxic discharge']
+    title: "Water Conservation",
+    description:
+      "Closed-loop dyeing and water recycling systems reducing consumption by 60%",
+    features: [
+      "Recycled water systems",
+      "OEKO-TEX certified dyes",
+      "Low-impact washing",
+      "Zero toxic discharge",
+    ],
   },
   {
     icon: Recycle,
-    title: 'Waste Reduction',
-    description: 'Precision cutting and fabric recycling to minimize landfill waste',
-    features: ['CAD pattern optimization', 'Scrap fabric recycling', '90% waste reduction', 'Zero-waste packaging']
+    title: "Waste Reduction",
+    description:
+      "Precision cutting and fabric recycling to minimize landfill waste",
+    features: [
+      "CAD pattern optimization",
+      "Scrap fabric recycling",
+      "90% waste reduction",
+      "Zero-waste packaging",
+    ],
   },
   {
     icon: Sun,
-    title: 'Clean Energy',
-    description: 'Transitioning to renewable energy and maximizing natural light',
-    features: ['Solar power integration', 'LED lighting throughout', 'Energy-efficient machines', 'Carbon footprint tracking']
+    title: "Clean Energy",
+    description:
+      "Transitioning to renewable energy and maximizing natural light",
+    features: [
+      "Solar power integration",
+      "LED lighting throughout",
+      "Energy-efficient machines",
+      "Carbon footprint tracking",
+    ],
   },
   {
     icon: Trees,
-    title: 'Sustainable Materials',
-    description: 'Organic, recycled, and eco-friendly fabric options available',
-    features: ['Organic cotton', 'Recycled polyester', 'Bamboo & Tencel', 'BCI certified cotton']
+    title: "Sustainable Materials",
+    description: "Organic, recycled, and eco-friendly fabric options available",
+    features: [
+      "Organic cotton",
+      "Recycled polyester",
+      "Bamboo & Tencel",
+      "BCI certified cotton",
+    ],
   },
   {
     icon: Heart,
-    title: 'Social Responsibility',
-    description: 'Supporting local communities and empowering workers',
-    features: ['Skills training programs', 'Women empowerment', 'Community development', 'Healthcare support']
-  }
+    title: "Social Responsibility",
+    description: "Supporting local communities and empowering workers",
+    features: [
+      "Skills training programs",
+      "Women empowerment",
+      "Community development",
+      "Healthcare support",
+    ],
+  },
 ];
 
 const CERTIFICATIONS = [
-  { name: 'OEKO-TEX', desc: 'Certified safe textile production' },
-  { name: 'WRAP', desc: 'Worldwide Responsible Accredited Production' },
-  { name: 'BCI', desc: 'Better Cotton Initiative member' },
-  { name: 'GOTS Ready', desc: 'Global Organic Textile Standard compliance' },
-  { name: 'ISO 9001', desc: 'Quality management certified' },
-  { name: 'SA8000', desc: 'Social accountability certified' }
+  { name: "OEKO-TEX", desc: "Certified safe textile production" },
+  { name: "WRAP", desc: "Worldwide Responsible Accredited Production" },
+  { name: "BCI", desc: "Better Cotton Initiative member" },
+  { name: "GOTS Ready", desc: "Global Organic Textile Standard compliance" },
+  { name: "ISO 9001", desc: "Quality management certified" },
+  { name: "SA8000", desc: "Social accountability certified" },
 ];
 
 const INITIATIVES = [
   {
     icon: Droplets,
-    title: 'Water Recycling System',
-    impact: '60% reduction in water use',
-    description: 'Our closed-loop system recycles and treats water used in dyeing and washing processes'
+    title: "Water Recycling System",
+    impact: "60% reduction in water use",
+    description:
+      "Our closed-loop system recycles and treats water used in dyeing and washing processes",
   },
   {
     icon: Recycle,
-    title: 'Fabric Scrap Upcycling',
-    impact: '90% waste diverted from landfills',
-    description: 'Leftover fabric is collected and transformed into industrial textiles and insulation'
+    title: "Fabric Scrap Upcycling",
+    impact: "90% waste diverted from landfills",
+    description:
+      "Leftover fabric is collected and transformed into industrial textiles and insulation",
   },
   {
     icon: Sun,
-    title: 'Solar Power Transition',
-    impact: '40% renewable energy',
-    description: 'Installing solar panels across our facilities to reduce carbon emissions'
+    title: "Solar Power Transition",
+    impact: "40% renewable energy",
+    description:
+      "Installing solar panels across our facilities to reduce carbon emissions",
   },
   {
     icon: Trees,
-    title: 'Tree Planting Program',
-    impact: '500+ trees planted annually',
-    description: 'Carbon offset initiative supporting local reforestation projects'
-  }
+    title: "Tree Planting Program",
+    impact: "500+ trees planted annually",
+    description:
+      "Carbon offset initiative supporting local reforestation projects",
+  },
 ];
 
 const STATS = [
-  { value: '60%', label: 'Water Saved' },
-  { value: '90%', label: 'Waste Reduced' },
-  { value: '40%', label: 'Renewable Energy' },
-  { value: '100%', label: 'Fair Wages' }
+  { value: "60%", label: "Water Saved" },
+  { value: "90%", label: "Waste Reduced" },
+  { value: "40%", label: "Renewable Energy" },
+  { value: "100%", label: "Fair Wages" },
 ];
 
 export default function SustainabilityPage() {
@@ -92,7 +143,7 @@ export default function SustainabilityPage() {
     <div className="pt-32 pb-24 min-h-screen bg-white">
       <div className="container mx-auto px-6 md:px-12">
         {/* Header */}
-        <SectionHeading 
+        <SectionHeading
           eyebrow="Sustainability"
           title="Conscious Manufacturing"
           subtitle="Building a responsible supply chain that respects people and planet"
@@ -106,7 +157,10 @@ export default function SustainabilityPage() {
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
         >
           {STATS.map((stat, index) => (
-            <div key={index} className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <div
+              key={index}
+              className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200"
+            >
               <div className="text-3xl md:text-4xl font-sans font-bold text-black mb-2">
                 {stat.value}
               </div>
@@ -157,7 +211,9 @@ export default function SustainabilityPage() {
                   {pillar.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-700 font-sans">{feature}</span>
+                      <span className="text-sm text-gray-700 font-sans">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -247,9 +303,7 @@ export default function SustainabilityPage() {
                 <h3 className="text-sm font-sans font-bold text-black mb-1">
                   {cert.name}
                 </h3>
-                <p className="text-xs text-gray-600 font-sans">
-                  {cert.desc}
-                </p>
+                <p className="text-xs text-gray-600 font-sans">{cert.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -271,23 +325,31 @@ export default function SustainabilityPage() {
               Our Commitment to You
             </h2>
             <p className="text-gray-700 font-sans leading-relaxed mb-8">
-              We believe that sustainable manufacturing isn't just good for the planet — it's good for business. 
-              When you partner with Rasheed Clothing, you're choosing a manufacturer that prioritizes ethical 
-              practices, environmental responsibility, and transparent operations. Together, we can build a 
-              supply chain you can be proud of.
+              We believe that sustainable manufacturing isn't just good for the
+              planet — it's good for business. When you partner with Rasheed
+              Clothing, you're choosing a manufacturer that prioritizes ethical
+              practices, environmental responsibility, and transparent
+              operations. Together, we can build a supply chain you can be proud
+              of.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border border-gray-200">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm font-sans font-bold text-gray-700">Transparent Reporting</span>
+                <span className="text-sm font-sans font-bold text-gray-700">
+                  Transparent Reporting
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border border-gray-200">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm font-sans font-bold text-gray-700">Continuous Improvement</span>
+                <span className="text-sm font-sans font-bold text-gray-700">
+                  Continuous Improvement
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-full border border-gray-200">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm font-sans font-bold text-gray-700">Third-Party Audited</span>
+                <span className="text-sm font-sans font-bold text-gray-700">
+                  Third-Party Audited
+                </span>
               </div>
             </div>
           </div>
@@ -313,8 +375,18 @@ export default function SustainabilityPage() {
               className="inline-flex items-center gap-2 bg-white text-near-black px-8 py-3 rounded-full font-sans font-bold text-sm uppercase tracking-wider hover:bg-gray-100 transition-all duration-300 hover:scale-105"
             >
               Request Quote
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </a>
             <a

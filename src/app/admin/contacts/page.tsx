@@ -1,6 +1,6 @@
-import { AdminShell } from '@/app/admin/layout';
-import { ContactsClient } from './ContactsClient';
-import { getAllInquiries } from '@/lib/api/contact.service';
+import { AdminShell } from "@/app/admin/layout";
+import { ContactsClient } from "./ContactsClient";
+import { getAllInquiries } from "@/lib/api/contact.service";
 
 export default async function ContactsPage() {
   const contacts = await getAllInquiries();

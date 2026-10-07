@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Upload, X, Loader2, Plus } from 'lucide-react';
-import { Input } from './Input';
+import { useState } from "react";
+import { Upload, X, Loader2, Plus } from "lucide-react";
+import { Input } from "./Input";
 
 interface MultiImageUploadProps {
   label: string;
@@ -12,10 +12,16 @@ interface MultiImageUploadProps {
   required?: boolean;
 }
 
-export function MultiImageUpload({ label, value, onChange, helperText, required }: MultiImageUploadProps) {
+export function MultiImageUpload({
+  label,
+  value,
+  onChange,
+  helperText,
+  required,
+}: MultiImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [urlInput, setUrlInput] = useState('');
+  const [urlInput, setUrlInput] = useState("");
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -23,17 +29,17 @@ export function MultiImageUpload({ label, value, onChange, helperText, required 
 
     setIsUploading(true);
     setError(null);
-    
+
     const newUrls = [...value];
-    
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       try {
-        const res = await fetch('/api/admin/upload', {
-          method: 'POST',
+        const res = await fetch("/api/admin/upload", {
+          method: "POST",
           body: formData,
         });
 
@@ -42,15 +48,15 @@ export function MultiImageUpload({ label, value, onChange, helperText, required 
           newUrls.push(data.url);
         } else {
           const errorData = await res.json();
-          setError(errorData.error || 'Upload failed');
-          console.error('Upload failed');
+          setError(errorData.error || "Upload failed");
+          console.error("Upload failed");
         }
       } catch (error) {
-        setError('An error occurred during upload');
-        console.error('Upload error:', error);
+        setError("An error occurred during upload");
+        console.error("Upload error:", error);
       }
     }
-    
+
     onChange(newUrls);
     setIsUploading(false);
   };
@@ -62,7 +68,7 @@ export function MultiImageUpload({ label, value, onChange, helperText, required 
   const addUrl = () => {
     if (urlInput.trim()) {
       onChange([...value, urlInput.trim()]);
-      setUrlInput('');
+      setUrlInput("");
     }
   };
 
@@ -72,14 +78,21 @@ export function MultiImageUpload({ label, value, onChange, helperText, required 
         {label}
         {required && <span className="text-red-400 ml-1">*</span>}
       </label>
-      
+
       <div className="flex flex-col gap-4">
         {/* Gallery */}
         {value.length > 0 && (
           <div className="flex flex-wrap gap-4">
             {value.map((url, index) => (
-              <div key={index} className="shrink-0 relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 group bg-white/5">
-                <img src={url} alt={`Uploaded ${index + 1}`} className="w-full h-full object-cover" />
+              <div
+                key={index}
+                className="shrink-0 relative w-24 h-24 rounded-xl overflow-hidden border border-white/10 group bg-white/5"
+              >
+                <img
+                  src={url}
+                  alt={`Uploaded ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
                     type="button"
@@ -103,7 +116,9 @@ export function MultiImageUpload({ label, value, onChange, helperText, required 
             ) : (
               <>
                 <Upload className="w-6 h-6 text-white/40 mb-2" />
-                <span className="text-xs text-white/40 font-medium">Upload</span>
+                <span className="text-xs text-white/40 font-medium">
+                  Upload
+                </span>
               </>
             )}
             <input
@@ -124,7 +139,7 @@ export function MultiImageUpload({ label, value, onChange, helperText, required 
                 placeholder="Or enter image URL manually..."
                 error={error || undefined}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     e.preventDefault();
                     addUrl();
                   }
@@ -139,7 +154,9 @@ export function MultiImageUpload({ label, value, onChange, helperText, required 
                 Add
               </button>
             </div>
-            {helperText && !error && <p className="text-xs text-white/40">{helperText}</p>}
+            {helperText && !error && (
+              <p className="text-xs text-white/40">{helperText}</p>
+            )}
           </div>
         </div>
       </div>

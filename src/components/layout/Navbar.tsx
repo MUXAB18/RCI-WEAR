@@ -1,38 +1,42 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { navigation } from '@/data/navigation';
-import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { navigation } from "@/data/navigation";
+import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
-  const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
+  const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(
+    null,
+  );
   const pathname = usePathname();
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-    return () => { document.body.style.overflow = 'unset'; };
+    return () => {
+      document.body.style.overflow = "unset";
+    };
   }, [mobileMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close mobile menu on route change
@@ -44,12 +48,12 @@ export function Navbar() {
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
 
@@ -60,7 +64,7 @@ export function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 80, damping: 20, delay: 0.1 }}
         className={cn(
-          "fixed inset-x-0 top-0 z-50 flex justify-center transition-all duration-500 pointer-events-none pt-4 md:pt-6 px-4 md:px-8"
+          "fixed inset-x-0 top-0 z-50 flex justify-center transition-all duration-500 pointer-events-none pt-4 md:pt-6 px-4 md:px-8",
         )}
       >
         <div className="w-full max-w-7xl relative group pointer-events-auto px-4">
@@ -70,7 +74,7 @@ export function Navbar() {
           <div
             className={cn(
               "relative z-10 w-full flex items-center justify-between transition-all duration-500",
-              "bg-[#0f0f0f]/80 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] rounded-full p-2 pl-6"
+              "bg-[#0f0f0f]/80 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] rounded-full p-2 pl-6",
             )}
           >
             {/* Logo (White) */}
@@ -80,7 +84,7 @@ export function Navbar() {
             >
               <div className="relative w-full h-full">
                 <Image
-                  src="/rci-logo.svg"
+                  src="/rasheed-clothing-logo-transparent.png"
                   alt="RCI Logo"
                   fill
                   className="object-contain brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
@@ -104,7 +108,9 @@ export function Navbar() {
                     href={item.href}
                     className={cn(
                       "relative flex items-center gap-1 text-[14px] font-medium transition-colors duration-300 px-4 py-2.5 rounded-full z-10 whitespace-nowrap",
-                      pathname === item.href ? "text-white" : "text-white/70 hover:text-white"
+                      pathname === item.href
+                        ? "text-white"
+                        : "text-white/70 hover:text-white",
                     )}
                   >
                     {/* Magnetic Sliding Hover Pill */}
@@ -115,15 +121,21 @@ export function Navbar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
+                        transition={{
+                          type: "spring",
+                          bounce: 0.15,
+                          duration: 0.5,
+                        }}
                       />
                     )}
                     {item.name}
                     {item.dropdown && (
-                      <ChevronDown className={cn(
-                        "w-4 h-4 transition-transform duration-300",
-                        hoveredMenu === item.name ? "rotate-180" : ""
-                      )} />
+                      <ChevronDown
+                        className={cn(
+                          "w-4 h-4 transition-transform duration-300",
+                          hoveredMenu === item.name ? "rotate-180" : "",
+                        )}
+                      />
                     )}
                   </Link>
 
@@ -171,7 +183,7 @@ export function Navbar() {
             {/* Mobile Menu Toggle */}
             <button
               className="lg:hidden relative z-50 p-4 text-white hover:bg-white/10 rounded-full transition-colors mr-1 outline-none focus:outline-none focus:ring-0 active:outline-none -webkit-tap-highlight-color-transparent"
-              style={{ WebkitTapHighlightColor: 'transparent' }}
+              style={{ WebkitTapHighlightColor: "transparent" }}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -224,7 +236,7 @@ export function Navbar() {
                 style={{ width: 160, height: 55 }}
               >
                 <Image
-                  src="/rci-logo.svg"
+                  src="/rasheed-clothing-logo-transparent.png"
                   alt="Rasheed Clothing International"
                   fill
                   className="object-contain object-left brightness-0 invert opacity-90"
@@ -235,7 +247,7 @@ export function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-white/[0.12] text-white/70 hover:text-white hover:border-white/25 hover:bg-white/[0.04] transition-all duration-200"
                 aria-label="Close navigation menu"
-                style={{ WebkitTapHighlightColor: 'transparent' }}
+                style={{ WebkitTapHighlightColor: "transparent" }}
               >
                 <X className="w-[18px] h-[18px]" strokeWidth={1.2} />
               </button>
@@ -258,18 +270,22 @@ export function Navbar() {
                   >
                     {item.dropdown ? (
                       <button
-                        onClick={() => setExpandedMobileMenu(expandedMobileMenu === item.name ? null : item.name)}
+                        onClick={() =>
+                          setExpandedMobileMenu(
+                            expandedMobileMenu === item.name ? null : item.name,
+                          )
+                        }
                         className={cn(
-                          "flex items-center justify-between py-4 group border-b border-white/[0.06] w-full text-left outline-none focus:outline-none"
+                          "flex items-center justify-between py-4 group border-b border-white/[0.06] w-full text-left outline-none focus:outline-none",
                         )}
-                        style={{ WebkitTapHighlightColor: 'transparent' }}
+                        style={{ WebkitTapHighlightColor: "transparent" }}
                       >
                         <span
                           className={cn(
                             "text-[26px] font-sans font-light tracking-[0.01em] leading-none transition-colors duration-200",
                             expandedMobileMenu === item.name
                               ? "text-white"
-                              : "text-white/60 group-hover:text-white/90"
+                              : "text-white/60 group-hover:text-white/90",
                           )}
                         >
                           {item.name}
@@ -277,7 +293,9 @@ export function Navbar() {
                         <ChevronDown
                           className={cn(
                             "w-5 h-5 transition-all duration-300",
-                            expandedMobileMenu === item.name ? "text-white rotate-180" : "text-white/40 group-hover:text-white/80"
+                            expandedMobileMenu === item.name
+                              ? "text-white rotate-180"
+                              : "text-white/40 group-hover:text-white/80",
                           )}
                           strokeWidth={1.5}
                         />
@@ -289,14 +307,14 @@ export function Navbar() {
                         className={cn(
                           "flex items-center justify-between py-4 group border-b border-white/[0.06] w-full",
                         )}
-                        style={{ WebkitTapHighlightColor: 'transparent' }}
+                        style={{ WebkitTapHighlightColor: "transparent" }}
                       >
                         <span
                           className={cn(
                             "text-[26px] font-sans font-light tracking-[0.01em] leading-none transition-colors duration-200",
                             pathname === item.href
                               ? "text-white"
-                              : "text-white/60 group-hover:text-white/90 group-active:text-white"
+                              : "text-white/60 group-hover:text-white/90 group-active:text-white",
                           )}
                         >
                           {item.name}
@@ -315,7 +333,10 @@ export function Navbar() {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                          transition={{
+                            duration: 0.3,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
                           className="overflow-hidden"
                         >
                           <div className="flex flex-col gap-1 pl-4 pt-3 pb-3 ml-2 border-l-2 border-white/[0.08] mt-2 mb-2">
@@ -325,7 +346,9 @@ export function Navbar() {
                                 href={subItem.href}
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="text-[16px] font-light tracking-wide text-white/50 hover:text-white/90 active:text-white py-2 transition-colors duration-200"
-                                style={{ WebkitTapHighlightColor: 'transparent' }}
+                                style={{
+                                  WebkitTapHighlightColor: "transparent",
+                                }}
                               >
                                 {subItem.name}
                               </Link>
@@ -343,14 +366,18 @@ export function Navbar() {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.38, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                delay: 0.38,
+                duration: 0.4,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="px-6 pt-5 pb-36 border-t border-white/[0.07] shrink-0"
             >
               <Button
                 href="/request-quote"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full bg-[#efefef] text-[#0a0a0a] py-[15px] rounded-full text-[10px] font-semibold uppercase tracking-[0.22em] border-none hover:bg-white active:bg-white/90 transition-colors duration-200 flex items-center justify-center gap-2.5 group"
-                style={{ WebkitTapHighlightColor: 'transparent' }}
+                style={{ WebkitTapHighlightColor: "transparent" }}
               >
                 Order Now
                 <ArrowRight

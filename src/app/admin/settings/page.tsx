@@ -1,7 +1,7 @@
-import { AdminShell } from '@/app/admin/layout';
-import { SettingsClient } from './SettingsClient';
-import { AdminAccountSettings } from './AdminAccountSettings';
-import { getAllSettings } from '@/lib/api/settings.service';
+import { AdminShell } from "@/app/admin/layout";
+import { SettingsClient } from "./SettingsClient";
+import { AdminAccountSettings } from "./AdminAccountSettings";
+import { getAllSettings } from "@/lib/api/settings.service";
 
 export default async function SettingsPage() {
   const settings = await getAllSettings();

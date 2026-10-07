@@ -1,11 +1,11 @@
-import { AdminShell } from '@/app/admin/layout';
-import { ReviewsClient } from './ReviewsClient';
-import { getAllReviews, getReviewStats } from '@/lib/api/review.service';
+import { AdminShell } from "@/app/admin/layout";
+import { ReviewsClient } from "./ReviewsClient";
+import { getAllReviews, getReviewStats } from "@/lib/api/review.service";
 
 export default async function ReviewsPage() {
   const [reviewsData, stats] = await Promise.all([
     getAllReviews({ limit: 100 }), // Default load first 100
-    getReviewStats()
+    getReviewStats(),
   ]);
 
   return (

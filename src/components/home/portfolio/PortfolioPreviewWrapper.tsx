@@ -1,6 +1,6 @@
-import React from 'react';
-import { getFeaturedProjects } from '@/lib/api/portfolio.service';
-import { PortfolioPreviewSection } from './PortfolioPreviewSection';
+import React from "react";
+import { getFeaturedProjects } from "@/lib/api/portfolio.service";
+import { PortfolioPreviewSection } from "./PortfolioPreviewSection";
 
 export async function PortfolioPreviewWrapper() {
   const projects = await getFeaturedProjects();

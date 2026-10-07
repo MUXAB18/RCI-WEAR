@@ -1,21 +1,41 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { ShoppingBag, Edit, Trash2, Eye, Plus, X, Star, MessageSquare, Download, Filter, Link as LinkIcon } from 'lucide-react';
-import { PageHeader } from '@/components/admin/ui/PageHeader';
-import { Button } from '@/components/admin/ui/Button';
-import { DataTable, Column } from '@/components/admin/ui/DataTable';
-import { Badge } from '@/components/admin/ui/Badge';
-import { Modal } from '@/components/admin/ui/Modal';
-import { ConfirmModal } from '@/components/admin/ui/ConfirmModal';
-import { Input } from '@/components/admin/ui/Input';
-import { Select } from '@/components/admin/ui/Select';
-import { Textarea } from '@/components/admin/ui/Textarea';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import toast from 'react-hot-toast';
+import { useState, useMemo } from "react";
+import {
+  ShoppingBag,
+  Edit,
+  Trash2,
+  Eye,
+  Plus,
+  X,
+  Star,
+  MessageSquare,
+  Download,
+  Filter,
+  Link as LinkIcon,
+} from "lucide-react";
+import { PageHeader } from "@/components/admin/ui/PageHeader";
+import { Button } from "@/components/admin/ui/Button";
+import { DataTable, Column } from "@/components/admin/ui/DataTable";
+import { Badge } from "@/components/admin/ui/Badge";
+import { Modal } from "@/components/admin/ui/Modal";
+import { ConfirmModal } from "@/components/admin/ui/ConfirmModal";
+import { Input } from "@/components/admin/ui/Input";
+import { Select } from "@/components/admin/ui/Select";
+import { Textarea } from "@/components/admin/ui/Textarea";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import toast from "react-hot-toast";
 
-type OrderStatus = 'pending' | 'sourcing' | 'production' | 'qc' | 'packaging' | 'shipped' | 'delivered' | 'cancelled';
+type OrderStatus =
+  | "pending"
+  | "sourcing"
+  | "production"
+  | "qc"
+  | "packaging"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
 
 type Order = {
   id: string;
@@ -76,33 +96,35 @@ type Props = {
 };
 
 const statusOptions = [
-  { value: 'pending', label: 'Order Placed (Pending)' },
-  { value: 'sourcing', label: 'Material Sourcing' },
-  { value: 'production', label: 'Production (Cutting & Stitching)' },
-  { value: 'qc', label: 'Quality Control' },
-  { value: 'packaging', label: 'Packaging' },
-  { value: 'shipped', label: 'Shipped' },
-  { value: 'delivered', label: 'Delivered' },
-  { value: 'cancelled', label: 'Cancelled' },
+  { value: "pending", label: "Order Placed (Pending)" },
+  { value: "sourcing", label: "Material Sourcing" },
+  { value: "production", label: "Production (Cutting & Stitching)" },
+  { value: "qc", label: "Quality Control" },
+  { value: "packaging", label: "Packaging" },
+  { value: "shipped", label: "Shipped" },
+  { value: "delivered", label: "Delivered" },
+  { value: "cancelled", label: "Cancelled" },
 ];
 
-const getStatusVariant = (status: OrderStatus): 'success' | 'warning' | 'danger' | 'info' | 'default' => {
+const getStatusVariant = (
+  status: OrderStatus,
+): "success" | "warning" | "danger" | "info" | "default" => {
   switch (status) {
-    case 'delivered':
-      return 'success';
-    case 'shipped':
-    case 'packaging':
-      return 'info';
-    case 'pending':
-    case 'sourcing':
-      return 'warning';
-    case 'cancelled':
-      return 'danger';
-    case 'production':
-    case 'qc':
-      return 'info';
+    case "delivered":
+      return "success";
+    case "shipped":
+    case "packaging":
+      return "info";
+    case "pending":
+    case "sourcing":
+      return "warning";
+    case "cancelled":
+      return "danger";
+    case "production":
+    case "qc":
+      return "info";
     default:
-      return 'default';
+      return "default";
   }
 };
 
@@ -115,74 +137,85 @@ export function OrdersClient({ initialOrders }: Props) {
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  
+
   // Filtering & Selection State
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [paymentFilter, setPaymentFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [paymentFilter, setPaymentFilter] = useState<string>("all");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  
+
   const [formData, setFormData] = useState({
-    status: 'pending' as OrderStatus,
-    paymentStatus: 'unpaid',
-    notes: '',
-    trackingNumber: '',
-    estimatedDelivery: '',
-    productionCost: '',
-    shippingCost: '',
-    otherCosts: '',
+    status: "pending" as OrderStatus,
+    paymentStatus: "unpaid",
+    notes: "",
+    trackingNumber: "",
+    estimatedDelivery: "",
+    productionCost: "",
+    shippingCost: "",
+    otherCosts: "",
   });
 
   const [createFormData, setCreateFormData] = useState({
-    customerName: '',
-    customerEmail: '',
-    customerPhone: '',
-    company: '',
-    shippingAddress: '',
-    notes: '',
-    status: 'pending' as OrderStatus,
-    estimatedDelivery: '',
-    shipping: '',
-    tax: '',
-    items: [{ name: '', quantity: '1', price: '0' }],
+    customerName: "",
+    customerEmail: "",
+    customerPhone: "",
+    company: "",
+    shippingAddress: "",
+    notes: "",
+    status: "pending" as OrderStatus,
+    estimatedDelivery: "",
+    shipping: "",
+    tax: "",
+    items: [{ name: "", quantity: "1", price: "0" }],
     // Custom fields
-    website: '',
-    country: '',
-    category: '',
-    fabric: '',
-    gsm: '',
-    quantity: '',
+    website: "",
+    country: "",
+    category: "",
+    fabric: "",
+    gsm: "",
+    quantity: "",
     sizes: [] as string[],
     decoration: [] as string[],
     extras: [] as string[],
-    colors: '',
-    timeline: '',
-    budget: '',
-    comments: '',
-    productionCost: '',
-    shippingCost: '',
-    otherCosts: '',
+    colors: "",
+    timeline: "",
+    budget: "",
+    comments: "",
+    productionCost: "",
+    shippingCost: "",
+    otherCosts: "",
   });
 
   const filteredOrders = useMemo(() => {
-    return orders.filter(order => {
-      const matchesSearch = 
-        searchQuery === '' || 
+    return orders.filter((order) => {
+      const matchesSearch =
+        searchQuery === "" ||
         order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
         order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         order.customerEmail.toLowerCase().includes(searchQuery.toLowerCase());
-        
-      const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-      const matchesPayment = paymentFilter === 'all' || order.paymentStatus === paymentFilter;
-      
+
+      const matchesStatus =
+        statusFilter === "all" || order.status === statusFilter;
+      const matchesPayment =
+        paymentFilter === "all" || order.paymentStatus === paymentFilter;
+
       return matchesSearch && matchesStatus && matchesPayment;
     });
   }, [orders, searchQuery, statusFilter, paymentFilter]);
 
   const handleExportCSV = () => {
     // Generate CSV from filteredOrders
-    const headers = ['Order Number', 'Date', 'Customer Name', 'Customer Email', 'Status', 'Payment Status', 'Total', 'Profit'];
-    const rows = filteredOrders.map(o => [
+    const headers = [
+      "Order Number",
+      "Date",
+      "Customer Name",
+      "Customer Email",
+      "Status",
+      "Payment Status",
+      "Total",
+      "Profit",
+    ];
+    const rows = filteredOrders.map((o) => [
       o.orderNumber,
       new Date(o.createdAt).toLocaleDateString(),
       `"${o.customerName}"`,
@@ -190,15 +223,21 @@ export function OrdersClient({ initialOrders }: Props) {
       o.status,
       o.paymentStatus,
       o.total.toFixed(2),
-      o.profit ? o.profit.toFixed(2) : '0.00'
+      o.profit ? o.profit.toFixed(2) : "0.00",
     ]);
-    
-    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((r) => r.join(",")),
+    ].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', `orders_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute(
+      "download",
+      `orders_export_${new Date().toISOString().split("T")[0]}.csv`,
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -208,24 +247,30 @@ export function OrdersClient({ initialOrders }: Props) {
     if (selectedIds.length === 0) return;
     setLoading(true);
     try {
-      // Since we don't have a bulk API yet, we can update them one by one, 
+      // Since we don't have a bulk API yet, we can update them one by one,
       // or implement the bulk API later. Doing simple parallel fetch for now:
-      await Promise.all(selectedIds.map(id => 
-        fetch(`/api/admin/orders/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: newStatus }),
-        })
-      ));
-      
+      await Promise.all(
+        selectedIds.map((id) =>
+          fetch(`/api/admin/orders/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: newStatus }),
+          }),
+        ),
+      );
+
       // Update local state
-      setOrders(orders.map(o => selectedIds.includes(o.id) ? { ...o, status: newStatus } : o));
+      setOrders(
+        orders.map((o) =>
+          selectedIds.includes(o.id) ? { ...o, status: newStatus } : o,
+        ),
+      );
       setSelectedIds([]);
-      toast.success('Orders updated successfully');
+      toast.success("Orders updated successfully");
       router.refresh();
     } catch (err) {
-      console.error('Bulk update failed', err);
-      toast.error('Failed to update orders');
+      console.error("Bulk update failed", err);
+      toast.error("Failed to update orders");
     } finally {
       setLoading(false);
     }
@@ -233,11 +278,16 @@ export function OrdersClient({ initialOrders }: Props) {
 
   const columns: Column<Order>[] = [
     {
-      key: 'orderNumber',
-      label: 'Order',
+      key: "orderNumber",
+      label: "Order",
       render: (item) => (
         <div className="max-w-[120px]">
-          <p className="font-medium text-white truncate" title={`#${item.orderNumber}`}>#{item.orderNumber}</p>
+          <p
+            className="font-medium text-white truncate"
+            title={`#${item.orderNumber}`}
+          >
+            #{item.orderNumber}
+          </p>
           <p className="text-xs text-white/40">
             {new Date(item.createdAt).toLocaleDateString()}
           </p>
@@ -245,42 +295,54 @@ export function OrdersClient({ initialOrders }: Props) {
       ),
     },
     {
-      key: 'customer',
-      label: 'Customer',
+      key: "customer",
+      label: "Customer",
       render: (item) => (
         <div className="max-w-[150px]">
-          <p className="text-white truncate" title={item.customerName}>{item.customerName}</p>
-          <p className="text-xs text-white/40 truncate" title={item.customerEmail}>{item.customerEmail}</p>
+          <p className="text-white truncate" title={item.customerName}>
+            {item.customerName}
+          </p>
+          <p
+            className="text-xs text-white/40 truncate"
+            title={item.customerEmail}
+          >
+            {item.customerEmail}
+          </p>
         </div>
       ),
     },
     {
-      key: 'total',
-      label: 'Financials',
+      key: "total",
+      label: "Financials",
       render: (item) => (
         <div>
-          <p className="text-white font-medium">${item.total?.toFixed(2) || '0.00'}</p>
+          <p className="text-white font-medium">
+            ${item.total?.toFixed(2) || "0.00"}
+          </p>
           {item.profit !== undefined && (
-             <p className={`text-xs mt-1 font-medium ${item.profit > 0 ? 'text-green-400' : item.profit < 0 ? 'text-red-400' : 'text-white/40'}`}>
-               {item.profit > 0 ? '+' : ''}${item.profit.toFixed(2)} Profit
-               {item.total > 0 && ` (${Math.round((item.profit / (item.total - item.tax)) * 100)}%)`}
-             </p>
+            <p
+              className={`text-xs mt-1 font-medium ${item.profit > 0 ? "text-green-400" : item.profit < 0 ? "text-red-400" : "text-white/40"}`}
+            >
+              {item.profit > 0 ? "+" : ""}${item.profit.toFixed(2)} Profit
+              {item.total > 0 &&
+                ` (${Math.round((item.profit / (item.total - item.tax)) * 100)}%)`}
+            </p>
           )}
         </div>
       ),
     },
     {
-      key: 'payment',
-      label: 'Payment',
+      key: "payment",
+      label: "Payment",
       render: (item) => (
-        <Badge variant={item.paymentStatus === 'paid' ? 'success' : 'warning'}>
-          {item.paymentStatus === 'paid' ? 'Paid' : 'Unpaid'}
+        <Badge variant={item.paymentStatus === "paid" ? "success" : "warning"}>
+          {item.paymentStatus === "paid" ? "Paid" : "Unpaid"}
         </Badge>
       ),
     },
     {
-      key: 'status',
-      label: 'Status',
+      key: "status",
+      label: "Status",
       render: (item) => (
         <Badge variant={getStatusVariant(item.status)}>
           {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
@@ -288,13 +350,13 @@ export function OrdersClient({ initialOrders }: Props) {
       ),
     },
     {
-      key: 'review',
-      label: 'Review',
+      key: "review",
+      label: "Review",
       render: (item) => {
-        if (item.status !== 'delivered') {
+        if (item.status !== "delivered") {
           return <span className="text-white/40 text-xs">N/A</span>;
         }
-        
+
         if (item.review) {
           return (
             <div className="flex items-center gap-2">
@@ -303,21 +365,23 @@ export function OrdersClient({ initialOrders }: Props) {
                   <Star
                     key={i}
                     className={`w-3 h-3 ${
-                      i < item.review!.rating 
-                        ? 'fill-yellow-400 text-yellow-400' 
-                        : 'fill-transparent text-white/20'
+                      i < item.review!.rating
+                        ? "fill-yellow-400 text-yellow-400"
+                        : "fill-transparent text-white/20"
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-xs text-white/60">({item.review.rating}/5)</span>
+              <span className="text-xs text-white/60">
+                ({item.review.rating}/5)
+              </span>
               {item.review.comment && (
-                <MessageSquare className="w-3 h-3 text-blue-400"  />
+                <MessageSquare className="w-3 h-3 text-blue-400" />
               )}
             </div>
           );
         }
-        
+
         return (
           <Badge variant="warning" className="text-xs">
             Pending Review
@@ -326,8 +390,8 @@ export function OrdersClient({ initialOrders }: Props) {
       },
     },
     {
-      key: 'actions',
-      label: 'Actions',
+      key: "actions",
+      label: "Actions",
       render: (item) => (
         <div className="flex items-center gap-1">
           <Button
@@ -337,8 +401,10 @@ export function OrdersClient({ initialOrders }: Props) {
             title="Copy Tracking Link"
             onClick={(e) => {
               e.stopPropagation();
-              navigator.clipboard.writeText(`${window.location.origin}/track/${item.orderNumber}`);
-              toast.success('Tracking link copied!');
+              navigator.clipboard.writeText(
+                `${window.location.origin}/track/${item.orderNumber}`,
+              );
+              toast.success("Tracking link copied!");
             }}
           >
             <LinkIcon className="w-3.5 h-3.5" />
@@ -387,12 +453,14 @@ export function OrdersClient({ initialOrders }: Props) {
     setFormData({
       status: order.status,
       paymentStatus: order.paymentStatus,
-      notes: order.notes || '',
-      trackingNumber: order.trackingNumber || '',
-      estimatedDelivery: order.estimatedDelivery ? new Date(order.estimatedDelivery).toISOString().split('T')[0] : '',
-      productionCost: order.productionCost?.toString() || '',
-      shippingCost: order.shippingCost?.toString() || '',
-      otherCosts: order.otherCosts?.toString() || '',
+      notes: order.notes || "",
+      trackingNumber: order.trackingNumber || "",
+      estimatedDelivery: order.estimatedDelivery
+        ? new Date(order.estimatedDelivery).toISOString().split("T")[0]
+        : "",
+      productionCost: order.productionCost?.toString() || "",
+      shippingCost: order.shippingCost?.toString() || "",
+      otherCosts: order.otherCosts?.toString() || "",
     });
     setIsModalOpen(true);
   };
@@ -403,21 +471,22 @@ export function OrdersClient({ initialOrders }: Props) {
 
   const executeDelete = async () => {
     if (!deleteId) return;
-    
-    
+
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/orders/${deleteId}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/orders/${deleteId}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setOrders(orders.filter((o) => o.id !== deleteId));
-        toast.success('Order deleted successfully');
+        toast.success("Order deleted successfully");
       } else {
         const data = await res.json();
-        toast.error(data.error || 'Failed to delete order');
+        toast.error(data.error || "Failed to delete order");
       }
     } catch (error) {
-      console.error('Failed to delete order:', error);
-      toast.error('An unexpected error occurred');
+      console.error("Failed to delete order:", error);
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
       setDeleteId(null);
@@ -437,25 +506,25 @@ export function OrdersClient({ initialOrders }: Props) {
         shippingCost: Number(formData.shippingCost) || 0,
         otherCosts: Number(formData.otherCosts) || 0,
       };
-      
+
       const res = await fetch(`/api/admin/orders/${editingOrder.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (res.ok) {
-        toast.success('Order updated successfully');
+        toast.success("Order updated successfully");
         router.refresh();
         setIsModalOpen(false);
         resetForm();
       } else {
         const data = await res.json();
-        toast.error(data.error || 'Failed to update order');
+        toast.error(data.error || "Failed to update order");
       }
     } catch (error) {
-      console.error('Failed to update order:', error);
-      toast.error('An unexpected error occurred');
+      console.error("Failed to update order:", error);
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -463,14 +532,14 @@ export function OrdersClient({ initialOrders }: Props) {
 
   const resetForm = () => {
     setFormData({
-      status: 'pending',
-      paymentStatus: 'unpaid',
-      notes: '',
-      trackingNumber: '',
-      estimatedDelivery: '',
-      productionCost: '',
-    shippingCost: '',
-    otherCosts: '',
+      status: "pending",
+      paymentStatus: "unpaid",
+      notes: "",
+      trackingNumber: "",
+      estimatedDelivery: "",
+      productionCost: "",
+      shippingCost: "",
+      otherCosts: "",
     });
     setEditingOrder(null);
   };
@@ -487,33 +556,33 @@ export function OrdersClient({ initialOrders }: Props) {
         productionCost: Number(createFormData.productionCost) || 0,
         shippingCost: Number(createFormData.shippingCost) || 0,
         otherCosts: Number(createFormData.otherCosts) || 0,
-        items: createFormData.items.map(item => ({
+        items: createFormData.items.map((item) => ({
           ...item,
           quantity: Number(item.quantity) || 1,
           price: Number(item.price) || 0,
-        }))
+        })),
       };
 
       const res = await fetch(`/api/admin/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (res.ok) {
         const newOrder = await res.json();
         setOrders([newOrder, ...orders]);
-        toast.success('Order created successfully');
+        toast.success("Order created successfully");
         setIsCreateModalOpen(false);
         resetCreateForm();
         router.refresh();
       } else {
         const data = await res.json();
-        toast.error(data.error || 'Failed to create order');
+        toast.error(data.error || "Failed to create order");
       }
     } catch (error) {
-      console.error('Failed to create order:', error);
-      toast.error('An unexpected error occurred');
+      console.error("Failed to create order:", error);
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -521,45 +590,49 @@ export function OrdersClient({ initialOrders }: Props) {
 
   const resetCreateForm = () => {
     setCreateFormData({
-      customerName: '',
-      customerEmail: '',
-      customerPhone: '',
-      company: '',
-      shippingAddress: '',
-      notes: '',
-      status: 'pending',
-      estimatedDelivery: '',
-      shipping: '',
-      tax: '',
-      items: [{ name: 'Custom Manufacturing Order', quantity: '1', price: '0' }],
-      website: '',
-      country: '',
-      category: '',
-      fabric: '',
-      gsm: '',
-      quantity: '',
+      customerName: "",
+      customerEmail: "",
+      customerPhone: "",
+      company: "",
+      shippingAddress: "",
+      notes: "",
+      status: "pending",
+      estimatedDelivery: "",
+      shipping: "",
+      tax: "",
+      items: [
+        { name: "Custom Manufacturing Order", quantity: "1", price: "0" },
+      ],
+      website: "",
+      country: "",
+      category: "",
+      fabric: "",
+      gsm: "",
+      quantity: "",
       sizes: [],
       decoration: [],
       extras: [],
-      colors: '',
-      timeline: '',
-      budget: '',
-      comments: '',
-      productionCost: '',
-    shippingCost: '',
-    otherCosts: '',
+      colors: "",
+      timeline: "",
+      budget: "",
+      comments: "",
+      productionCost: "",
+      shippingCost: "",
+      otherCosts: "",
     });
   };
 
   // Calculate statistics
   const stats = {
     total: orders.length,
-    pending: orders.filter(o => o.status === 'pending').length,
-    processing: orders.filter(o => ['sourcing', 'production', 'qc', 'packaging'].includes(o.status)).length,
-    completed: orders.filter(o => o.status === 'delivered').length,
+    pending: orders.filter((o) => o.status === "pending").length,
+    processing: orders.filter((o) =>
+      ["sourcing", "production", "qc", "packaging"].includes(o.status),
+    ).length,
+    completed: orders.filter((o) => o.status === "delivered").length,
     revenue: orders.reduce((sum, o) => sum + (o.total || 0), 0),
-    reviews: orders.filter(o => o.review !== null).length,
-    deliveredOrders: orders.filter(o => o.status === 'delivered').length,
+    reviews: orders.filter((o) => o.review !== null).length,
+    deliveredOrders: orders.filter((o) => o.status === "delivered").length,
   };
 
   return (
@@ -569,10 +642,17 @@ export function OrdersClient({ initialOrders }: Props) {
         description="Manage customer orders and track fulfillment"
         actions={
           <div className="flex items-center gap-2">
-            <Button variant="ghost" onClick={handleExportCSV} icon={<Download className="w-4 h-4" />}>
+            <Button
+              variant="ghost"
+              onClick={handleExportCSV}
+              icon={<Download className="w-4 h-4" />}
+            >
               Export CSV
             </Button>
-            <Button onClick={() => setIsCreateModalOpen(true)} icon={<Plus className="w-4 h-4" />}>
+            <Button
+              onClick={() => setIsCreateModalOpen(true)}
+              icon={<Plus className="w-4 h-4" />}
+            >
               Create Order
             </Button>
           </div>
@@ -587,15 +667,21 @@ export function OrdersClient({ initialOrders }: Props) {
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Pending</p>
-          <p className="text-2xl font-semibold text-yellow-500">{stats.pending}</p>
+          <p className="text-2xl font-semibold text-yellow-500">
+            {stats.pending}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Processing</p>
-          <p className="text-2xl font-semibold text-blue-500">{stats.processing}</p>
+          <p className="text-2xl font-semibold text-blue-500">
+            {stats.processing}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Completed</p>
-          <p className="text-2xl font-semibold text-green-500">{stats.completed}</p>
+          <p className="text-2xl font-semibold text-green-500">
+            {stats.completed}
+          </p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Reviews</p>
@@ -605,7 +691,9 @@ export function OrdersClient({ initialOrders }: Props) {
         </div>
         <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4">
           <p className="text-white/60 text-sm mb-1">Revenue</p>
-          <p className="text-2xl font-semibold text-white">${stats.revenue.toFixed(2)}</p>
+          <p className="text-2xl font-semibold text-white">
+            ${stats.revenue.toFixed(2)}
+          </p>
         </div>
       </div>
 
@@ -620,8 +708,8 @@ export function OrdersClient({ initialOrders }: Props) {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Statuses' },
-              ...statusOptions
+              { value: "all", label: "All Statuses" },
+              ...statusOptions,
             ]}
           />
         </div>
@@ -631,10 +719,10 @@ export function OrdersClient({ initialOrders }: Props) {
             value={paymentFilter}
             onChange={(e) => setPaymentFilter(e.target.value)}
             options={[
-              { value: 'all', label: 'All Payment Status' },
-              { value: 'paid', label: 'Paid' },
-              { value: 'unpaid', label: 'Unpaid' },
-              { value: 'refunded', label: 'Refunded' }
+              { value: "all", label: "All Payment Status" },
+              { value: "paid", label: "Paid" },
+              { value: "unpaid", label: "Unpaid" },
+              { value: "refunded", label: "Refunded" },
             ]}
           />
         </div>
@@ -658,14 +746,18 @@ export function OrdersClient({ initialOrders }: Props) {
               onChange={(e) => {
                 if (e.target.value) {
                   handleBulkUpdateStatus(e.target.value as OrderStatus);
-                  e.target.value = ''; // reset
+                  e.target.value = ""; // reset
                 }
               }}
               defaultValue=""
             >
-              <option value="" disabled>Update Status</option>
-              {statusOptions.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              <option value="" disabled>
+                Update Status
+              </option>
+              {statusOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
               ))}
             </select>
           </div>
@@ -691,67 +783,115 @@ export function OrdersClient({ initialOrders }: Props) {
           {editingOrder && (
             <div className="bg-white/[0.03] border border-white/[0.08] rounded-lg p-4 mb-4">
               <p className="text-xs text-white/40 mb-1">Order Number</p>
-              <p className="text-white font-medium">#{editingOrder.orderNumber}</p>
+              <p className="text-white font-medium">
+                #{editingOrder.orderNumber}
+              </p>
               <p className="text-xs text-white/40 mt-2">Customer</p>
               <p className="text-white">{editingOrder.customerName}</p>
-              <p className="text-xs text-white/60">{editingOrder.customerEmail}</p>
-              
+              <p className="text-xs text-white/60">
+                {editingOrder.customerEmail}
+              </p>
+
               <div className="mt-4 pt-4 border-t border-white/[0.08] grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <p className="text-xs text-white/40 mb-1">Company / Brand</p>
-                  <p className="text-white font-medium">{editingOrder.company || 'N/A'}</p>
+                  <p className="text-white font-medium">
+                    {editingOrder.company || "N/A"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 mb-1">Phone Number</p>
-                  <p className="text-white font-medium">{editingOrder.customerPhone || 'N/A'}</p>
+                  <p className="text-white font-medium">
+                    {editingOrder.customerPhone || "N/A"}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40 mb-1">Website / Instagram</p>
-                  <p className="text-white font-medium">{editingOrder.website || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">
+                    Website / Instagram
+                  </p>
+                  <p className="text-white font-medium">
+                    {editingOrder.website || "N/A"}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40 mb-1">Location / Country</p>
-                  <p className="text-white font-medium">{editingOrder.country || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">
+                    Location / Country
+                  </p>
+                  <p className="text-white font-medium">
+                    {editingOrder.country || "N/A"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 mb-1">Category</p>
-                  <p className="text-white font-medium">{editingOrder.category || 'N/A'}</p>
+                  <p className="text-white font-medium">
+                    {editingOrder.category || "N/A"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 mb-1">Quantity</p>
-                  <p className="text-white font-medium">{editingOrder.quantity || 'N/A'}</p>
+                  <p className="text-white font-medium">
+                    {editingOrder.quantity || "N/A"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 mb-1">Fabric & GSM</p>
-                  <p className="text-white font-medium">{editingOrder.fabric || 'N/A'} {editingOrder.gsm ? `(${editingOrder.gsm})` : ''}</p>
+                  <p className="text-white font-medium">
+                    {editingOrder.fabric || "N/A"}{" "}
+                    {editingOrder.gsm ? `(${editingOrder.gsm})` : ""}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 mb-1">Colors</p>
-                  <p className="text-white font-medium">{editingOrder.colors || 'N/A'}</p>
+                  <p className="text-white font-medium">
+                    {editingOrder.colors || "N/A"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 mb-1">Sizes</p>
-                  <p className="text-white font-medium">{editingOrder.sizes?.join(', ') || 'N/A'}</p>
+                  <p className="text-white font-medium">
+                    {editingOrder.sizes?.join(", ") || "N/A"}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-xs text-white/40 mb-1">Timeline & Budget</p>
-                  <p className="text-white font-medium">{editingOrder.timeline || 'N/A'} | {editingOrder.budget || 'N/A'}</p>
+                  <p className="text-xs text-white/40 mb-1">
+                    Timeline & Budget
+                  </p>
+                  <p className="text-white font-medium">
+                    {editingOrder.timeline || "N/A"} |{" "}
+                    {editingOrder.budget || "N/A"}
+                  </p>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-xs text-white/40 mb-1">Decoration Methods</p>
+                  <p className="text-xs text-white/40 mb-1">
+                    Decoration Methods
+                  </p>
                   <div className="flex flex-wrap gap-2 mt-1">
-                    {editingOrder.decoration?.length ? editingOrder.decoration.map(d => <Badge key={d}>{d}</Badge>) : <span className="text-white/60">N/A</span>}
+                    {editingOrder.decoration?.length ? (
+                      editingOrder.decoration.map((d) => (
+                        <Badge key={d}>{d}</Badge>
+                      ))
+                    ) : (
+                      <span className="text-white/60">N/A</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-span-2">
                   <p className="text-xs text-white/40 mb-1">Branding Extras</p>
                   <div className="flex flex-wrap gap-2 mt-1">
-                    {editingOrder.extras?.length ? editingOrder.extras.map(e => <Badge key={e}>{e}</Badge>) : <span className="text-white/60">N/A</span>}
+                    {editingOrder.extras?.length ? (
+                      editingOrder.extras.map((e) => <Badge key={e}>{e}</Badge>)
+                    ) : (
+                      <span className="text-white/60">N/A</span>
+                    )}
                   </div>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-xs text-white/40 mb-1">Customer Comments</p>
-                  <p className="text-white font-medium bg-white/[0.02] p-3 rounded-lg border border-white/[0.05]">{editingOrder.comments || 'No comments provided'}</p>
+                  <p className="text-xs text-white/40 mb-1">
+                    Customer Comments
+                  </p>
+                  <p className="text-white font-medium bg-white/[0.02] p-3 rounded-lg border border-white/[0.05]">
+                    {editingOrder.comments || "No comments provided"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -760,7 +900,12 @@ export function OrdersClient({ initialOrders }: Props) {
           <Select
             label="Order Status"
             value={formData.status}
-            onChange={(e) => setFormData({ ...formData, status: e.target.value as OrderStatus })}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                status: e.target.value as OrderStatus,
+              })
+            }
             options={statusOptions}
             required
           />
@@ -768,11 +913,13 @@ export function OrdersClient({ initialOrders }: Props) {
           <Select
             label="Payment Status"
             value={formData.paymentStatus}
-            onChange={(e) => setFormData({ ...formData, paymentStatus: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, paymentStatus: e.target.value })
+            }
             options={[
-              { value: 'unpaid', label: 'Unpaid' },
-              { value: 'paid', label: 'Paid' },
-              { value: 'refunded', label: 'Refunded' },
+              { value: "unpaid", label: "Unpaid" },
+              { value: "paid", label: "Paid" },
+              { value: "refunded", label: "Refunded" },
             ]}
           />
 
@@ -780,18 +927,24 @@ export function OrdersClient({ initialOrders }: Props) {
             label="Tracking Number (if shipped)"
             type="text"
             value={formData.trackingNumber}
-            onChange={(e) => setFormData({ ...formData, trackingNumber: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, trackingNumber: e.target.value })
+            }
           />
 
           <Input
             label="Estimated Delivery Date"
             type="date"
             value={formData.estimatedDelivery}
-            onChange={(e) => setFormData({ ...formData, estimatedDelivery: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, estimatedDelivery: e.target.value })
+            }
           />
 
           <div className="pt-4 border-t border-white/[0.08]">
-            <h3 className="text-sm font-medium text-white mb-4">Cost Tracking (For Profitability)</h3>
+            <h3 className="text-sm font-medium text-white mb-4">
+              Cost Tracking (For Profitability)
+            </h3>
             <div className="grid grid-cols-3 gap-4">
               <Input
                 label="Production Cost ($)"
@@ -799,7 +952,9 @@ export function OrdersClient({ initialOrders }: Props) {
                 min="0"
                 step="0.01"
                 value={formData.productionCost}
-                onChange={(e) => setFormData({ ...formData, productionCost: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, productionCost: e.target.value })
+                }
               />
               <Input
                 label="Shipping Cost ($)"
@@ -807,7 +962,9 @@ export function OrdersClient({ initialOrders }: Props) {
                 min="0"
                 step="0.01"
                 value={formData.shippingCost}
-                onChange={(e) => setFormData({ ...formData, shippingCost: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, shippingCost: e.target.value })
+                }
               />
               <Input
                 label="Other Costs ($)"
@@ -815,23 +972,45 @@ export function OrdersClient({ initialOrders }: Props) {
                 min="0"
                 step="0.01"
                 value={formData.otherCosts}
-                onChange={(e) => setFormData({ ...formData, otherCosts: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, otherCosts: e.target.value })
+                }
               />
             </div>
             {editingOrder && (
               <div className="mt-4 p-4 bg-white/[0.02] rounded-lg border border-white/[0.05] space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/60">Total Revenue (excl. Tax):</span>
-                  <span className="text-white">${(editingOrder.total - editingOrder.tax).toFixed(2)}</span>
+                  <span className="text-white/60">
+                    Total Revenue (excl. Tax):
+                  </span>
+                  <span className="text-white">
+                    ${(editingOrder.total - editingOrder.tax).toFixed(2)}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-white/60">Total Costs:</span>
-                  <span className="text-red-400">-${(Number(formData.productionCost) + Number(formData.shippingCost) + Number(formData.otherCosts)).toFixed(2)}</span>
+                  <span className="text-red-400">
+                    -$
+                    {(
+                      Number(formData.productionCost) +
+                      Number(formData.shippingCost) +
+                      Number(formData.otherCosts)
+                    ).toFixed(2)}
+                  </span>
                 </div>
                 <div className="pt-2 border-t border-white/[0.05] flex justify-between items-center">
-                  <span className="text-white font-medium">Projected Net Profit:</span>
+                  <span className="text-white font-medium">
+                    Projected Net Profit:
+                  </span>
                   <span className="text-lg font-medium text-green-400">
-                    ${((editingOrder.total - editingOrder.tax) - (Number(formData.productionCost) + Number(formData.shippingCost) + Number(formData.otherCosts))).toFixed(2)}
+                    $
+                    {(
+                      editingOrder.total -
+                      editingOrder.tax -
+                      (Number(formData.productionCost) +
+                        Number(formData.shippingCost) +
+                        Number(formData.otherCosts))
+                    ).toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -841,7 +1020,9 @@ export function OrdersClient({ initialOrders }: Props) {
           <Textarea
             label="Admin Notes"
             value={formData.notes}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, notes: e.target.value })
+            }
             placeholder="Internal notes about this order..."
             rows={3}
           />
@@ -869,28 +1050,48 @@ export function OrdersClient({ initialOrders }: Props) {
             <Input
               label="Customer Name *"
               value={createFormData.customerName}
-              onChange={(e) => setCreateFormData({ ...createFormData, customerName: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  customerName: e.target.value,
+                })
+              }
               required
             />
             <Input
               label="Customer Email *"
               type="email"
               value={createFormData.customerEmail}
-              onChange={(e) => setCreateFormData({ ...createFormData, customerEmail: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  customerEmail: e.target.value,
+                })
+              }
               required
             />
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Phone Number"
               value={createFormData.customerPhone}
-              onChange={(e) => setCreateFormData({ ...createFormData, customerPhone: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  customerPhone: e.target.value,
+                })
+              }
             />
             <Input
               label="Company Name"
               value={createFormData.company}
-              onChange={(e) => setCreateFormData({ ...createFormData, company: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  company: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -898,12 +1099,22 @@ export function OrdersClient({ initialOrders }: Props) {
             <Input
               label="Website"
               value={createFormData.website}
-              onChange={(e) => setCreateFormData({ ...createFormData, website: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  website: e.target.value,
+                })
+              }
             />
             <Input
               label="Country"
               value={createFormData.country}
-              onChange={(e) => setCreateFormData({ ...createFormData, country: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  country: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -911,12 +1122,22 @@ export function OrdersClient({ initialOrders }: Props) {
             <Input
               label="Category (e.g. T-Shirts)"
               value={createFormData.category}
-              onChange={(e) => setCreateFormData({ ...createFormData, category: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  category: e.target.value,
+                })
+              }
             />
             <Input
               label="Quantity Required"
               value={createFormData.quantity}
-              onChange={(e) => setCreateFormData({ ...createFormData, quantity: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  quantity: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -924,12 +1145,16 @@ export function OrdersClient({ initialOrders }: Props) {
             <Input
               label="Fabric"
               value={createFormData.fabric}
-              onChange={(e) => setCreateFormData({ ...createFormData, fabric: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({ ...createFormData, fabric: e.target.value })
+              }
             />
             <Input
               label="GSM"
               value={createFormData.gsm}
-              onChange={(e) => setCreateFormData({ ...createFormData, gsm: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({ ...createFormData, gsm: e.target.value })
+              }
             />
           </div>
 
@@ -937,12 +1162,19 @@ export function OrdersClient({ initialOrders }: Props) {
             <Input
               label="Colors"
               value={createFormData.colors}
-              onChange={(e) => setCreateFormData({ ...createFormData, colors: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({ ...createFormData, colors: e.target.value })
+              }
             />
             <Input
               label="Timeline"
               value={createFormData.timeline}
-              onChange={(e) => setCreateFormData({ ...createFormData, timeline: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  timeline: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -950,32 +1182,60 @@ export function OrdersClient({ initialOrders }: Props) {
             <Input
               label="Budget"
               value={createFormData.budget}
-              onChange={(e) => setCreateFormData({ ...createFormData, budget: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({ ...createFormData, budget: e.target.value })
+              }
             />
             <Input
               label="Sizes (comma separated)"
-              value={createFormData.sizes.join(', ')}
-              onChange={(e) => setCreateFormData({ ...createFormData, sizes: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+              value={createFormData.sizes.join(", ")}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  sizes: e.target.value
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean),
+                })
+              }
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Decoration (comma separated)"
-              value={createFormData.decoration.join(', ')}
-              onChange={(e) => setCreateFormData({ ...createFormData, decoration: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+              value={createFormData.decoration.join(", ")}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  decoration: e.target.value
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean),
+                })
+              }
             />
             <Input
               label="Extras (comma separated)"
-              value={createFormData.extras.join(', ')}
-              onChange={(e) => setCreateFormData({ ...createFormData, extras: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+              value={createFormData.extras.join(", ")}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  extras: e.target.value
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean),
+                })
+              }
             />
           </div>
 
           <Textarea
             label="Customer Comments"
             value={createFormData.comments}
-            onChange={(e) => setCreateFormData({ ...createFormData, comments: e.target.value })}
+            onChange={(e) =>
+              setCreateFormData({ ...createFormData, comments: e.target.value })
+            }
             rows={2}
           />
 
@@ -983,7 +1243,12 @@ export function OrdersClient({ initialOrders }: Props) {
             <Select
               label="Initial Status"
               value={createFormData.status}
-              onChange={(e) => setCreateFormData({ ...createFormData, status: e.target.value as OrderStatus })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  status: e.target.value as OrderStatus,
+                })
+              }
               options={statusOptions}
               required
             />
@@ -991,14 +1256,24 @@ export function OrdersClient({ initialOrders }: Props) {
               label="Estimated Delivery Date"
               type="date"
               value={createFormData.estimatedDelivery}
-              onChange={(e) => setCreateFormData({ ...createFormData, estimatedDelivery: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  estimatedDelivery: e.target.value,
+                })
+              }
             />
           </div>
 
           <Textarea
             label="Shipping Address"
             value={createFormData.shippingAddress}
-            onChange={(e) => setCreateFormData({ ...createFormData, shippingAddress: e.target.value })}
+            onChange={(e) =>
+              setCreateFormData({
+                ...createFormData,
+                shippingAddress: e.target.value,
+              })
+            }
             rows={2}
           />
 
@@ -1009,7 +1284,12 @@ export function OrdersClient({ initialOrders }: Props) {
               min="0"
               step="0.01"
               value={createFormData.shipping}
-              onChange={(e) => setCreateFormData({ ...createFormData, shipping: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({
+                  ...createFormData,
+                  shipping: e.target.value,
+                })
+              }
             />
             <Input
               label="Tax ($)"
@@ -1017,12 +1297,16 @@ export function OrdersClient({ initialOrders }: Props) {
               min="0"
               step="0.01"
               value={createFormData.tax}
-              onChange={(e) => setCreateFormData({ ...createFormData, tax: e.target.value })}
+              onChange={(e) =>
+                setCreateFormData({ ...createFormData, tax: e.target.value })
+              }
             />
           </div>
 
           <div className="pt-4 border-t border-white/[0.08]">
-            <h3 className="text-sm font-medium text-white mb-4">Exact Pricing & Quantity (For Billing)</h3>
+            <h3 className="text-sm font-medium text-white mb-4">
+              Exact Pricing & Quantity (For Billing)
+            </h3>
             <div className="grid grid-cols-2 gap-4">
               <Input
                 label="Exact Units"
@@ -1051,14 +1335,20 @@ export function OrdersClient({ initialOrders }: Props) {
             <div className="mt-4 p-4 bg-white/[0.02] rounded-lg border border-white/[0.05] flex justify-between items-center">
               <span className="text-white/60">Calculated Subtotal:</span>
               <span className="text-lg font-medium text-white">
-                ${(Number(createFormData.items[0].quantity || 0) * Number(createFormData.items[0].price || 0)).toFixed(2)}
+                $
+                {(
+                  Number(createFormData.items[0].quantity || 0) *
+                  Number(createFormData.items[0].price || 0)
+                ).toFixed(2)}
               </span>
             </div>
           </div>
 
           <div className="pt-4 border-t border-white/[0.08]">
             <div className="flex justify-between items-end mb-4">
-              <h3 className="text-sm font-medium text-white">Expense Tracking (Optional)</h3>
+              <h3 className="text-sm font-medium text-white">
+                Expense Tracking (Optional)
+              </h3>
               {createFormData.budget && (
                 <span className="text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded">
                   Customer Budget: {createFormData.budget}
@@ -1072,7 +1362,12 @@ export function OrdersClient({ initialOrders }: Props) {
                 min="0"
                 step="0.01"
                 value={createFormData.productionCost}
-                onChange={(e) => setCreateFormData({ ...createFormData, productionCost: e.target.value })}
+                onChange={(e) =>
+                  setCreateFormData({
+                    ...createFormData,
+                    productionCost: e.target.value,
+                  })
+                }
               />
               <Input
                 label="Shipping Exp. ($)"
@@ -1080,7 +1375,12 @@ export function OrdersClient({ initialOrders }: Props) {
                 min="0"
                 step="0.01"
                 value={createFormData.shippingCost}
-                onChange={(e) => setCreateFormData({ ...createFormData, shippingCost: e.target.value })}
+                onChange={(e) =>
+                  setCreateFormData({
+                    ...createFormData,
+                    shippingCost: e.target.value,
+                  })
+                }
               />
               <Input
                 label="Other Costs ($)"
@@ -1088,28 +1388,52 @@ export function OrdersClient({ initialOrders }: Props) {
                 min="0"
                 step="0.01"
                 value={createFormData.otherCosts}
-                onChange={(e) => setCreateFormData({ ...createFormData, otherCosts: e.target.value })}
+                onChange={(e) =>
+                  setCreateFormData({
+                    ...createFormData,
+                    otherCosts: e.target.value,
+                  })
+                }
               />
             </div>
-            
+
             <div className="mt-4 p-4 bg-white/[0.02] rounded-lg border border-white/[0.05] space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Total Revenue (excl. Tax):</span>
+                <span className="text-white/60">
+                  Total Revenue (excl. Tax):
+                </span>
                 <span className="text-white">
-                  ${((Number(createFormData.items[0].quantity) * Number(createFormData.items[0].price)) + Number(createFormData.shipping)).toFixed(2)}
+                  $
+                  {(
+                    Number(createFormData.items[0].quantity) *
+                      Number(createFormData.items[0].price) +
+                    Number(createFormData.shipping)
+                  ).toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-white/60">Total Costs:</span>
                 <span className="text-red-400">
-                  -${(Number(createFormData.productionCost) + Number(createFormData.shippingCost) + Number(createFormData.otherCosts)).toFixed(2)}
+                  -$
+                  {(
+                    Number(createFormData.productionCost) +
+                    Number(createFormData.shippingCost) +
+                    Number(createFormData.otherCosts)
+                  ).toFixed(2)}
                 </span>
               </div>
               <div className="pt-2 border-t border-white/[0.05] flex justify-between items-center">
                 <span className="text-white font-medium">Net Profit:</span>
                 <span className="text-lg font-medium text-green-400">
-                  ${(((Number(createFormData.items[0].quantity) * Number(createFormData.items[0].price)) + Number(createFormData.shipping)) - 
-                    (Number(createFormData.productionCost) + Number(createFormData.shippingCost) + Number(createFormData.otherCosts))).toFixed(2)}
+                  $
+                  {(
+                    Number(createFormData.items[0].quantity) *
+                      Number(createFormData.items[0].price) +
+                    Number(createFormData.shipping) -
+                    (Number(createFormData.productionCost) +
+                      Number(createFormData.shippingCost) +
+                      Number(createFormData.otherCosts))
+                  ).toFixed(2)}
                 </span>
               </div>
             </div>
@@ -1118,7 +1442,9 @@ export function OrdersClient({ initialOrders }: Props) {
           <Textarea
             label="Internal Notes"
             value={createFormData.notes}
-            onChange={(e) => setCreateFormData({ ...createFormData, notes: e.target.value })}
+            onChange={(e) =>
+              setCreateFormData({ ...createFormData, notes: e.target.value })
+            }
             placeholder="Special instructions or internal notes..."
             rows={2}
           />

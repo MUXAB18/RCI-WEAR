@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { PortfolioProject } from '@prisma/client';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { PortfolioProject } from "@prisma/client";
 
-export function PortfolioPreviewSection({ projects }: { projects: PortfolioProject[] }) {
+export function PortfolioPreviewSection({
+  projects,
+}: {
+  projects: PortfolioProject[];
+}) {
   if (!projects || projects.length === 0) return null;
 
   return (
     <section className="bg-[#faf9f6] py-16 md:py-32 lg:py-48 overflow-hidden w-full selection:bg-black selection:text-white">
       <div className="container mx-auto px-5 md:px-8 max-w-[1400px]">
-
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-16 gap-4 md:gap-8 text-center md:text-left">
           <div>
@@ -72,7 +75,10 @@ export function PortfolioPreviewSection({ projects }: { projects: PortfolioProje
               transition={{ duration: 0.6, delay: i * 0.1 }}
               className="group relative flex flex-col"
             >
-              <Link href="/portfolio" className="relative w-full aspect-[3/4] overflow-hidden bg-[#F7F5F0] rounded-xl md:rounded-2xl mb-3 md:mb-6 block">
+              <Link
+                href="/portfolio"
+                className="relative w-full aspect-[3/4] overflow-hidden bg-[#F7F5F0] rounded-xl md:rounded-2xl mb-3 md:mb-6 block"
+              >
                 <Image
                   src={item.imageUrl}
                   alt={item.title}
@@ -106,7 +112,6 @@ export function PortfolioPreviewSection({ projects }: { projects: PortfolioProje
             <span>&rarr;</span>
           </Link>
         </div>
-
       </div>
     </section>
   );

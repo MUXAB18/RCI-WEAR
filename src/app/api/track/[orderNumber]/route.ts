@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getOrderByNumber } from '@/lib/api/order.service';
+import { NextRequest, NextResponse } from "next/server";
+import { getOrderByNumber } from "@/lib/api/order.service";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ orderNumber: string }> }
+  { params }: { params: Promise<{ orderNumber: string }> },
 ) {
   try {
     const order = await getOrderByNumber((await params).orderNumber);
-    
+
     if (!order) {
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
     // Strip sensitive information before returning public data
@@ -20,7 +20,7 @@ export async function GET(
       estimatedDelivery: order.estimatedDelivery,
       trackingNumber: order.trackingNumber,
       createdAt: order.createdAt,
-      items: order.items.map(item => ({
+      items: order.items.map((item) => ({
         name: item.name,
         quantity: item.quantity,
       })),
@@ -29,7 +29,10 @@ export async function GET(
 
     return NextResponse.json(publicOrderData);
   } catch (error) {
-    console.error('Failed to fetch tracking data:', error);
-    return NextResponse.json({ error: 'Failed to fetch tracking data' }, { status: 500 });
+    console.error("Failed to fetch tracking data:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch tracking data" },
+      { status: 500 },
+    );
   }
 }

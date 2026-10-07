@@ -1,4 +1,4 @@
-import { Loader } from '@/components/admin/ui/Loader';
+import { Loader } from "@/components/admin/ui/Loader";
 
 export default function AdminLoading() {
   return (

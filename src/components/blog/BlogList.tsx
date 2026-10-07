@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowUpRight, Calendar, Clock, Tag } from 'lucide-react';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowUpRight, Calendar, Clock, Tag } from "lucide-react";
 
 type Post = {
   title: string;
@@ -18,23 +18,27 @@ type Post = {
 };
 
 export function BlogList({ posts }: { posts: Post[] }) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [displayCount, setDisplayCount] = useState(6);
 
   // Extract unique categories from tags
-  const allCategories = ['All', ...Array.from(new Set(posts.flatMap(post => post.tags)))];
+  const allCategories = [
+    "All",
+    ...Array.from(new Set(posts.flatMap((post) => post.tags))),
+  ];
 
   // Filter posts by category
-  const filteredPosts = selectedCategory === 'All' 
-    ? posts 
-    : posts.filter(post => post.tags.includes(selectedCategory));
+  const filteredPosts =
+    selectedCategory === "All"
+      ? posts
+      : posts.filter((post) => post.tags.includes(selectedCategory));
 
   // Get featured post (latest post)
   const featuredPost = filteredPosts[0];
   const regularPosts = filteredPosts.slice(1, displayCount);
 
   const handleLoadMore = () => {
-    setDisplayCount(prev => prev + 6);
+    setDisplayCount((prev) => prev + 6);
   };
 
   return (
@@ -53,8 +57,8 @@ export function BlogList({ posts }: { posts: Post[] }) {
             }}
             className={`px-4 py-2 rounded-full font-sans text-sm font-semibold transition-all duration-300 ${
               selectedCategory === category
-                ? 'bg-near-black text-white scale-105'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? "bg-near-black text-white scale-105"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
             {category}
@@ -64,7 +68,9 @@ export function BlogList({ posts }: { posts: Post[] }) {
 
       {filteredPosts.length === 0 && (
         <div className="text-center py-20">
-          <p className="text-gray-500 font-sans text-lg">No articles found in this category.</p>
+          <p className="text-gray-500 font-sans text-lg">
+            No articles found in this category.
+          </p>
         </div>
       )}
 
@@ -91,7 +97,9 @@ export function BlogList({ posts }: { posts: Post[] }) {
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                        <span className="font-sans font-bold text-gray-400">NO IMAGE</span>
+                        <span className="font-sans font-bold text-gray-400">
+                          NO IMAGE
+                        </span>
                       </div>
                     )}
                   </div>
@@ -104,7 +112,10 @@ export function BlogList({ posts }: { posts: Post[] }) {
 
                     <div className="flex items-center gap-4 mb-4 flex-wrap">
                       {featuredPost.tags.slice(0, 2).map((tag, i) => (
-                        <span key={i} className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gray-600">
+                        <span
+                          key={i}
+                          className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gray-600"
+                        >
                           <Tag className="w-3 h-3" />
                           {tag}
                         </span>
@@ -116,21 +127,23 @@ export function BlogList({ posts }: { posts: Post[] }) {
                     </h2>
 
                     <p className="text-gray-600 font-sans text-lg leading-relaxed mb-6 line-clamp-3">
-                      {featuredPost.excerpt || 'Click to read the full article.'}
+                      {featuredPost.excerpt ||
+                        "Click to read the full article."}
                     </p>
 
                     <div className="flex items-center gap-6 text-sm text-gray-500 mb-6">
                       <span className="flex items-center gap-2">
                         <Calendar className="w-4 h-4" />
-                        {new Date(featuredPost.publishedAt || featuredPost.createdAt).toLocaleDateString('en-US', {
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric'
+                        {new Date(
+                          featuredPost.publishedAt || featuredPost.createdAt,
+                        ).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
                         })}
                       </span>
                       <span className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        5 min read
+                        <Clock className="w-4 h-4" />5 min read
                       </span>
                     </div>
 
@@ -161,7 +174,10 @@ export function BlogList({ posts }: { posts: Post[] }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Link href={`/blog/${post.slug}`} className="group block h-full">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="group block h-full"
+                  >
                     <article className="h-full flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-near-black hover:shadow-xl transition-all duration-500">
                       {/* Image */}
                       <div className="aspect-[16/9] relative overflow-hidden bg-gray-100">
@@ -174,7 +190,9 @@ export function BlogList({ posts }: { posts: Post[] }) {
                           />
                         ) : (
                           <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                            <span className="font-sans font-bold text-gray-400 text-sm">NO IMAGE</span>
+                            <span className="font-sans font-bold text-gray-400 text-sm">
+                              NO IMAGE
+                            </span>
                           </div>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -185,14 +203,19 @@ export function BlogList({ posts }: { posts: Post[] }) {
                         {/* Tags & Date */}
                         <div className="flex items-center gap-3 mb-3 flex-wrap">
                           {post.tags.slice(0, 1).map((tag, i) => (
-                            <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
+                            <span
+                              key={i}
+                              className="text-[10px] font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full"
+                            >
                               {tag}
                             </span>
                           ))}
                           <span className="text-xs font-sans text-gray-500">
-                            {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric'
+                            {new Date(
+                              post.publishedAt || post.createdAt,
+                            ).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
                             })}
                           </span>
                         </div>
@@ -204,7 +227,7 @@ export function BlogList({ posts }: { posts: Post[] }) {
 
                         {/* Excerpt */}
                         <p className="text-gray-600 font-sans text-sm leading-relaxed line-clamp-2 mb-4">
-                          {post.excerpt || 'Read more...'}
+                          {post.excerpt || "Read more..."}
                         </p>
 
                         {/* Read More Link */}

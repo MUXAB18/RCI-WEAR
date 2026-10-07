@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { CheckCircle2, Factory, Users, Target, Award } from 'lucide-react';
-import { companyData } from '@/data/company';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import React from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { CheckCircle2, Factory, Users, Target, Award } from "lucide-react";
+import { companyData } from "@/data/company";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export default function AboutPage() {
-
   return (
     <div className="pt-32 pb-24 min-h-screen bg-white">
       <div className="container mx-auto px-6 md:px-12">
-        <SectionHeading 
+        <SectionHeading
           eyebrow="Our Story"
           title="About Rasheed Clothing International"
           subtitle={`${companyData.slogan} - A legacy of manufacturing excellence from ${companyData.location}.`}
@@ -20,7 +19,7 @@ export default function AboutPage() {
 
         {/* Hero Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch mb-32">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -33,9 +32,12 @@ export default function AboutPage() {
               {companyData.description}
             </p>
             <p className="text-near-black/70 leading-relaxed mb-8">
-              Since {companyData.founded}, we've been bridging the gap between premium international fashion brands and high-quality, reliable manufacturing. Today, we're proud to be the trusted manufacturing partner for brands across North America, Europe, and beyond.
+              Since {companyData.founded}, we've been bridging the gap between
+              premium international fashion brands and high-quality, reliable
+              manufacturing. Today, we're proud to be the trusted manufacturing
+              partner for brands across North America, Europe, and beyond.
             </p>
-            
+
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <div className="text-4xl font-sans font-black tracking-tight mb-2">
@@ -56,7 +58,7 @@ export default function AboutPage() {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
@@ -81,23 +83,34 @@ export default function AboutPage() {
         >
           <div className="bg-gradient-to-br from-near-black to-gray-900 rounded-3xl p-8 md:p-12 text-white">
             <Target className="w-12 h-12 mb-6" />
-            <h3 className="text-2xl md:text-3xl font-sans font-bold mb-4">Our Mission</h3>
+            <h3 className="text-2xl md:text-3xl font-sans font-bold mb-4">
+              Our Mission
+            </h3>
             <p className="text-white/80 leading-relaxed font-sans">
-              To empower fashion brands worldwide with premium, ethically-manufactured apparel that exceeds expectations in quality, reliability, and value. We transform creative visions into tangible products that brands are proud to wear their name on.
+              To empower fashion brands worldwide with premium,
+              ethically-manufactured apparel that exceeds expectations in
+              quality, reliability, and value. We transform creative visions
+              into tangible products that brands are proud to wear their name
+              on.
             </p>
           </div>
 
           <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-3xl p-8 md:p-12">
             <Award className="w-12 h-12 mb-6 text-near-black" />
-            <h3 className="text-2xl md:text-3xl font-sans font-bold text-black mb-4">Our Vision</h3>
+            <h3 className="text-2xl md:text-3xl font-sans font-bold text-black mb-4">
+              Our Vision
+            </h3>
             <p className="text-gray-700 leading-relaxed font-sans">
-              To be recognized globally as the most trusted and innovative apparel manufacturing partner, setting new industry standards in quality, sustainability, and client satisfaction while showcasing Pakistan's manufacturing excellence.
+              To be recognized globally as the most trusted and innovative
+              apparel manufacturing partner, setting new industry standards in
+              quality, sustainability, and client satisfaction while showcasing
+              Pakistan's manufacturing excellence.
             </p>
           </div>
         </motion.section>
 
         {/* Gallery */}
-        <SectionHeading 
+        <SectionHeading
           eyebrow="Inside Our Factory"
           title="Manufacturing Excellence"
           subtitle="A glimpse into our state-of-the-art facilities and dedicated workforce."
@@ -110,9 +123,9 @@ export default function AboutPage() {
             "/aboutus/factory-image-3.jpeg",
             "/aboutus/factory-image-4.jpeg",
             "/aboutus/factory-image-5.jpeg",
-            "/aboutus/factory-image-6.jpeg"
+            "/aboutus/factory-image-6.jpeg",
           ].map((src, i) => (
-            <motion.div 
+            <motion.div
               key={src}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -131,7 +144,7 @@ export default function AboutPage() {
         </div>
 
         {/* Values */}
-        <SectionHeading 
+        <SectionHeading
           eyebrow="Our Values"
           title="The RCI Difference"
           subtitle="What sets us apart in the global apparel supply chain."
@@ -141,18 +154,18 @@ export default function AboutPage() {
           {[
             {
               title: "Ethical Manufacturing",
-              desc: "We strictly adhere to fair labor practices, ensuring safe working conditions and equitable compensation for all our craftsmen."
+              desc: "We strictly adhere to fair labor practices, ensuring safe working conditions and equitable compensation for all our craftsmen.",
             },
             {
               title: "Sustainable Practices",
-              desc: "From minimizing fabric waste to adopting eco-friendly dyes, we are committed to reducing the environmental footprint of fashion."
+              desc: "From minimizing fabric waste to adopting eco-friendly dyes, we are committed to reducing the environmental footprint of fashion.",
             },
             {
               title: "Uncompromising Quality",
-              desc: "Every garment is subjected to a rigorous multi-stage inspection process, guaranteeing retail-ready perfection upon delivery."
-            }
+              desc: "Every garment is subjected to a rigorous multi-stage inspection process, guaranteeing retail-ready perfection upon delivery.",
+            },
           ].map((val, i) => (
-            <motion.div 
+            <motion.div
               key={val.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -161,8 +174,12 @@ export default function AboutPage() {
               className="p-8 border border-gray-100 bg-[#F8F8F8] rounded-2xl hover:shadow-lg transition-all duration-300"
             >
               <CheckCircle2 className="w-8 h-8 text-near-black mb-6" />
-              <h4 className="text-xl font-sans font-black tracking-tight mb-4">{val.title}</h4>
-              <p className="text-sm font-sans text-near-black/70 leading-relaxed">{val.desc}</p>
+              <h4 className="text-xl font-sans font-black tracking-tight mb-4">
+                {val.title}
+              </h4>
+              <p className="text-sm font-sans text-near-black/70 leading-relaxed">
+                {val.desc}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -179,15 +196,26 @@ export default function AboutPage() {
             Ready to Work Together?
           </h3>
           <p className="text-white/70 text-lg mb-8 max-w-2xl mx-auto font-sans">
-            Let's discuss how we can bring your apparel vision to life with our manufacturing expertise
+            Let's discuss how we can bring your apparel vision to life with our
+            manufacturing expertise
           </p>
           <a
             href="/contact"
             className="inline-flex items-center gap-2 bg-white text-near-black px-8 py-4 rounded-full font-sans font-bold text-sm tracking-wider uppercase hover:bg-gray-100 transition-all duration-300 hover:scale-105"
           >
             Start Your Project
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
           </a>
         </motion.div>

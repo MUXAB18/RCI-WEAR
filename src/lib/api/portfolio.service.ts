@@ -1,14 +1,14 @@
 /**
  * Portfolio API Service
- * 
+ *
  * Central place for all portfolio-related database operations.
  * Used by both:
  * - Next.js API route handlers (src/app/api/portfolio/*)
  * - React Server Components (e.g. PortfolioPreviewWrapper)
  */
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type CreatePortfolioInput = {
   title: string;
@@ -30,24 +30,24 @@ export type UpdatePortfolioInput = Partial<CreatePortfolioInput>;
 
 export async function getAllProjects() {
   return prisma.portfolioProject.findMany({
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
   });
 }
 
 export async function getPublishedProjects() {
   return prisma.portfolioProject.findMany({
     where: { isPublished: true },
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
   });
 }
 
 export async function getFeaturedProjects(limit = 4) {
   return prisma.portfolioProject.findMany({
-    where: { 
+    where: {
       isFeatured: true,
       isPublished: true,
     },
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
     take: limit,
   });
 }
@@ -60,23 +60,23 @@ export async function getProjectById(id: string) {
 
 export async function getProjectsByCategory(category: string) {
   return prisma.portfolioProject.findMany({
-    where: { 
+    where: {
       category,
       isPublished: true,
     },
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
   });
 }
 
 export async function getProjectsByTag(tag: string) {
   return prisma.portfolioProject.findMany({
-    where: { 
+    where: {
       isPublished: true,
       tags: {
         has: tag,
       },
     },
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
   });
 }
 
@@ -118,7 +118,7 @@ export async function toggleFeatured(id: string) {
     where: { id },
     select: { isFeatured: true },
   });
-  
+
   if (project) {
     return updateProject(id, { isFeatured: !project.isFeatured });
   }
@@ -129,7 +129,7 @@ export async function togglePublished(id: string) {
     where: { id },
     select: { isPublished: true },
   });
-  
+
   if (project) {
     return updateProject(id, { isPublished: !project.isPublished });
   }
@@ -162,7 +162,7 @@ export async function getPortfolioStats() {
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function revalidatePaths() {
-  revalidatePath('/');
-  revalidatePath('/portfolio');
-  revalidatePath('/admin/portfolio');
+  revalidatePath("/");
+  revalidatePath("/portfolio");
+  revalidatePath("/admin/portfolio");
 }

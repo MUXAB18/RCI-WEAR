@@ -1,71 +1,93 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { Check, Palette, Layers, Sparkles, Zap, Award } from 'lucide-react';
-import { SectionHeading } from '@/components/ui/SectionHeading';
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Check, Palette, Layers, Sparkles, Zap, Award } from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export default function CustomizationPage() {
   const customizationMethods = [
     {
       icon: Palette,
-      title: 'Screen Printing',
-      description: 'Vibrant, durable prints ideal for bulk orders and solid color designs.',
-      highlights: ['Cost-effective', 'Long-lasting', 'MOQ: 50 units'],
-      applications: ['T-shirts', 'Hoodies', 'Uniforms']
+      title: "Screen Printing",
+      description:
+        "Vibrant, durable prints ideal for bulk orders and solid color designs.",
+      highlights: ["Cost-effective", "Long-lasting", "MOQ: 50 units"],
+      applications: ["T-shirts", "Hoodies", "Uniforms"],
     },
     {
       icon: Layers,
-      title: 'Embroidery',
-      description: 'Premium 3D textured branding for a professional, luxury appearance.',
-      highlights: ['Highly durable', 'Premium look', 'Corporate ideal'],
-      applications: ['Polo Shirts', 'Caps', 'Jackets']
+      title: "Embroidery",
+      description:
+        "Premium 3D textured branding for a professional, luxury appearance.",
+      highlights: ["Highly durable", "Premium look", "Corporate ideal"],
+      applications: ["Polo Shirts", "Caps", "Jackets"],
     },
     {
       icon: Sparkles,
-      title: 'Heat Transfer',
-      description: 'High-resolution prints perfect for detailed graphics and photos.',
-      highlights: ['Full-color', 'Quick turnaround', 'No MOQ'],
-      applications: ['Custom Designs', 'Small Batches', 'Photos']
+      title: "Heat Transfer",
+      description:
+        "High-resolution prints perfect for detailed graphics and photos.",
+      highlights: ["Full-color", "Quick turnaround", "No MOQ"],
+      applications: ["Custom Designs", "Small Batches", "Photos"],
     },
     {
       icon: Zap,
-      title: 'Sublimation',
-      description: 'All-over printing for seamless, photo-realistic designs on polyester.',
-      highlights: ['Full coverage', 'Won\'t crack', 'Unlimited colors'],
-      applications: ['Activewear', 'Sportswear', 'Performance Wear']
+      title: "Sublimation",
+      description:
+        "All-over printing for seamless, photo-realistic designs on polyester.",
+      highlights: ["Full coverage", "Won't crack", "Unlimited colors"],
+      applications: ["Activewear", "Sportswear", "Performance Wear"],
     },
     {
       icon: Award,
-      title: 'DTG Printing',
-      description: 'Direct-to-Garment for detailed, colorful designs on demand.',
-      highlights: ['Eco-friendly inks', 'High detail', 'No setup costs'],
-      applications: ['Custom Art', 'Photo Prints', 'Small Orders']
+      title: "DTG Printing",
+      description:
+        "Direct-to-Garment for detailed, colorful designs on demand.",
+      highlights: ["Eco-friendly inks", "High detail", "No setup costs"],
+      applications: ["Custom Art", "Photo Prints", "Small Orders"],
     },
     {
       icon: Sparkles,
-      title: 'Vinyl Printing',
-      description: 'Cut vinyl graphics for bold, solid color designs and lettering.',
-      highlights: ['Sharp edges', 'Flexible', 'Quick production'],
-      applications: ['Names & Numbers', 'Team Jerseys', 'Logos']
-    }
+      title: "Vinyl Printing",
+      description:
+        "Cut vinyl graphics for bold, solid color designs and lettering.",
+      highlights: ["Sharp edges", "Flexible", "Quick production"],
+      applications: ["Names & Numbers", "Team Jerseys", "Logos"],
+    },
   ];
 
   const additionalServices = [
-    { title: 'Custom Labels & Tags', icon: '🏷️' },
-    { title: 'Hang Tags', icon: '📎' },
-    { title: 'Custom Packaging', icon: '📦' },
-    { title: 'Appliqué Patches', icon: '🎨' },
-    { title: 'Foil Printing', icon: '✨' },
-    { title: 'Puff Printing', icon: '💫' }
+    { title: "Custom Labels & Tags", icon: "🏷️" },
+    { title: "Hang Tags", icon: "📎" },
+    { title: "Custom Packaging", icon: "📦" },
+    { title: "Appliqué Patches", icon: "🎨" },
+    { title: "Foil Printing", icon: "✨" },
+    { title: "Puff Printing", icon: "💫" },
   ];
 
   const processSteps = [
-    { number: '01', title: 'Design Consultation', description: 'Share your design. We suggest the best method.' },
-    { number: '02', title: 'Sample Approval', description: 'Physical samples created for your review.' },
-    { number: '03', title: 'Production', description: 'Bulk production with strict quality control.' },
-    { number: '04', title: 'Delivery', description: 'Carefully packaged and shipped worldwide.' }
+    {
+      number: "01",
+      title: "Design Consultation",
+      description: "Share your design. We suggest the best method.",
+    },
+    {
+      number: "02",
+      title: "Sample Approval",
+      description: "Physical samples created for your review.",
+    },
+    {
+      number: "03",
+      title: "Production",
+      description: "Bulk production with strict quality control.",
+    },
+    {
+      number: "04",
+      title: "Delivery",
+      description: "Carefully packaged and shipped worldwide.",
+    },
   ];
 
   return (
@@ -86,12 +108,15 @@ export default function CustomizationPage() {
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
         >
           {[
-            { label: 'Printing Methods', value: '6+' },
-            { label: 'Colors Available', value: 'Unlimited' },
-            { label: 'Min Order Qty', value: '50 Units' },
-            { label: 'Sample Time', value: '5-7 Days' }
+            { label: "Printing Methods", value: "6+" },
+            { label: "Colors Available", value: "Unlimited" },
+            { label: "Min Order Qty", value: "50 Units" },
+            { label: "Sample Time", value: "5-7 Days" },
           ].map((stat, index) => (
-            <div key={index} className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <div
+              key={index}
+              className="text-center p-6 bg-gray-50 rounded-2xl border border-gray-200"
+            >
               <div className="text-3xl md:text-4xl font-sans font-bold text-black mb-2">
                 {stat.value}
               </div>
@@ -149,7 +174,9 @@ export default function CustomizationPage() {
                   {(method.highlights ?? []).map((highlight, idx) => (
                     <div key={idx} className="flex items-center gap-2">
                       <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-700 font-sans">{highlight}</span>
+                      <span className="text-sm text-gray-700 font-sans">
+                        {highlight}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -267,8 +294,18 @@ export default function CustomizationPage() {
               className="inline-flex items-center gap-2 bg-white text-near-black px-8 py-3 rounded-full font-sans font-bold text-sm uppercase tracking-wider hover:bg-gray-100 transition-all duration-300 hover:scale-105"
             >
               Request Quote
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </a>
             <a

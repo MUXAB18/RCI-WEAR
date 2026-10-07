@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/Button';
+import React from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/Button";
 
 export function HomeCtaSection() {
   return (
@@ -19,13 +19,23 @@ export function HomeCtaSection() {
             Ready to scale your brand?
           </h2>
           <p className="text-xl text-gray-600 mb-12 font-light font-sans">
-            Partner with Rasheed Clothing International for premium, reliable, and scalable apparel manufacturing.
+            Partner with Rasheed Clothing International for premium, reliable,
+            and scalable apparel manufacturing.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button href="/contact" variant="primary" className="bg-black text-white hover:bg-[#2A2A28] rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold uppercase whitespace-nowrap transition-colors duration-300 font-sans">
+            <Button
+              href="/contact"
+              variant="primary"
+              className="bg-black text-white hover:bg-[#2A2A28] rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold uppercase whitespace-nowrap transition-colors duration-300 font-sans"
+            >
               Start a Project
             </Button>
-            <Button href="/catalog.pdf" download variant="outline" className="border border-black/20 text-black hover:bg-black/5 rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold uppercase whitespace-nowrap transition-colors duration-300 font-sans">
+            <Button
+              href="/catalog.pdf"
+              download
+              variant="outline"
+              className="border border-black/20 text-black hover:bg-black/5 rounded-full px-8 h-14 flex items-center justify-center text-[13px] font-semibold uppercase whitespace-nowrap transition-colors duration-300 font-sans"
+            >
               Download Catalog
             </Button>
           </div>

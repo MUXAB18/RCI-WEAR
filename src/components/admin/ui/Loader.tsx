@@ -1,19 +1,19 @@
-import { Loader2 } from 'lucide-react';
+import { Loader2 } from "lucide-react";
 
 interface LoaderProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
   text?: string;
   fullScreen?: boolean;
 }
 
 const sizeMap = {
-  sm: 'w-4 h-4',
-  md: 'w-6 h-6',
-  lg: 'w-10 h-10',
-  xl: 'w-16 h-16',
+  sm: "w-4 h-4",
+  md: "w-6 h-6",
+  lg: "w-10 h-10",
+  xl: "w-16 h-16",
 };
 
-export function Loader({ size = 'md', text, fullScreen = false }: LoaderProps) {
+export function Loader({ size = "md", text, fullScreen = false }: LoaderProps) {
   const content = (
     <div className="flex flex-col items-center justify-center space-y-4">
       <Loader2 className={`${sizeMap[size]} text-white/60 animate-spin`} />

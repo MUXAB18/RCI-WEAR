@@ -1,15 +1,16 @@
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import { Navbar } from './Navbar';
-import { Footer } from './Footer';
-import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+import { usePathname } from "next/navigation";
+import { Navbar } from "./Navbar";
+import { Footer } from "./Footer";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  
+
   // Check if current route is admin or track
-  const isPlainRoute = pathname?.startsWith('/admin') || pathname?.startsWith('/track');
+  const isPlainRoute =
+    pathname?.startsWith("/admin") || pathname?.startsWith("/track");
 
   // Admin/Track routes: no navbar/footer, just return children
   if (isPlainRoute) {
@@ -20,9 +21,7 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <main className="flex-grow">
-        {children}
-      </main>
+      <main className="flex-grow">{children}</main>
       <Footer />
       <WhatsAppButton />
     </>

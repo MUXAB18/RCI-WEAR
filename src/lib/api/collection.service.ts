@@ -3,8 +3,8 @@
  * CRUD operations for product collections
  */
 
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type CreateCollectionInput = {
   name: string;
@@ -21,7 +21,7 @@ export type UpdateCollectionInput = Partial<CreateCollectionInput>;
 
 export async function getAllCollections() {
   return prisma.collection.findMany({
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
     include: {
       products: {
         select: { id: true, name: true },
@@ -33,7 +33,7 @@ export async function getAllCollections() {
 export async function getPublishedCollections() {
   return prisma.collection.findMany({
     where: { isPublished: true },
-    orderBy: { order: 'asc' },
+    orderBy: { order: "asc" },
     include: {
       products: {
         where: { isPublished: true },
@@ -81,7 +81,10 @@ export async function createCollection(data: CreateCollectionInput) {
 
 // ─── UPDATE ──────────────────────────────────────────────────────────────────
 
-export async function updateCollection(id: string, data: UpdateCollectionInput) {
+export async function updateCollection(
+  id: string,
+  data: UpdateCollectionInput,
+) {
   const collection = await prisma.collection.update({
     where: { id },
     data,
@@ -98,7 +101,7 @@ export async function deleteCollection(id: string) {
     where: { collectionId: id },
     data: { collectionId: null },
   });
-  
+
   await prisma.collection.delete({ where: { id } });
   revalidatePaths();
 }
@@ -106,7 +109,7 @@ export async function deleteCollection(id: string) {
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function revalidatePaths() {
-  revalidatePath('/');
-  revalidatePath('/collections');
-  revalidatePath('/admin/collections');
+  revalidatePath("/");
+  revalidatePath("/collections");
+  revalidatePath("/admin/collections");
 }
