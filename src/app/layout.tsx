@@ -28,8 +28,8 @@ export const metadata = {
     type: 'website',
   },
   icons: {
-    icon: '/browserlogo.png',
-    apple: '/browserlogo.png',
+    icon: '/rci-logo.svg',
+    apple: '/rci-logo.svg',
   },
 };
 

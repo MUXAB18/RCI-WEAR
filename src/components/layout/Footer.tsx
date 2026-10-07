@@ -20,7 +20,7 @@ export function Footer() {
           <div className="col-span-1 lg:col-span-5 flex flex-col items-start text-left">
             <Link href="/" className="inline-block mb-5 relative h-14 w-14 md:h-24 md:w-24 transition-all duration-300 hover:scale-105">
               <Image
-                src="/logo-v2.png"
+                src="/rci-logo.svg"
                 alt="RCI Logo"
                 fill
                 className="object-contain brightness-0 invert opacity-90"

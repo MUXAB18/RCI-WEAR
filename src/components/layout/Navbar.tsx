@@ -80,7 +80,7 @@ export function Navbar() {
             >
               <div className="relative w-full h-full">
                 <Image
-                  src="/logo-v2.png"
+                  src="/rci-logo.svg"
                   alt="RCI Logo"
                   fill
                   className="object-contain brightness-0 invert opacity-90 hover:opacity-100 transition-opacity"
@@ -221,10 +221,10 @@ export function Navbar() {
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
                 className="relative flex items-center"
-                style={{ width: 88, height: 30 }}
+                style={{ width: 160, height: 55 }}
               >
                 <Image
-                  src="/logo-v2.png"
+                  src="/rci-logo.svg"
                   alt="Rasheed Clothing International"
                   fill
                   className="object-contain object-left brightness-0 invert opacity-90"
