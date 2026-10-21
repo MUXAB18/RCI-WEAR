@@ -4,6 +4,10 @@
 
 A production-grade, high-performance marketing & e-commerce web application built with **React 18 + Vite 5 + CSS Modules**.
 
+## Overview
+
+RCI-WEAR is the marketing & e-commerce web app for **Rasheed Clothing International**, a premium custom-clothing brand. Alongside brand and product pages it includes an interactive **Design Studio** — a canvas-based garment customizer built with React-Konva — and a contact workflow powered by EmailJS. The app is engineered for speed and reach: lazy-loaded vendor chunks, optimized responsive images (WebP + `srcset`), an offline-capable service worker, and WCAG 2.1 AA accessibility.
+
 ---
 
 ## Table of Contents
